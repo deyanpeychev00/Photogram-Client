@@ -34,7 +34,13 @@
   </a>
 </div>
 
+<div *ngIf="!upcommingResults && journeysArr.length === 0">
+  <div class="container center red-text">
+    <div class="no-results">Все още нямате създадени пътешествия</div>
+    <span><b><a routerLink="/journeys/create" class="btn blue">Създай пътешествие</a></b></span>
+  </div>
+</div>
 <!-- Footer-->
-<div *ngIf="!upcommingResults">
+<div *ngIf="!upcommingResults && journeysArr.length > 0">
   <app-footer></app-footer>
 </div>

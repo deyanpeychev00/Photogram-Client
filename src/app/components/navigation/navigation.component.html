@@ -5,9 +5,9 @@
   <a *ngIf="!logged" class="menu-item" routerLink="/register" (click)="closeNav()">Регистрация</a>
 
   <a *ngIf="admin"  class="menu-item admin-item" routerLink="/admin" (click)="closeNav()">Администрация</a>
-  <a *ngIf="logged && !blocked"  class="menu-item" routerLink="/journeys/discover" (click)="closeNav()">Всички пътувания</a>
   <a *ngIf="logged && !blocked"  class="menu-item" routerLink="/journeys/create" (click)="closeNav()">Създай пътуване</a>
   <a *ngIf="logged && blocked"  class="red-text warning-text" >Профилът ви е блокиран, не можете да създавате пътешествия</a>
+  <a *ngIf="logged"  class="menu-item" routerLink="/journeys/discover" (click)="closeNav()">Всички пътувания</a>
   <a *ngIf="logged"  class="menu-item" routerLink="/journeys/myjourneys" (click)="closeNav()">Моите пътувания</a>
   <a *ngIf="logged"  class="menu-item" (click)="logOut()" (click)="closeNav()">Изход</a>
 </div>

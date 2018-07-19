@@ -15,7 +15,7 @@ export class JourneysDiscoverComponent implements OnInit {
   isListening = true;
   journeysCount = 0;
   upcommingResults = true;
-  limitCount = 2;
+  limitCount = 5;
   dateFrom;
   dateTo;
 

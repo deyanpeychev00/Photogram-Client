@@ -1,9 +1,51 @@
-.card-image img{
-  margin: auto;
-  max-height: 100px;
-  width: auto;
+.card{
+  padding: 10px;
+
+}
+
+.redCard{
+  background: radial-gradient(#ffcdd2, #ffebee);
+}
+
+.greenCard{
+  background: radial-gradient(#c8e6c9, #e8f5e9);
 }
 
 .warning-message{
   margin-bottom: 0;
+  margin-top: -10px;
 }
+
+
+.materialboxedimage{
+  min-height: 300px;
+  max-height: 300px;
+}
+
+@media all and (max-width: 782px){
+  .container{
+    width: 100%;
+  }
+  .row, .col{
+    margin: 0 !important;
+  }
+
+}
+
+@media all and (max-width: 993px){
+  .materialboxedimage{
+    max-height: 100%;
+  }
+}
+
+.materialboxed{
+  cursor: pointer;
+}
+
+.upImg {
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.upImg:hover {opacity: 0.7;}

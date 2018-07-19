@@ -16,7 +16,7 @@ export class MyJourneysComponent implements OnInit {
   isListening = true;
   journeysCount = 0;
   upcommingResults = true;
-  limitCount = 2;
+  limitCount = 5;
 
   constructor(private auth: AuthService, private journeyService: JourneyService, private toastr: ToastrService, private activatedRoute: ActivatedRoute, private router: Router) {
   }

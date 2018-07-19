@@ -1,33 +1,27 @@
-<div class="col s12 m3">
-  <div class="card">
-    <div class="row">
-      <div class="card-image container">
-        <img src="{{photo.encoded}}" id="{{photo.localID}}" class="previewImage">
-      </div>
+<div class="col s12 m12 l4">
+  <div class="card hoverable" [class.redCard]="!photo.hasExif" [class.greenCard]="photo.hasExif">
+    <div class="card-image" *ngIf="photo.localID">
+      <img src="{{photo.encoded}}" id="localIMG-{{photo.localID}}" class="previewImage activator materialboxed materialboxedimage upImg">
     </div>
-    <div class="card-stacked">
-      <div class="card-content">
-        <span class="row img-det" *ngIf="photo.showSize === true"><span class="chip left"><b>Размер:</b></span><span class="right">{{(photo.size).toFixed(2) + "KB"}}</span></span>
-        <span class="row img-det"><span class="chip left"><b>Координати:</b></span><span class="right">
+    <div class="card-reveal">
+      <span class="card-title grey-text text-darken-4 row"><i class="material-icons right">close</i></span>
+      <span class="row img-det" *ngIf="photo.showSize === true"><span class="chip left"><b>Размер:</b></span><span class="right">{{(photo.size).toFixed(2) + "KB"}}</span></span>
+      <span class="row img-det"><span class="chip left"><b>Координати:</b></span><span class="right">
                   <span *ngIf="photo.location.length > 0"><i class="material-icons green-text">check</i></span>
                   <span *ngIf="photo.location.length === 0" class="red-text"><i class="material-icons red-text">close</i></span>
                 </span></span>
-        <span class="row"><span class="chip left"><b>EXIF данни:</b></span><span class="right">
+      <span class="row"><span class="chip left"><b>EXIF данни:</b></span><span class="right">
                   <span *ngIf="photo.hasExif"><i class="material-icons green-text">check</i></span>
                   <span *ngIf="!photo.hasExif" class="red-text"><i class="material-icons red-text">close</i></span>
                 </span></span>
-        <span class="row"><span class="chip left"><b>Визуализация:</b></span><span class="right">
+      <span class="row"><span class="chip left"><b>Визуализация:</b></span><span class="right">
                   <span *ngIf="photo.location.length > 0"><i class="material-icons green-text">check</i></span>
                   <span *ngIf="photo.location.length === 0" class="red-text"><i class="material-icons red-text">close</i></span>
                 </span></span>
-        <div class="row center red-text warning-message" *ngIf="photo.showSize === false">
-          <a *ngIf="photo.prepareDelete === false || photo.prepareDelete === undefined" class="waves-effect waves-light btn-small red" (click)="prepareForDelete(photo._id)"><i class="material-icons right">close</i>Изтрий</a>
-          <a *ngIf="photo.prepareDelete === true" class="waves-effect waves-light btn-small grey" (click)="cancelPrepareDelete(photo._id)">Отмени изтриването</a>
-        </div>
-        <div class="row center red-text warning-message" *ngIf="!photo.hasExif">
-            Тази снимка няма да бъде добавена към пътешествието, поради липса на EXIF данни.
-        </div>
+      <div class="row center red-text warning-message" *ngIf="!photo.hasExif">
+        Тази снимка няма да бъде добавена към пътешествието, поради липса на EXIF данни.
       </div>
     </div>
   </div>
 </div>
+

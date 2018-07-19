@@ -16,6 +16,7 @@ export class JourneyImageComponent implements OnInit {
   modalImg:any;
   imgLocation: string;
   angle = 0;
+  downloadName: string;
   constructor(private mapService: MapService, private journeyService: JourneyService, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
@@ -24,6 +25,7 @@ export class JourneyImageComponent implements OnInit {
       this.sanitizer.bypassSecurityTrustStyle(imageUrl);
       let image: any = document.getElementById('img-clicker-' + this.photo._id);
       image.src = imageUrl;
+      this.downloadName = this.photo.fileName;
       this.photo.fileName = imageUrl;
       this.mapService.showRetrievedImage(this.photo);
     });
@@ -37,11 +39,14 @@ export class JourneyImageComponent implements OnInit {
     this.photoModal = document.getElementById(this.photo._id);
     this.imgContainer = document.getElementById('img-clicker-'+this.photo._id);
     this.modalImg = document.getElementById("img-"+this.photo._id);
+    let downloadBtn:any = document.getElementById('download-'+this.photo._id);
 
     this.photoModal.style.display = "block";
     let imageModal: any = this.modalImg;
     let imageContainer: any = this.imgContainer;
     imageModal.src = imageContainer.src;
+    downloadBtn.download = this.downloadName;
+    downloadBtn.href = imageContainer.src;
   }
 
 

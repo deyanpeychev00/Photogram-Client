@@ -6,6 +6,7 @@ import {ToastrService} from '../../services/toastr/toastr.service';
 import {JourneyService} from '../../services/journey/journey.service';
 import {DataService} from '../../services/data/data.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
+import {ServerService} from '../../services/server/server.service';
 
 declare const $: any;
 
@@ -14,15 +15,16 @@ declare const $: any;
 })
 export class EditJourneyComponent implements OnInit {
   selectedPictures: Array<any> = [];
+  selectedFiles: Array<any> = [];
   donePhotos = [];
   journeyName = '';
   journeyDescription = '';
   journey;
   journeyID;
   journeyPictures = [];
-  prevPicsAdded: boolean;
+  imageMarkers: Array<any> = [];
 
-  constructor(private auth: AuthService, private map: MapService, private toastrService: ToastrService, private journeyService: JourneyService, private dataService: DataService, private activatedRoute: ActivatedRoute, private toastr: ToastrService, private router: Router) {
+  constructor(private auth: AuthService, private map: MapService, private toastrService: ToastrService, private journeyService: JourneyService, private dataService: DataService, private activatedRoute: ActivatedRoute, private toastr: ToastrService, private router: Router, private serverService: ServerService) {
   }
 
   ngOnInit() {
@@ -34,34 +36,45 @@ export class EditJourneyComponent implements OnInit {
 
   retreiveJourney() {
     this.toastr.toast('Зареждане на детайлите за пътешествието..');
+    // get journey ID from url params
     this.activatedRoute.params.subscribe((params: Params) => {
       this.journeyID = params['id'];
     });
-    this.journeyService.getCurrentJourney(this.journeyID).subscribe(data => {
-      this.journey = data;
+    // get journey details from db
+    this.journeyService.getCurrentJourney(this.journeyID).subscribe((res: any) => {
+      this.journey = res.data[0];
       this.journeyName = this.journey.name;
       this.journeyDescription = this.journey.caption;
+      // get journey photos from db
       this.journeyService.getJourneyPhotos(this.journeyID).subscribe(picsData => {
         let pictures: any = picsData;
-
-        for (let pic of pictures) {
-
+        // create image object for map rendering
+        for (let pic of pictures.data) {
           let imgObj = {
+            picName: pic.fileName,
             _id: pic._id,
             position: 'TRANSIT',
-            localID: btoa(pic.file.name),
-            file: pic.file,
-            encoded: pic.encoded,
-            hasExif: Object.keys(pic.file.exifdata).length > 0,
+            localID: btoa(pic.fileName),
+            size: pic.size,
+            hasExif: true,
             showSize: false,
+            location: pic.location,
+            dateTaken: pic.dateTaken,
+            fileName: pic.fileName,
+            make: pic.make,
+            model: pic.model,
+            resolution: pic.resolution,
+            flash: pic.flash,
+            iso: pic.iso,
+            focalLength: pic.focalLength,
             previouslyAdded: true
           };
+          // push image object in markers array for map rendering and in pictures array for passing to child components
           this.journeyPictures.push(imgObj);
-          this.selectedPictures.push(imgObj);
+          this.imageMarkers.push({
+            ID: imgObj.localID, coordinates: imgObj.location, timestamp: imgObj.dateTaken, thumbnail: ''
+          });
         }
-
-        this.prevPicsAdded = true;
-
       }, picsErr => {
         this.toastr.errorToast((picsErr.error.description ? picsErr.error.description : 'Възникна грешка при зареждането на снимките, моля презаредете страницата.'));
       });
@@ -71,39 +84,62 @@ export class EditJourneyComponent implements OnInit {
   }
 
   onPictureSelectorChange(ev) {
+    // empty markers and reset arrays
     this.map.emptyMarkers();
+    let oldPics = this.journeyPictures;
+    this.selectedFiles = [];
     this.selectedPictures = [];
-    this.prevPicsAdded = true;
+    this.journeyPictures = [];
+    this.imageMarkers = [];
     const files: Array<File> = ev.target.files;
 
+    // push the existing journey image in markers and images arrays
+    for (let pic of oldPics) {
+      this.journeyPictures.push(pic);
+      this.imageMarkers.push({
+        ID: pic.localID, coordinates: pic.location, timestamp: pic.dateTaken, thumbnail: ''
+      });
+    }
+    // handle file input changes
     for (let i = 0; i < files.length; i++) {
       const file: any = files[i];
+      // validate image size limits
       const validator = this.auth.validatePostPicture(file);
       if (!validator.isValid) {
         this.toastrService.toast(validator.msg);
         continue;
       }
+      // read the file for future encoding
       const fileReader: FileReader = new FileReader();
       fileReader.readAsDataURL(file);
       fileReader.onload = (e) => {
+        // extract file EXIF data
         EXIF.getData(file, () => {
           let imgObj = {
             position: 'TRANSIT',
             localID: btoa(file.name),
-            file: file,
-            encoded: fileReader.result,
+            size: file.size / 1024,
+            make: file.exifdata.Make ? file.exifdata.Make.toUpperCase() : '',
+            model: file.exifdata.Model ? file.exifdata.Model.toUpperCase() : '',
+            dateTaken: file.exifdata.DateTimeOriginal,
+            location: this.journeyService.extractFileLocation(file),
+            resolution: [file.exifdata.PixelXDimension, file.exifdata.PixelYDimension],
+            flash: file.exifdata.Flash,
+            iso: file.exifdata.ISOSpeedRatings,
+            focalLength: file.exifdata.FocalLength,
             hasExif: Object.keys(file.exifdata).length > 0,
-            showSize: true
+            showSize: true,
+            encoded: fileReader.result,
+            fileName: ''
           };
+          // push file object to array of selected files for upload and to markers array for live update of the journey
+          this.selectedFiles.push({file, fileID: imgObj.localID});
           this.selectedPictures.push(imgObj);
+          this.imageMarkers.push({
+            ID: imgObj.localID, coordinates: imgObj.location, timestamp: imgObj.dateTaken, thumbnail: imgObj.encoded
+          });
         });
-        if (this.prevPicsAdded) {
-          for (let pic of this.journeyPictures) {
-            pic.previouslyAdded = true;
-            this.selectedPictures.push(pic);
-          }
-          this.prevPicsAdded = false;
-        }
+
       };
       fileReader.onerror = (error) => {
         console.log(error);
@@ -111,23 +147,17 @@ export class EditJourneyComponent implements OnInit {
       };
     }
 
-    if (files.length === 0) {
-      if (this.prevPicsAdded) {
-        for (let pic of this.journeyPictures) {
-          pic.previouslyAdded = true;
-          this.selectedPictures.push(pic);
-        }
-        this.prevPicsAdded = false;
-      }
-    }
-
-    this.map.connectJourneyMarkers();
+    // live connection of the markers
+    this.map.connectEditMarkers(this.imageMarkers);
   }
 
   saveEdits() {
-
-    this.donePhotos = this.selectedPictures.filter(p => Object.keys(p.file.exifdata).length > 0);
-
+    // Fill the array for photos upload
+    this.donePhotos = this.selectedPictures.filter(p => p.hasExif);
+    for (let pic of this.journeyPictures) {
+      this.donePhotos.push(pic);
+    }
+    // validate journey
     const validateJourney = this.auth.validateCreateJourney(this.journeyName, this.journeyDescription, this.donePhotos);
     if (!validateJourney.isValid) {
       this.toastrService.errorToast(validateJourney.msg);
@@ -135,63 +165,87 @@ export class EditJourneyComponent implements OnInit {
     } else {
       this.toastr.toast('Запазване на промените...');
 
-      // delete old pictures
-      for (let i = 0; i < this.donePhotos.length; i++) {
-        if (this.donePhotos[i].prepareDelete && this.donePhotos[i].prepareDelete === true) {
-
-          this.journeyService.removePhotoFromDatabase(this.donePhotos[i]._id);
-
-          // remove image from donePhotos after delete (avoid duplicates on adding images)
-          this.donePhotos.splice(i, 1);
-          i--;
-        }
-      }
-
       // upload new pictures
       let photosToAdd = this.donePhotos.filter(p => p.previouslyAdded !== true);
 
-      for (let pht of photosToAdd) {
-        this.journeyService.uploadImageToKinveyCollections(pht, this.journeyID).subscribe(data => {
+      if(photosToAdd.length > 0){
+        // upload pictures to server and save their details in db
+        if (this.uploadFiles(photosToAdd)) {
+          // update journey details
+          this.journey.name = this.journeyName;
+          this.journey.caption = this.journeyDescription;
+          // update journey itself
+          this.journeyService.updateJourney(this.journey).subscribe(data => {
+            this.toastr.successToast('Промените бяха успешно записани');
+            this.router.navigate(['/journeys/myjourneys']);
+          }, err => {
+            this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
+          });
+        }
+      }else{
+        // update journey details
+        this.journey.name = this.journeyName;
+        this.journey.caption = this.journeyDescription;
+        // update journey itself
+        this.journeyService.updateJourney(this.journey).subscribe(data => {
+          this.toastr.successToast('Промените бяха успешно записани');
+          this.router.navigate(['/journeys/myjourneys']);
         }, err => {
-          this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка при качването на снимка, моля опитайте отново'));
+          this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
         });
       }
 
-      // update journey details
-      this.journey.name = this.journeyName;
-      this.journey.caption = this.journeyDescription;
-
-      this.journeyService.updateJourney(this.journey).subscribe(data => {
-        this.toastr.successToast('Промените бяха успешно записани');
-        this.router.navigate(['/journeys/myjourneys']);
-      }, err => {
-        this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
-      });
     }
   }
 
+
+  uploadFiles(dPht) {
+    // process all files for upload
+    for (let fileObj of this.selectedFiles) {
+      // upload each file to server
+      this.serverService.uploadFileToServer(fileObj.file).subscribe((result: any) => {
+        // get filename from server response
+        if (result.success) {
+          // process the file upload result (server response)
+          let photoForKinvey = this.processFileUploadResult(result.data.filename, fileObj, dPht);
+          // upload image details to db
+          this.journeyService.uploadImageToKinveyCollections(photoForKinvey, this.journeyID).subscribe(data=>{});
+        } else if (!result.success) {
+          this.toastrService.errorToast(result.msg ? result.msg : 'Възникна грешка, моля опитайте отново');
+          return false;
+        }
+      });
+    }
+    return true;
+  }
+
+  processFileUploadResult(fileName, fileObj, dPht) {
+    // update the filename of the images to upload with the one returned from server after image upload
+    let photoObj;
+    for (let i = 0; i < dPht.length; i++) {
+      if (this.donePhotos[i].localID === fileObj.fileID) {
+        this.donePhotos[i].fileName = fileName;
+        photoObj = this.donePhotos[i];
+        break;
+      }
+    }
+    return photoObj;
+  }
+
   cancelCreateJourney() {
-    window.history.back();
+    this.router.navigate(['/']);
   }
 
   clearForm() {
+    // clear all inputs and map
     this.selectedPictures = this.donePhotos = [];
     this.journeyName = this.journeyDescription = '';
     $('.uploadFileInput').val('');
     this.map.clearMap();
   }
 
-  showMapChanges() {
-    this.map.emptyMarkers();
-    this.donePhotos = this.selectedPictures.filter(p => Object.keys(p.file.exifdata).length > 0);
-    for (let pic of this.donePhotos) {
-      if (!pic.prepareDelete) {
-        this.map.displayPictureOnMap(pic);
-      }
-    }
-  }
-
   showModal() {
+    // show modal for journey delete confirmation
     document.getElementById('myModal').style.display = 'block';
     window.onclick = (event) => {
       if (event.target === document.getElementById('myModal')) {
@@ -201,6 +255,7 @@ export class EditJourneyComponent implements OnInit {
   }
 
   closeModal() {
+    // close modal for journey delete confirmation
     document.getElementById('myModal').style.display = 'none';
   }
 
@@ -210,18 +265,46 @@ export class EditJourneyComponent implements OnInit {
 
     // delete journey pictures
     for (let pic of this.journeyPictures) {
-      this.journeyService.removePhotoFromDatabase(pic._id);
+      this.deleteImage(pic);
     }
 
     // delete journey itself
     this.journeyService.deleteJourney(this.journeyID).subscribe(data => {
-          this.toastr.successToast('Успешно изтрихте пътешествието');
-          this.router.navigate(['/journeys/myjourneys']);
+      this.toastr.successToast('Успешно изтрихте пътешествието');
+      this.router.navigate(['/journeys/myjourneys']);
     }, err => {
       this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
     });
 
   }
 
+  deleteImage(e) {
+
+    // Remove item from markers array
+    for (let i = 0; i < this.imageMarkers.length; i++) {
+      if (this.imageMarkers[i].ID === e.localID) {
+        this.imageMarkers.splice(i, 1);
+        break;
+      }
+    }
+    // delete item from existing journey pictures array
+    for (let i = 0; i < this.journeyPictures.length; i++) {
+      if (this.journeyPictures[i].localID === e.localID) {
+        this.journeyPictures.splice(i, 1);
+        break;
+      }
+    }
+    this.journeyService.deleteImageFromServer(e).subscribe((res:any) => {
+      if(res.success){
+        this.journeyService.removePhotoFromDatabase(e._id);
+      }else{
+        this.toastr.errorToast(res.msg ? res.msg : "Възникна грешка, моля опитайте отново");
+      }
+    });
+    // Update map
+    this.map.emptyMarkers();
+    this.map.connectEditMarkers(this.imageMarkers);
+
+  }
 
 }

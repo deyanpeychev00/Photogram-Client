@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
 import {MapService} from '../../services/map/map.service';
 
 declare const $: any;
@@ -10,19 +10,10 @@ declare const $: any;
 })
 export class UploadPictureFormComponent implements OnInit {
   @Input() photo;
-  @Output() picChangeStatus = new EventEmitter<string>();
   constructor(private mapService: MapService) { }
 
   ngOnInit() {
-    this.mapService.displayPictureOnMap(this.photo);
-  }
-  prepareForDelete(photoID){
-    this.photo.prepareDelete = true;
-    this.picChangeStatus.emit('updated');
+      this.mapService.showRetrievedImage(this.photo);
   }
 
-  cancelPrepareDelete(photoID){
-    this.photo.prepareDelete = false;
-    this.picChangeStatus.emit('updated');
-  }
 }

@@ -118,9 +118,9 @@ export class AdminPanelComponent implements OnInit {
   }
 
   getAllUsers() {
-    this.admin.getAllUsers().subscribe(data => {
-      this.users = data;
-      this.usersShow = data;
+    this.admin.getAllUsers().subscribe(res => {
+      this.users = res.data;
+      this.usersShow = res.data;
       this.usersLoaded = true;
     }, err => {
       this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
@@ -128,10 +128,15 @@ export class AdminPanelComponent implements OnInit {
   }
 
   getAllJourneys() {
-    this.journeyService.getAllJourneysAdmin().subscribe(data => {
-      this.journeys = data;
-      this.journeysShow = this.journeys;
-      this.journeysLoaded = true;
+    this.journeyService.getAllJourneysAdmin().subscribe((res:any) => {
+      if(res.success){
+        this.journeys = res.data;
+        this.journeysShow = this.journeys;
+        this.journeysLoaded = true;
+      }else{
+        this.toastr.errorToast((res.msg ? res.msg : 'Възникна грешка, моля опитайте отново'));
+
+      }
     }, err => {
       this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
     });
@@ -168,11 +173,14 @@ export class AdminPanelComponent implements OnInit {
     this.toastr.toast('Изтриване на пътешествието..');
 
     // delete journey pictures
-    this.journeyService.getJourneyPhotosIDs(JID).subscribe(data => {
-      let pics: any = data;
-      for(let pic of pics){
-        this.journeyService.removePhotoFromDatabase(pic._id);
+    this.journeyService.getJourneyPhotosIDs(JID).subscribe((response: any) => {
+      if(response.success){
+        let pics: any = response.data;
+        for(let pic of pics){
+          this.journeyService.removePhotoFromDatabase(pic._id);
+        }
       }
+
     },err => {
       this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
     });

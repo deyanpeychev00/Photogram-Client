@@ -10,6 +10,8 @@ export class MyJourneyPreviewComponent implements OnInit {
   @Input() journey;
   @Input() journeyCount;
   featuredImage;
+  imageLoaded = false;
+
   constructor(private journeyService: JourneyService) { }
 
   ngOnInit() {
@@ -18,6 +20,7 @@ export class MyJourneyPreviewComponent implements OnInit {
         const imageUrl = URL.createObjectURL(file);
         let image: any = document.getElementById(this.journey._id);
         image.src = imageUrl;
+        this.imageLoaded = true;
       });
     });
   }

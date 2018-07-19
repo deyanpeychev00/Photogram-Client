@@ -13,13 +13,15 @@ declare const $: any;
   selector: 'app-create-journey', templateUrl: './create-journey.component.html', styleUrls: ['./create-journey.component.css']
 })
 export class CreateJourneyComponent implements OnInit {
+
   selectedPictures: Array<any> = [];
   selectedFiles: Array<any> = [];
   donePhotos = [];
   journeyName: string;
   journeyDescription: string;
 
-  constructor(private auth: AuthService, private map: MapService, private toastrService: ToastrService, private journeyService: JourneyService, private dataService: DataService, private serverService: ServerService) {
+  constructor(private auth: AuthService, private map: MapService, private toastrService: ToastrService,
+              private journeyService: JourneyService, private dataService: DataService, private serverService: ServerService) {
   }
 
   ngOnInit() {
@@ -55,8 +57,8 @@ export class CreateJourneyComponent implements OnInit {
             position: 'TRANSIT',
             localID: btoa(file.name),
             size: file.size / 1024,
-            make: file.exifdata.Make.toUpperCase(),
-            model: file.exifdata.Model.toUpperCase(),
+            make: file.exifdata.Make ? file.exifdata.Make.toUpperCase() : '',
+            model: file.exifdata.Model ? file.exifdata.Model.toUpperCase() : '',
             dateTaken: file.exifdata.DateTimeOriginal,
             location: this.journeyService.extractFileLocation(file),
             resolution: [file.exifdata.PixelXDimension, file.exifdata.PixelYDimension],
@@ -89,12 +91,12 @@ export class CreateJourneyComponent implements OnInit {
       this.toastrService.errorToast(validateJourney.msg);
     } else {
       if (this.uploadFiles(this.donePhotos)) {
-        this.sendRequestToKinvey();
+        this.sendRequestToServer();
       }
     }
   }
 
-  sendRequestToKinvey() {
+  sendRequestToServer() {
     this.journeyService.uploadJourney(this.journeyName, this.journeyDescription, this.donePhotos);
     this.clearForm();
   }

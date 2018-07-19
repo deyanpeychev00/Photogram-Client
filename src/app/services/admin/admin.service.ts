@@ -5,30 +5,20 @@ import {DataService} from '../data/data.service';
 @Injectable()
 export class AdminService {
   kinvey = this.data.getKinveyCredentials();
+  serverURL = 'http://localhost:8080';
   constructor(private data: DataService,private http: HttpClient) { }
 
   getAllUsers(): Observable<any>{
-    return this.http.get(`${this.kinvey.host}/user/${this.kinvey.appKey}/`, {
-      headers: new HttpHeaders()
-        .set('Authorization', 'Kinvey ' + localStorage.getItem('authtoken'))
-        .set('Content-Type', 'application/json')
-    });
+    return this.http.get(`${this.serverURL}/users/all`);
   }
 
-  getCurrentUserBlockStatus(id): Observable<any>{
-    return this.http.get(`${this.kinvey.host}/user/${this.kinvey.appKey}/${id}?query={}&filter=blocked`, {
-      headers: new HttpHeaders()
-        .set('Authorization', 'Kinvey ' + localStorage.getItem('authtoken'))
-        .set('Content-Type', 'application/json')
-    });
+  getSingleUser(id): Observable<any>{
+    return this.http.get(`${this.serverURL}/users/single/${id}`);
   }
 
   updateUser(id, user): Observable<any>{
-    return this.http.put(`${this.kinvey.host}/user/${this.kinvey.appKey}/${id}`, user, {
-      headers: new HttpHeaders()
-        .set('Authorization', 'Kinvey ' + localStorage.getItem('authtoken'))
-        .set('Content-Type', 'application/json')
-    });
+    console.log(user);
+    return this.http.put(`${this.serverURL}/users/update`, user);
   }
 
   deleteUser(id): Observable<any>{

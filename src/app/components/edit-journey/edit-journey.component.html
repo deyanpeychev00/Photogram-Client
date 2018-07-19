@@ -30,7 +30,7 @@
         </div>
       </form>
       <div class="uploadedPhotosWrapper">
-          <div *ngIf="!selectedPictures.length" class="preloader-wrapper small active">
+          <div *ngIf="!selectedPictures.length && !journeyPictures.length" class="preloader-wrapper small active">
             <div class="spinner-layer spinner-blue-only">
               <div class="circle-clipper left">
                 <div class="circle"></div>
@@ -43,9 +43,11 @@
               </div>
             </div>
         </div>
-
-        <div *ngIf="selectedPictures.length">
-          <app-upload-picture-form (picChangeStatus)="showMapChanges()" *ngFor="let photo of selectedPictures" [photo]="photo"></app-upload-picture-form>
+        <div *ngIf="journeyPictures.length > 0">
+          <app-edit-picture-form (delete)="deleteImage($event)" *ngFor="let photo of journeyPictures" [photo]="photo"></app-edit-picture-form>
+        </div>
+        <div *ngIf="selectedPictures.length > 0">
+          <app-upload-picture-form  *ngFor="let photo of selectedPictures" [photo]="photo"></app-upload-picture-form>
         </div>
 
       </div>

@@ -24,3 +24,11 @@
 .chip{
   margin: 10px 0 15px 0;
 }
+
+.progress{
+  background-color: #ffcdd2 !important;
+}
+
+.progress .indeterminate{
+  background-color: #ef5350;
+}

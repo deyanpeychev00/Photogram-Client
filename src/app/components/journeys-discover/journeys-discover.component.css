@@ -52,5 +52,10 @@ input[type="submit"] {
   background-color: transparent;
 }
 
+.no-results{
+  margin-bottom: 20px;
+  font-size: 18px
+}
+
 
 

@@ -12,7 +12,6 @@ export class MapService {
 
   startIcon = new L.Icon({
     iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
@@ -20,12 +19,20 @@ export class MapService {
   });
   finishIcon = new L.Icon({
     iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
   });
+
+   transitIcon = new L.Icon({
+    iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+
   popup = {
     closeButton: false, autoClose: false
   };
@@ -79,48 +86,26 @@ export class MapService {
     this.initMap(id);
   }
 
-  displayPictureOnMap(pht) {
 
-    if (!pht.prepareDelete) {
-      // convert coordinates from exif data to decimals
-      if(pht.location.length > 0){
-        this.showRetrievedImage(pht);
-      }
-
-      /*    if (pht.file.exifdata && (pht.file.exifdata.GPSLatitude || pht.file.exifdata.GPSLongitude)) {
-        const gpsLat = pht.file.exifdata.GPSLatitude;
-        const dLatitude = (gpsLat[0] + gpsLat[1] / 60.0 + gpsLat[2] / 3600.0).toFixed(5);
-        const gpsLon = pht.file.exifdata.GPSLongitude;
-        const dLongitude = (gpsLon[0] + gpsLon[1] / 60.0 + gpsLon[2] / 3600.0).toFixed(5);
-        this.currentMarkers.push({
-          timestamp: pht.file.exifdata.DateTimeOriginal,
-          coordinates: [dLatitude, dLongitude],
-          thumbnail: pht.encoded,
-          position: pht.position
-        });
-      }
-      // create journey path
-      this.connectJourneyMarkers();*/
-    }
-
-  }
-
-  showRetrievedImage(pht){
+  showRetrievedImage(pht) {
     let obj = {
-      timestamp: pht.dateTaken,
-      coordinates: pht.location,
-      thumbnail: pht.encoded ,
-      position: pht.position,
-      imgsrc: pht.fileName
+      timestamp: pht.dateTaken, coordinates: pht.location, thumbnail: pht.encoded, position: pht.position, imgsrc: pht.fileName
     };
-    if(obj.coordinates.length > 0) {
+    if (obj.coordinates.length > 0) {
       this.currentMarkers.push(obj);
 
     }
     this.connectJourneyMarkers();
   }
 
+  connectEditMarkers(markers){
+    this.currentMarkers = markers;
+    // this.sortMarkers();
+    this.connectJourneyMarkers();
+  }
+
   connectJourneyMarkers() {
+
     this.sortMarkers();
 
     try {
@@ -130,18 +115,27 @@ export class MapService {
     } catch (e) {
     }
     this.clearNeedlessPolylines();
+
     for (let pht of this.currentMarkers) {
       let popupHTML = `<img src="${pht.thumbnail || `${pht.imgsrc}`}" style="max-width: 100%; transform: scale(2); z-index: 1">`;
-
       if (pht.position === 'START') {
-        const marker = L.marker(pht.coordinates, {type: 'marker', icon: this.startIcon})
-          .addTo(this.map).bindPopup(popupHTML, this.popup);
+        const marker = L.marker(pht.coordinates , {type: 'marker', icon: this.startIcon})
+          .addTo(this.map);
+        if(pht.thumbnail || pht.imgsrc){
+          marker.bindPopup(popupHTML, this.popup);
+        }
       } else if (pht.position === 'FINISH') {
         const marker = L.marker(pht.coordinates, {type: 'marker', icon: this.finishIcon})
-          .addTo(this.map).bindPopup(popupHTML, this.popup);
+          .addTo(this.map);
+        if(pht.thumbnail || pht.imgsrc){
+          marker.bindPopup(popupHTML, this.popup);
+        }
       } else {
-        const marker = L.marker(pht.coordinates, {type: 'marker'})
-          .addTo(this.map).bindPopup(popupHTML, this.popup);
+        const marker = L.marker(pht.coordinates, {type: 'marker', icon: this.transitIcon})
+          .addTo(this.map);
+        if(pht.thumbnail || pht.imgsrc){
+          marker.bindPopup(popupHTML, this.popup);
+        }
       }
     }
     const polyline = L.polyline(this.currentMarkers.map(x => x.coordinates), {color: 'red', weight: 2, type: 'polyline'}).addTo(this.map);
@@ -172,7 +166,7 @@ export class MapService {
   reDrawPointsOnPrevPicDelete(photo) {
     this.emptyMarkers();
     if (photo.prepareDelete === false || photo.prepareDelete === undefined) {
-      this.displayPictureOnMap(photo);
+      this.showRetrievedImage(photo);
     }
   }
 }

@@ -30,3 +30,11 @@
   margin-top:20px;
   margin-bottom: -20px;
 }
+
+.progress{
+  background-color: #bbdefb !important;
+}
+
+.progress .indeterminate{
+  background-color: #2196f3;
+}

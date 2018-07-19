@@ -36,19 +36,28 @@ export class JourneyDetailsComponent implements OnInit {
     this.activatedRoute.params.subscribe((params: Params) => {
       this.journeyID = params['id'];
     });
-    this.journeyService.getCurrentJourney(this.journeyID).subscribe(data => {
-      this.journey = data;
-      this.journeyRating = this.calculateJourneyRating(this.journey);
-      this.journeyLoaded = true;
-      this.ratingsLoaded = true;
-      this.journeyService.getJourneyPhotosFromServer(this.journeyID).subscribe(picsData => {
-        let pictures: any = picsData;
-        this.journeyPictures = pictures.data;
-        this.journeyPicturesResponse = true;
-      }, picsErr => {
-        this.toastr.errorToast((picsErr.error.description ? picsErr.error.description : 'Възникна грешка при зареждането на снимките, моля презаредете страницата.'));
-        this.journeyPicturesResponse = true;
-      });
+    this.journeyService.getCurrentJourney(this.journeyID).subscribe((res: any) => {
+      if(res.success){
+        this.journey = res.data[0];
+        this.journeyRating = this.calculateJourneyRating(this.journey);
+        this.journeyLoaded = true;
+        this.ratingsLoaded = true;
+        this.journeyService.getJourneyPhotos(this.journeyID).subscribe((picsData:any) => {
+          if(picsData.success){
+            this.journeyPictures = picsData.data;
+            this.journeyPicturesResponse = true;
+          }else{
+            this.toastr.errorToast((picsData.msg ? picsData.msg : 'Възникна грешка при зареждането на снимките. Моля опитайте отново.'));
+          }
+        }, picsErr => {
+          this.toastr.errorToast((picsErr.error.description ? picsErr.error.description : 'Възникна грешка при зареждането на снимките, моля презаредете страницата.'));
+          this.journeyPicturesResponse = true;
+        });
+      }else{
+        this.toastr.errorToast((res.msg ? res.msg : 'Възникна грешка, моля опитайте отново.'));
+
+      }
+
     }, err => {
       this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново.'));
     });

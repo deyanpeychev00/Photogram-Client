@@ -102,8 +102,8 @@ export class AuthService {
   }
 
   blockProtector() {
-    this.admin.getCurrentUserBlockStatus(localStorage.getItem('userId')).subscribe(data => {
-      if (data.blocked === true) {
+    this.admin.getSingleUser(localStorage.getItem('userId')).subscribe(userData => {
+      if (userData.data[0].blocked === true) {
         this.router.navigate(['/']);
         this.toastr.errorToast('Вашият профил е блокиран. Не можете да създавате пътешествия.');
         return false;
@@ -156,7 +156,7 @@ export class AuthService {
     this.http.post('http://localhost:8080/register', body).subscribe(responseData => {
       let response: any = responseData;
       if (response.success) {
-        this.dataService.setUserLocalData(response.data);
+        this.dataService.setUserLocalData(response.data.server);
         this.toastr.successToast(response.msg);
         this.router.navigate(['/journeys/discover']);
       } else if (response.success) {

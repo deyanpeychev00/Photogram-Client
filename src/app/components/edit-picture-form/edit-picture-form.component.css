@@ -1,41 +1,11 @@
-.card-content p{
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  line-height: 20px;
-}
-
-.card-image img{
-}
-
-.card-large{
-  transform: scale(1.2);
-  opacity: 1;
-}
-
-.card-content .card-title{
-  font-weight: 600;
-  color: #212121;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.show-more-button{
-  background:  linear-gradient(to right, #7e57c2 , #2196f3) !important;
-}
-
-.chip{
-  margin: 10px 0 15px 0;
-}
-
-.divider{
-  height: 20px;
-  background: transparent;
+.card {
+  padding: 10px;
+  background: radial-gradient(#bdbdbd, #e0e0e0, #fafafa, #fff);
 }
 
 .materialboxedimage{
-  max-height: 200px;
+  min-height: 300px;
+  max-height: 300px;
 }
 
 @media all and (max-width: 782px){
@@ -73,50 +43,13 @@
 }
 
 
-.tooltip {
-
-  position: relative;
-  display: inline-block;
-}
-
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 800%;
-  background-color: grey;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-  position: absolute;
-  z-index: 1;
-  top: -5px;
-  left: 110%;
-  opacity: 0.6;
-}
-
-.tooltip .tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: 100%;
-  margin-top: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent grey transparent transparent;
-  border-opacity: 0.6;
-}
-.tooltip:hover .tooltiptext {
-  margin-left: 5px;
-  visibility: visible;
-}
-
-#myImg {
+.upImg {
   border-radius: 5px;
   cursor: pointer;
   transition: 0.3s;
 }
 
-#myImg:hover {opacity: 0.7;}
+.upImg:hover {opacity: 0.7;}
 
 /* The Modal (background) */
 .modal {
@@ -218,4 +151,47 @@
   -moz-transition-duration: 0.5s;
   -o-transition-duration: 0.5s;
   transition-duration: 0.5s;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 200%;
+  background-color: #424242;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 10px;
+  position: absolute;
+  z-index: 1;
+  top: 150%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 15%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #424242 transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+@media all and (max-width: 993px) {
+  .tooltip .tooltiptext {
+    visibility: visible;
+    width: 150%;
+    margin-bottom: 20px;
+  }
 }

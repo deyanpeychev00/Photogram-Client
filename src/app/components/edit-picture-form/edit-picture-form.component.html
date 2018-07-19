@@ -1,14 +1,15 @@
-<div class="card">
-  <div class="card-image hoverable">
-    <img id="img-clicker-{{photo._id}}" class="materialboxed materialboxedimage" (click)="showImageModal()"/>
+<div class="col s12 m12 l4">
+  <div class="card hoverable">
+    <div class="card-image" *ngIf="photo.localID">
+      <img id="img-clicker-{{photo.localID}}" class="materialboxed materialboxedimage upImg" (click)="showImageModal()">
+    </div>
   </div>
 </div>
 
-<!-- The Modal -->
-<div id="{{photo._id}}" class="modal photoModal">
+<div id="{{photo.localID}}" class="modal photoModal">
   <span class="close" (click)="closeImageModal()">&times;</span>
   <div class="col s12 m12 l8">
-    <img class="modal-content modal-image" id="img-{{photo._id}}">
+    <img class="modal-content modal-image" id="img-{{photo.localID}}">
   </div>
   <div class="col s12 m12 l4">
     <div class="white-text modal-content left col s12 m12 l12">
@@ -122,9 +123,10 @@
 
       <div class="row">
         <div class="col s12 l12 m12 left left-align">
-          <button class="btn grey" (click)="rotateImageLeft('img-'+photo._id)"><i class="material-icons">rotate_left</i></button>
-          <button class="btn grey" (click)="rotateImageRight('img-'+photo._id)"><i class="material-icons">rotate_right</i></button>
-          <a id="download-{{photo._id}}" class="btn blue" download="asd.jpg" href="{{photo.fileName}}">Изтегли снимката</a>
+          <div class="tooltip"><button class="btn red" (click)="deleteImage()">Изтрий снимката</button>
+            <span class="tooltiptext">Ако изтриете снимката, тя няма да бъде възстановена дори и да отмените промените по пътешествието.</span>
+          </div>
+
         </div>
       </div>
     </div>
