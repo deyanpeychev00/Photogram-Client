@@ -1,0 +1,60 @@
+<div>
+  <div class="row container">
+    <div class="divider"></div>
+    <div class="col s12 m12 center row">
+      <div class="row">
+        <form class="col s12 setMaxHeight">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="journeyName" type="text" class="validate" [(ngModel)]="journeyName" name="journeyName">
+              <label for="journeyName">Име на пътешествието</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <textarea id="journeyDescription" type="text" [(ngModel)]="journeyDescription" name="journeyDescription" class="materialize-textarea"></textarea>
+              <label for="journeyDescription">Описание</label>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col s12 m12 center row">
+      <form>
+        <div class="file-field input-field">
+          <div class="btn btn-upload">
+            <span>Снимки</span>
+            <input (change)="onPictureSelectorChange($event)" type="file" accept=".jpg, .jpeg" multiple class="uploadFileInput">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate uploadFileInput" type="text" placeholder="Качете една или няколко снимки">
+          </div>
+        </div>
+      </form>
+      <div class="uploadedPhotosWrapper">
+        <div *ngIf="!selectedPictures.length" class="red-text">
+          <p>Моля качете вашите снимки, за да видите детайли <span class="red-text text-darken-4">(максимален размер на снимка: 10МB)</span></p>
+        </div>
+        <div *ngIf="selectedPictures.length">
+          <app-upload-picture-form *ngFor="let photo of selectedPictures" [photo]="photo"></app-upload-picture-form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="divider"></div>
+</div>
+<div class="grey lighten-4">
+  <div class="divider"><div class="divider"></div>
+  </div>
+  <div class="row container center">
+    <div class="col s12 m12 center row">
+      <div id="uploadJourneyMap"></div>
+    </div>
+    <button class="btn green lighten-1" (click)="createJourney()">Създай</button>
+    <button class="btn grey" (click)="cancelCreateJourney()">Отмени</button>
+  </div>
+
+  <div class="divider"></div>
+</div>
+<app-footer></app-footer>
+

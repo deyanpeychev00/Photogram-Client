@@ -1,0 +1,12 @@
+.copyright-iconsize{
+  font-size: 16px;
+}
+
+footer{
+  background: -webkit-linear-gradient( left, #7e57c2 , #2196f3);
+  user-select: none;
+}
+
+.page-footer{
+  padding-top: 0;
+}

@@ -1,0 +1,50 @@
+*{
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+div.container{
+  margin-top: 50px;
+}
+
+.head-line{
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 60px;
+  letter-spacing: 1px;
+  transition: color .2s linear;
+  margin-bottom: 10px;
+}
+
+.primary-text-color{
+  color: #8C8C8C;
+}
+
+.secondary-text-color{
+  color: #7e57c2;
+}
+
+hr{
+  background-color: #7e57c2;
+  color: #7e57c2;
+  border: none;
+  height: 2px;
+  width: 250px;
+  margin: 35px 0;
+}
+
+.subheader{
+  font-weight: 400;
+  transition: color .2s linear;
+  font-size: 36px;
+  line-height: 46px;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.context{
+  transition: color .2s linear;
+  font-size: 18px;
+  line-height: 27px;
+}
+.btn{
+  background: linear-gradient(to right, #7e57c2, #2196f3) !important;
+}

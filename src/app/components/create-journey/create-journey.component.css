@@ -1,0 +1,64 @@
+#uploadJourneyMap {
+  height: 500px;
+  z-index: 0;
+}
+
+.btn-upload {
+  background: linear-gradient(to right, #7e57c2, #2196f3) !important;
+}
+
+.uploadedPhotosWrapper {
+  overflow-y: scroll;
+  max-height: 600px;
+}
+
+@media (max-width: 782px) {
+  #uploadJourneyMap {
+    height: 300px;
+  }
+}
+
+.card {
+  min-height: 420px;
+}
+
+button.red {
+  background: red !important;
+}
+
+button.grey {
+  background: dimgrey !important;
+}
+
+
+.img-name {
+  -o-text-overflow: ellipsis; /* Opera */
+  text-overflow: ellipsis; /* IE, Safari (WebKit) */
+  overflow: hidden; /* don't show excess chars */
+  white-space: nowrap; /* force single line */
+  width: 300px; /* fixed width */
+}
+
+.createJourneyWrapper {
+  z-index: auto;
+}
+
+.picsDetails {
+  font-size: 18px;
+}
+
+.divider {
+  height: 30px;
+  color: transparent;
+  background-color: transparent;
+}
+
+input[type=text]:not(.browser-default):focus:not([readonly]), textarea:focus:not([readonly]) {
+  border-color: dodgerblue;
+  box-shadow: 0 1px 0 0 dodgerblue;
+}
+
+input[type=text]:not(.browser-default):focus:not([readonly])+label, textarea:not(.browser-default):focus:not([readonly])+label{
+  color: dodgerblue;
+}
+

@@ -1,0 +1,9 @@
+.card-image img{
+  margin: auto;
+  max-height: 100px;
+  width: auto;
+}
+
+.warning-message{
+  margin-bottom: 0;
+}

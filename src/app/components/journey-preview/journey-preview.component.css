@@ -1,0 +1,32 @@
+.card-content p{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: 20px;
+}
+
+.card-image, .card-image img{
+  max-height: 400px;
+}
+
+.card-content .card-title{
+  font-weight: 600;
+  color: #212121;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.show-more-button{
+  background:  linear-gradient(to right, #7e57c2 , #2196f3) !important;
+}
+
+.chip{
+  margin: 10px 0 15px 0;
+}
+
+.card-author{
+  text-align: right;
+  margin-top:20px;
+  margin-bottom: -20px;
+}

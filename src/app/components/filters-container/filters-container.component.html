@@ -1,0 +1,57 @@
+<div id="mySidenav" class="Rsidenav">
+  <div class="center container">
+    <a href="javascript:void(0)" class="btn btn-clip indigo lighten-2 close-nav-btn" style="cursor:pointer"
+       (click)="closeNav()"><span>&times;</span> Скрий филтрите</a>
+  </div>
+  <div>
+    <div class="row">
+      <div class="divider"></div>
+      <div class="divider"></div>
+      <div class="filter">
+        <div class="divider"></div>
+        <div class="grey-text text-darken-3 filter-caption filter-heading">
+          <div class="container">
+            Търсене на пътешествия по автор:
+          </div>
+        </div>
+        <div class="container">
+          <div class="divider"></div>
+
+          <form (ngSubmit)="USearchSend()">
+            <div class="center">
+              <input type="text" name="searchedJourney" [(ngModel)]="searchedJourney">
+              <button class="btn green lighten-1 waves-effect waves-light" type="submit" name="action">Търсене</button>
+            </div>
+          </form>
+        </div>
+        <div class="divider"></div>
+      </div>
+
+      <div class="filter">
+        <div class="divider"></div>
+        <div class="grey-text text-darken-3 filter-caption filter-heading">
+          <div class="container">
+            Търсене на пътешествия по дата:
+          </div>
+        </div>
+        <div class="container center">
+          <div class="divider"></div>
+          <input type="date" class="datepicker" [(ngModel)]="dateFrom">
+          <input type="date" class="datepicker" [(ngModel)]="dateTo">
+          <button [class.disabled]="dateFrom === '' || dateTo === '' || dateFrom === dateTo"
+                  class="btn green lighten-1 waves-effect waves-light" (click)="DateSearchSend()" name="action">Търсене
+          </button>
+        </div>
+        <div class="divider"></div>
+
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<div class="center">
+  <button class="btn btn-clip indigo lighten-2" style="cursor:pointer" (click)="openNav()">&#9776; Покажи филтрите
+  </button>
+</div>

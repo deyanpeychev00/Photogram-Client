@@ -1,0 +1,27 @@
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+    <h2 class="active"> Регистрация </h2>
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <img src="/assets/images/logo.png" id="icon"/>
+    </div>
+
+    <!-- Login Form -->
+    <form (ngSubmit)="submitRegister()">
+      <input type="text" class="fadeIn second form-control" id="inputUsername" placeholder="Потребителско име" required  [(ngModel)]="username" name="username">
+      <input type="text" class="fadeIn second form-control" id="inputEmail" placeholder="Имейл" name="email"  [(ngModel)]="email" required>
+      <input type="text" class="fadeIn second form-control" id="inputFirstName" placeholder="Име" required  [(ngModel)]="firstName" name="firstName">
+      <input type="text" class="fadeIn second form-control" id="inputLastName" placeholder="Фамилия" required  [(ngModel)]="lastName" name="lastName">
+      <input type="password" class="fadeIn second form-control" id="inputPassword" placeholder="Парола" required [(ngModel)]="password" name="password">
+      <input type="password" class="fadeIn second form-control" id="repeatedPassword" placeholder="Потвърдете паролата" required [(ngModel)]="repeatedPassword" name="repeatedPassword">
+      <input type="submit" class="fadeIn fourth" value="Регистрация">
+    </form>
+
+    <!-- Remind Login -->
+    <div id="formFooter">
+      <a class="underlineHover" routerLink="/login">Логин</a>
+    </div>
+
+  </div>
+</div>

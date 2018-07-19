@@ -1,0 +1,137 @@
+<div class="center journeyMainAndMap bottomPush">
+  <div class="container col s12 m12 l4 center">
+    <div *ngIf="journey">
+      <h1>{{journey.name}}</h1>
+      <p>{{journey.caption}}</p>
+    </div>
+  </div>
+  <div *ngIf="ratingsLoaded">
+    <div class="row">
+      <span class="ratings" *ngFor="let a of starsArr; let index = index">
+        <i *ngIf="index+1 <= journeyRating" class="amber-text material-icons">star</i>
+        <i *ngIf="index+1 > journeyRating" class="grey-text material-icons">star</i>
+      </span>
+    </div>
+    <span class="totalReviewers">Брой гласове: {{journey.totalReviewers}} | <span class="red-text vote"
+                                                                                  (click)="showModal()">Гласувай</span></span>
+  </div>
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal" *ngIf="journeyLoaded">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <p>Дайте своята оценка за пътешествие <b>{{journey.name}}</b>:</p>
+    <form (ngSubmit)="postRating()">
+      <p>
+        <label>
+          <input name="group1" type="radio" [(ngModel)]="userRating" value="1"/>
+          <span>
+            <div class="ratings row">
+              <i class="amber-text material-icons">star</i><i class="grey-text material-icons">star</i><i
+              class="grey-text material-icons">star</i><i class="grey-text material-icons">star</i><i
+              class="grey-text material-icons">star</i>
+            </div>
+          </span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input name="group1" type="radio" [(ngModel)]="userRating" value="2"/>
+          <span>
+            <div class="ratings row">
+              <i class="amber-text material-icons">star</i><i class="amber-text material-icons">star</i><i
+              class="grey-text material-icons">star</i><i class="grey-text material-icons">star</i><i
+              class="grey-text material-icons">star</i>
+            </div>
+          </span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input name="group1" type="radio" [(ngModel)]="userRating" value="3"/>
+          <span>
+            <div class="ratings row">
+              <i class="amber-text material-icons">star</i><i class="amber-text material-icons">star</i><i
+              class="amber-text material-icons">star</i><i class="grey-text material-icons">star</i><i
+              class="grey-text material-icons">star</i>
+          </div>
+          </span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input name="group1" type="radio" [(ngModel)]="userRating" value="4"/>
+          <span>
+            <div class="ratings row">
+              <i class="amber-text material-icons">star</i><i class="amber-text material-icons">star</i><i
+              class="amber-text material-icons">star</i><i class="amber-text material-icons">star</i><i
+              class="grey-text material-icons">star</i>
+          </div>
+          </span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input name="group1" type="radio" [(ngModel)]="userRating" value="5" checked/>
+          <span>
+            <div class="ratings row">
+              <i class="amber-text material-icons">star</i><i class="amber-text material-icons">star</i><i
+              class="amber-text material-icons">star</i><i class="amber-text material-icons">star</i><i
+              class="amber-text material-icons">star</i>
+          </div>
+          </span>
+        </label>
+      </p>
+
+      <button type="submit" class="btn red">Гласувай</button>
+
+      <button type="button" class="btn grey" (click)="closeModal()">Отмени</button>
+    </form>
+  </div>
+
+</div>
+
+<div class="col s12 m12 l8 journeyMainRow">
+  <div id="journeyImagesMap"></div>
+</div>
+
+<div class="container center">
+  <div *ngIf="!journeyPicturesResponse" class="preloader-wrapper small active">
+    <div class="spinner-layer spinner-blue-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div>
+      <div class="gap-patch">
+        <div class="circle"></div>
+      </div>
+      <div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grey lighten-4">
+  <div class="col center container journeyMainAndMap">
+    <div class="uploadedPhotosWrapper center row" >
+      <div *ngIf="journeyPictures.length">
+        <div class="divider"></div>
+        <app-journey-image *ngFor="let photo of journeyPictures" [photo]="photo" class="col s12 m12 l3"></app-journey-image>
+        <div class="divider"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fixed-action-btn">
+  <a class="btn-floating btn-large grey waves-effect waves-light" (click)="scrollToTop()">
+    <i class="large material-icons">keyboard_arrow_up</i>
+  </a>
+</div>
+
+<div *ngIf="journeyPictures.length">
+  <app-footer></app-footer>
+</div>
+

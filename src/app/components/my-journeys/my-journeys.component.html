@@ -1,0 +1,40 @@
+<div class="container center">
+  <div class="divider"></div>
+  <div class="divider" id="pageTop"></div>
+  <!--Journeys and preloader container-->
+  <div class="container">
+    <div class="row center container">
+      <!--Journeys-->
+      <div class="journeysWrapper" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="0" (scrolled)="loadMoreJourneys()">
+        <app-my-journey-preview *ngFor="let journey of journeysArr" [journey]="journey" [journeyCount]="journeysCount" class="center row container"></app-my-journey-preview>
+      </div>
+    </div>
+
+    <!--Preloader-->
+    <div *ngIf="upcommingResults" class="preloader-wrapper small active">
+      <div class="spinner-layer spinner-blue-only">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+
+<div class="fixed-action-btn">
+  <a class="btn-floating btn-large grey waves-effect waves-light" (click)="scrollToTop()">
+    <i class="large material-icons">keyboard_arrow_up</i>
+  </a>
+</div>
+
+<!-- Footer-->
+<div *ngIf="!upcommingResults">
+  <app-footer></app-footer>
+</div>

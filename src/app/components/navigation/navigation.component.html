@@ -1,0 +1,15 @@
+<div id="leftSidenav" class="leftSidenav">
+  <a href="javascript:void(0)" class="closebtn" (click)="closeNav()"><i class="small material-icons">close</i></a>
+  <a routerLink="/profile" class="homebtn" (click)="closeNav()"><i class="small material-icons">person</i></a>
+  <a *ngIf="!logged" class="menu-item" routerLink="/login" (click)="closeNav()">Логин</a>
+  <a *ngIf="!logged" class="menu-item" routerLink="/register" (click)="closeNav()">Регистрация</a>
+
+  <a *ngIf="admin"  class="menu-item admin-item" routerLink="/admin" (click)="closeNav()">Администрация</a>
+  <a *ngIf="logged && !blocked"  class="menu-item" routerLink="/journeys/discover" (click)="closeNav()">Всички пътувания</a>
+  <a *ngIf="logged && !blocked"  class="menu-item" routerLink="/journeys/create" (click)="closeNav()">Създай пътуване</a>
+  <a *ngIf="logged && blocked"  class="red-text warning-text" >Профилът ви е блокиран, не можете да създавате пътешествия</a>
+  <a *ngIf="logged"  class="menu-item" routerLink="/journeys/myjourneys" (click)="closeNav()">Моите пътувания</a>
+  <a *ngIf="logged"  class="menu-item" (click)="logOut()" (click)="closeNav()">Изход</a>
+</div>
+
+<div class="nav-open-button" (click)="openNav()"><i class="small material-icons">menu</i></div>

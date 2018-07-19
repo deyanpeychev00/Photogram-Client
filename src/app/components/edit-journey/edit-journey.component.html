@@ -1,0 +1,82 @@
+<div>
+  <div class="row container">
+    <div class="divider"></div>
+    <div class="col s12 m12 center row">
+      <div class="row">
+        <form class="col s12 setMaxHeight">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="journeyName" type="text" class="validate" [(ngModel)]="journeyName" name="journeyName">
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <textarea id="journeyDescription" type="text" [(ngModel)]="journeyDescription" name="journeyDescription" class="materialize-textarea"></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col s12 m12 center row">
+      <form>
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>Снимки</span>
+            <input (change)="onPictureSelectorChange($event)" type="file" accept=".jpg, .jpeg" multiple class="uploadFileInput">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate uploadFileInput" type="text" placeholder="Качете една или няколко снимки">
+          </div>
+        </div>
+      </form>
+      <div class="uploadedPhotosWrapper">
+          <div *ngIf="!selectedPictures.length" class="preloader-wrapper small active">
+            <div class="spinner-layer spinner-blue-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div>
+              <div class="gap-patch">
+                <div class="circle"></div>
+              </div>
+              <div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+        </div>
+
+        <div *ngIf="selectedPictures.length">
+          <app-upload-picture-form (picChangeStatus)="showMapChanges()" *ngFor="let photo of selectedPictures" [photo]="photo"></app-upload-picture-form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="divider"></div>
+</div>
+<div class="grey lighten-4">
+  <div class="divider"><div class="divider"></div>
+  </div>
+  <div class="row container center">
+    <div class="col s12 m12 center row">
+      <div id="uploadJourneyMap"></div>
+    </div>
+    <button class="btn yellow" (click)="saveEdits()">Запиши промените</button>
+    <button class="btn red" id="myBtn" (click)="showModal()">Изтрий</button>
+    <button class="btn grey" (click)="cancelCreateJourney()">Отмени</button>
+  </div>
+
+  <div class="divider"></div>
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <p>Сигурни ли сте, че искате да изтриете пътешествието?</p>
+    <button class="btn red"  (click)="deleteJourney()">Изтрий</button>
+    <button class="btn grey" (click)="closeModal()">Отмени</button>
+  </div>
+
+</div>
+<app-footer></app-footer>

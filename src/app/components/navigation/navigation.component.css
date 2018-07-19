@@ -1,0 +1,100 @@
+.leftSidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 9999999999;
+  top: 0;
+  left: 0;
+  background-color: white;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  text-align: center;
+}
+
+.leftSidenav a {
+  padding: 8px 8px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #424242;
+  display: block;
+  transition: 0.3s;
+}
+
+.leftSidenav a.menu-item {
+  border-left: 5px solid #7e57c2;
+  cursor: pointer;
+  user-select: none;
+}
+
+.leftSidenav a.menu-item:hover {
+  background: linear-gradient(to right, #7e57c2, #2196f3);
+  color: #ffffff;
+}
+
+.nav-open-button {
+  color: white;
+  background: linear-gradient(to right, #7e57c2, #2196f3);
+}
+
+.leftSidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.leftSidenav .homebtn {
+  position: absolute;
+  top: 0;
+  left: 25px;
+  font-size: 36px;
+  float: left
+}
+
+.nav-open-button {
+  font-size: 30px;
+  cursor: pointer;
+
+}
+
+.nav-open-button i {
+  padding: 20px;
+}
+
+.menu-item-home {
+  border-bottom: 5px solid #7e57c2;
+}
+
+@media screen and (max-height: 450px) {
+  .leftSidenav {
+    padding-top: 15px;
+  }
+
+  .leftSidenav a {
+    font-size: 18px;
+  }
+}
+
+.admin-item {
+  background: #64b5f6;
+  border-color: #64b5f6 !important;
+  color: white !important;
+  bottom: 0 !important;
+  top: 0 !important;
+}
+
+.admin-item:hover {
+  background: #1565c0 !important;
+  border-color: #1565c0 !important;
+}
+
+.warning-text{
+  font-size: 14px !important;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

@@ -1,0 +1,112 @@
+.parallax img{
+  opacity: 1;
+}
+
+h1{
+  font-size: 80px;
+  padding-top: 80px;
+  font-family: -apple-system,BlinkMacSystemFont,San Francisco,Helvetica Neue,Helvetica,Ubuntu,Roboto,Noto,Segoe UI,Arial,sans-serif;
+  margin-bottom: 0;
+}
+
+h2{
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 400;
+  font-family: -apple-system,BlinkMacSystemFont,San Francisco,Helvetica Neue,Helvetica,Ubuntu,Roboto,Noto,Segoe UI,Arial,sans-serif;
+  margin-top: 10px;
+}
+
+input[type=text] {
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 40px;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+}
+
+input{
+  background: url("../../../assets/images/searchicon.png");
+}
+
+input[type=text]:focus {
+  background-color: #fff;
+  border-bottom: none !important;
+}
+
+input[type="submit"] {
+  margin-left: -50px;
+  height: 25px;
+  width: 50px;
+  color: white;
+  border: 0;
+  -webkit-appearance: none;
+}
+
+.morebtn{
+  z-index: auto;
+  background: linear-gradient(to right, #7e57c2 , #2196f3) !important;
+  font-weight: 500;
+}
+
+.parallax-container{
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+}
+
+.divider{
+  height: 30px;
+  color:transparent;
+  background-color: transparent;
+}
+
+.home-icon{
+  background: -webkit-linear-gradient( left, #7e57c2 , #2196f3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-top: 20px;
+}
+
+.home-icon-heading{
+  padding: 20px 0;
+  margin: 0 !important;
+  font-size: 24px;
+  font-weight: 600;
+  color: #424242;
+}
+
+.home-icon-text{
+  padding: 0 20px 20px 20px;
+}
+
+.row{
+  margin-bottom: 0;
+
+}
+
+.joinus-button, .joinus-button a{
+  background: white !important;
+  color: #424242;
+  font-weight: 500;
+  margin: 0px 10px 30px 10px;
+}
+
+@media screen and (max-width: 782px) {
+  .parallax-container{
+    height: 300px;
+  }
+
+  h1{
+    font-size: 42px;
+    padding-top: 30px;
+  }
+  h2{
+    font-size: 20px;
+  }
+
+}

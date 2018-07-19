@@ -1,0 +1,56 @@
+.indeterminate{
+  background-color: #2196f3;
+}
+.progress{
+  background-color: #cccccc;
+}
+
+input[type=text] {
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 40px;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+}
+
+input{
+  background: url("../../../assets/images/searchicon.png");
+}
+
+input[type=text]:focus {
+  background-color: #fff;
+  border-bottom: none !important;
+}
+
+input[type="submit"] {
+  margin-left: -50px;
+  height: 25px;
+  width: 50px;
+  color: white;
+  border: 0;
+  -webkit-appearance: none;
+}
+
+.searchbtn{
+  z-index: auto;
+  height: 40px;
+  background: linear-gradient(to right, #7e57c2 , #2196f3) !important;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+
+.divider{
+  height: 30px;
+  color:transparent;
+  background-color: transparent;
+}
+
+
+

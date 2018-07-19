@@ -1,0 +1,123 @@
+#uploadJourneyMap {
+  height: 500px;
+  z-index: 0;
+}
+
+.btn {
+  background: linear-gradient(to right, #7e57c2, #2196f3) !important;
+}
+
+.uploadedPhotosWrapper {
+  overflow-y: scroll;
+  max-height: 600px;
+}
+
+@media (max-width: 782px) {
+  #uploadJourneyMap {
+    height: 300px;
+  }
+}
+
+.card {
+  min-height: 420px;
+}
+
+button.red {
+  background: red !important;
+  margin-bottom: 20px;
+}
+
+button.yellow{
+  background: #ff7700 !important;
+  margin-bottom: 20px;
+
+}
+
+button.grey {
+  background: dimgrey !important;
+  margin-bottom: 20px;
+
+}
+
+button.green {
+  background: green !important;
+  margin-bottom: 20px;
+
+}
+
+button.blue {
+  background: #2196f3 !important;
+  margin-bottom: 20px;
+
+}
+
+.img-name {
+  -o-text-overflow: ellipsis; /* Opera */
+  text-overflow: ellipsis; /* IE, Safari (WebKit) */
+  overflow: hidden; /* don't show excess chars */
+  white-space: nowrap; /* force single line */
+  width: 300px; /* fixed width */
+}
+
+.createJourneyWrapper {
+  z-index: auto;
+}
+
+.picsDetails {
+  font-size: 18px;
+}
+
+.divider {
+  height: 30px;
+  color: transparent;
+  background-color: transparent;
+}
+
+input[type=text]:not(.browser-default):focus:not([readonly]), textarea:focus:not([readonly]) {
+  border-color: dodgerblue;
+  box-shadow: 0 1px 0 0 dodgerblue;
+}
+
+input[type=text]:not(.browser-default):focus:not([readonly])+label, textarea:not(.browser-default):focus:not([readonly])+label{
+  color: dodgerblue;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+

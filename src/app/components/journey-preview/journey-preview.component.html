@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="col s12 m12 center row container">
+    <div class="card">
+      <div class="card-image">
+        <img id="{{journey._id}}"/>
+        <a class="btn-floating btn-large halfway-fab waves-effect waves-light big show-more-button" routerLink="/journeys/show/{{journey._id}}"><i class="material-icons">menu</i></a>
+      </div>
+      <div class="card-content">
+        <span class="card-title">{{journey.name}}</span>
+        <p>{{journey.caption}}</p>
+        <div class="card-author">
+          <span class="chip">Автор: <b>{{journey.author}}</b></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
