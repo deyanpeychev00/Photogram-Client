@@ -29,12 +29,12 @@ export class MyJourneysComponent implements OnInit {
   }
 
   retreiveJourneys(){
-    this.journeyService.getMyJourneys(localStorage.getItem('username'), this.journeysCount, this.limitCount).subscribe(data => {
-      if(data.length < this.limitCount){
+    this.journeyService.getMyJourneys(localStorage.getItem('username'), this.journeysCount, this.limitCount).subscribe((res: any) => {
+      if(res.data.length < this.limitCount){
         this.upcommingResults = false;
       }
 
-      for (let el of data){
+      for (let el of res.data){
         this.journeysArr.push(el);
         this.journeysCount++;
       }

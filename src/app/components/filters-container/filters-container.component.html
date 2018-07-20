@@ -20,7 +20,14 @@
           <form (ngSubmit)="USearchSend()">
             <div class="center">
               <input type="text" name="searchedJourney" [(ngModel)]="searchedJourney">
-              <button class="btn green lighten-1 waves-effect waves-light" type="submit" name="action">Търсене</button>
+              <button [class.disabled]="
+                searchedJourney.length == 0 ||
+                searchedJourney.indexOf('/') !== -1 ||
+                searchedJourney.indexOf('\\') !== -1 ||
+                searchedJourney.indexOf('@') !== -1"
+                      class="btn green lighten-1 waves-effect waves-light" type="submit"
+                      name="action">Търсене
+              </button>
             </div>
           </form>
         </div>

@@ -13,14 +13,6 @@ export class ServerService {
     formData.append(file.name, file);
     let result = '';
 
-    return this.http.post('http://localhost:8080/images/upload', formData)/*.subscribe(data => {
-      let response: any = data;
-      result = response.data.filename;
-
-      if(result === ''){
-        return { success: false, msg: 'Възникна грешка при качването на снимките. Моля опитайте отново'};
-      }
-      return {success: true, filename: result, msg: 'Снимката е качена успешно'};
-    })*/;
+    return this.http.post('http://localhost:8080/images/upload', formData);
   }
 }

@@ -7,10 +7,9 @@ import {Router} from '@angular/router';
 
 @Injectable()
 export class JourneyService {
-  kinvey = this.data.getKinveyCredentials();
   serverURL = 'http://localhost:8080';
 
-  constructor(private http: HttpClient, private data: DataService, private toastr: ToastrService, private router: Router) {
+  constructor(private http: HttpClient, private toastr: ToastrService, private router: Router) {
   }
   // Service functions
   uploadJourney(name, description, images) {
@@ -45,70 +44,41 @@ export class JourneyService {
     return [];
   }
 
-
-  // REST API requests
-  getAllJourneys(skipJourneyCount, limitCount): Observable<any> {
-    return this.http.get(`${this.kinvey.host}/appdata/${this.kinvey.appKey}/journeys?sort={"_kmd.ect":-1}&limit=${limitCount}&skip=${skipJourneyCount}&_kmd,fields=name,caption,featuredImage,author`, {
-      headers: new HttpHeaders()
-        .set('Authorization', 'Kinvey ' + localStorage.getItem('authtoken'))
-        .set('Content-Type', 'application/json')
-    });
-  }
-
-  getMyJourneys(author, skipJourneyCount, limitCount): Observable<any> {
-    return this.http.get(`${this.kinvey.host}/appdata/${this.kinvey.appKey}/journeys?query={"author":"${author}"}&sort={"_kmd.ect":-1}&limit=${limitCount}&skip=${skipJourneyCount}&fields=_kmd,name,caption,featuredImage,author`, {
-      headers: new HttpHeaders()
-        .set('Authorization', 'Kinvey ' + localStorage.getItem('authtoken'))
-        .set('Content-Type', 'application/json')
-    });
-  }
-
-  getUserJourneys(UID): Observable<any> {
-    return this.http.get(`${this.kinvey.host}/appdata/${this.kinvey.appKey}/journeys?query={"authorID":"${UID}"}&sort={"_kmd.ect":-1}&fields=_kmd,name,caption,featuredImage,author`, {
-      headers: new HttpHeaders()
-        .set('Authorization', 'Kinvey ' + localStorage.getItem('authtoken'))
-        .set('Content-Type', 'application/json')
-    });
-  }
-
-  getJourneysByAuthorName(authorName, skipJourneyCount, limitCount): Observable<any> {
-    return this.http.get(`${this.kinvey.host}/appdata/${this.kinvey.appKey}/journeys/?query={"author":{"$regex":"^${authorName}"}}&sort={"_kmd.ect":-1}&limit=${limitCount}&skip=${skipJourneyCount}&fields=_kmd,name,caption,featuredImage,author`, {
-      headers: new HttpHeaders().set('Authorization', 'Kinvey ' + localStorage.getItem('authtoken'))
-        .set('Content-Type', 'application/json')
-    });
-  }
-
-  getJourneysInDateFrame(from, to): Observable<any> {
-    return this.http.get(`${this.kinvey.host}/appdata/${this.kinvey.appKey}/journeys/?query={"_kmd.ect":{"$gte":"${from}","$lte":"${to}"}}&sort={"_kmd.ect":-1}`, {
-      headers: new HttpHeaders().set('Authorization', 'Kinvey ' + localStorage.getItem('authtoken'))
-        .set('Content-Type', 'application/json')
-    });
-  }
-
-  // Server requests
-  getJourneyFeaturedImageFromServer(journeyID){
+  // GET
+  getJourneyFeaturedImageFromServer(journeyID): Observable<any>{
     return this.http.get(`${this.serverURL}/journey/featured/${journeyID}`);
   }
-
-  getFeaturedImageFile(filename){
+  getFeaturedImageFile(filename): Observable<any>{
     return this.http.get(`${this.serverURL}/images/get/single/${filename}`, {
       responseType: 'blob',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     });
   }
-
-  getJourneyPhotos(journeyID){
+  getJourneyPhotos(journeyID): Observable<any>{
     return this.http.get(`${this.serverURL}/journey/images/${journeyID}`);
   }
-
-  updateJourney(journey): Observable<any> {
-    return this.http.put(`${this.serverURL}/journey/update/${journey._id}`, journey);
+  getCurrentJourney(journeyID): Observable<any> {
+    return this.http.get(`${this.serverURL}/journey/fields/${journeyID}`);
   }
-
-  getJourneyPhotosIDs(journeyID) {
-    return this.http.get(`${this.serverURL}/images/ids/${journeyID}`);
+  getAllJourneysAdmin(): Observable<any> {
+    return this.http.get(`${this.serverURL}/journey/all/admin`);
   }
-
+  getAllJourneys(skipJourneyCount, limitCount): Observable<any> {
+    return this.http.get(`${this.serverURL}/journeys/${limitCount}/${skipJourneyCount}`);
+  }
+  getMyJourneys(author, skipJourneyCount, limitCount): Observable<any> {
+    return this.http.get(`${this.serverURL}/journeys/mine/${author}/${limitCount}/${skipJourneyCount}`);
+  }
+  getJourneysByAuthorName(authorName, skipJourneyCount, limitCount): Observable<any> {
+    return this.http.get(`${this.serverURL}/journeys/user/${authorName}/${limitCount}/${skipJourneyCount}`);
+  }
+  getUserJourneys(authorName): Observable<any> {
+    return this.http.get(`${this.serverURL}/journeys/user/all/${authorName}`);
+  }
+  getJourneysInDateFrame(from, to): Observable<any> {
+    return this.http.get(`${this.serverURL}/journeys/timeframe/${from}/${to}`);
+  }
+  // POST
   uploadImageToKinveyCollections(image, journeyID): Observable<any> {
     return this.http.post(`${this.serverURL}/images/kinvey/upload`, {
       make: image.make,
@@ -124,7 +94,6 @@ export class JourneyService {
       size: image.size
     });
   }
-
   uploadJourneyToCollection(name: any, description: any): Observable<any> {
     return this.http.post(`${this.serverURL}/journey/upload`, {
       name,
@@ -135,28 +104,29 @@ export class JourneyService {
       totalReviewers: 0
     });
   }
-
-  getCurrentJourney(journeyID): Observable<any> {
-    return this.http.get(`${this.serverURL}/journey/fields/${journeyID}`);
+  // UPDATE
+  updateJourney(journey): Observable<any> {
+    return this.http.put(`${this.serverURL}/journey/update/${journey._id}`, journey);
   }
-
-  getAllJourneysAdmin(): Observable<any> {
-    return this.http.get(`${this.serverURL}/journey/all/admin`);
-  }
-
+  // DELETE
   deleteImageFromServer(img): Observable<any> {
     return this.http.post(`${this.serverURL}/images/delete`, img);
   }
-
   removePhotoFromDatabase(photoID) {
     this.http.delete(`${this.serverURL}/images/kinvey/delete/${photoID}`).subscribe(data => {
     }, err => {
       this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка при изтриването на снимка, моля опитайте отново'));
     });
   }
-
   deleteJourney(journeyID): Observable<any> {
     return this.http.delete(`${this.serverURL}/journeys/delete/${journeyID}`);
   }
+
+
+// additional function for getting IDs of journey photos - needed for testing purposes
+
+// getJourneyPhotosIDs(journeyID) {
+//     return this.http.get(`${this.serverURL}/images/ids/${journeyID}`);
+//   }
 
 }

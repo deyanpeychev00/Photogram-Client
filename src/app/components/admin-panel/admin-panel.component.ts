@@ -15,7 +15,9 @@ export class AdminPanelComponent implements OnInit {
   users = [];
   usersShow = [];
   usersLoaded = false;
-  currentUserId = '';
+  currentUsername = '';
+  currentUserID = '';
+  databaseUserID = '';
   searchedUser = '';
   searchedID = '';
   searchedEmail = '';
@@ -152,8 +154,10 @@ export class AdminPanelComponent implements OnInit {
     };
   }
 
-  showUserModal(userId){
-    this.currentUserId = userId;
+  showUserModal(username, ID, DID){
+    this.currentUsername = username;
+    this.currentUserID = ID;
+    this.databaseUserID = DID;
     document.getElementById('usersModal').style.display = 'block';
     window.onclick = (event) => {
       if (event.target === document.getElementById('myModal')) {
@@ -166,43 +170,53 @@ export class AdminPanelComponent implements OnInit {
     document.getElementById(id).style.display = 'none';
   }
 
-  deleteJourney(MID, JID = this.currentUserId) {
+  deleteJourney(MID, JID = this.currentJourneyId) {
     // MID => modal ID ; JID => journey ID
 
-    this.closeModal(MID);
-    this.toastr.toast('Изтриване на пътешествието..');
-
-    // delete journey pictures
-    this.journeyService.getJourneyPhotosIDs(JID).subscribe((response: any) => {
-      if(response.success){
-        let pics: any = response.data;
-        for(let pic of pics){
-          this.journeyService.removePhotoFromDatabase(pic._id);
+      this.closeModal(MID);
+      this.toastr.toast('Изтриване на пътешествието..');
+      // get journey pictures
+    this.journeyService.getJourneyPhotos(JID).subscribe((res: any) => {
+      if(res.success){
+        // delete journey pictures
+        for (let pic of res.data) {
+          this.deleteImage(pic);
         }
+
+        // delete journey itself
+        this.journeyService.deleteJourney(JID).subscribe(data => {
+          this.toastr.successToast('Успешно изтрихте пътешествието');
+          // remove journey from admin panel table
+
+          let journey = this.journeys.find(x => x._id === JID);
+          let journeyIndex = this.journeys.indexOf(journey);
+          this.journeys.splice(journeyIndex, 1);
+        }, err => {
+          this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
+        });
+
       }
-
-    },err => {
-      this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
-    });
-
-    // delete journey itself
-    this.journeyService.deleteJourney(JID).subscribe(data => {
-      this.toastr.successToast('Успешно изтрихте пътешествието');
-
-      let journey = this.journeys.find(x => x._id === JID);
-      let journeyIndex = this.journeys.indexOf(journey);
-      this.journeys.splice(journeyIndex, 1);
-    }, err => {
-      this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
     });
 
   }
 
-  deleteUser(MID,UID = this.currentUserId){
+
+  deleteImage(e) {
+    this.journeyService.deleteImageFromServer(e).subscribe((res:any) => {
+      if(res.success){
+        this.journeyService.removePhotoFromDatabase(e._id);
+      }else{
+        this.toastr.errorToast(res.msg ? res.msg : "Възникна грешка, моля опитайте отново");
+      }
+    });
+  }
+
+
+  deleteUser(MID,UNAME = this.currentUsername, UID = this.currentUserID, DID = this.databaseUserID){
     this.closeModal(MID);
     // 1. Delete all user's journeys
-    this.journeyService.getUserJourneys(UID).subscribe(journeys => {
-      for(let jr of journeys ){
+    this.journeyService.getUserJourneys(UNAME).subscribe((res: any) => {
+      for(let jr of res.data ){
         this.deleteJourney('usersModal', jr._id);
       }
     }, err => {
@@ -210,14 +224,21 @@ export class AdminPanelComponent implements OnInit {
     });
 
     // 2. Delete user
-    this.admin.deleteUser(UID).subscribe(data => {
-      this.toastr.successToast('Успешно изтрихте потребителя');
+    this.admin.deleteUserFromServer(UID).subscribe((res: any) => {
+      if(res.success){
+        this.admin.deleteUserFromDataBase(DID).subscribe((dres: any) => {
+          if(dres.success){
+            this.toastr.successToast('Успешно изтрихте потребителя');
 
-      console.log(data);
+            let user = this.users.find(x => x.UID === UID);
+            let userIndex = this.users.indexOf(user);
+            this.users.splice(userIndex, 1);
+          }
+        },err => {
+            this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
+          });
+      }
 
-      let user = this.users.find(x => x._id === UID);
-      let userIndex = this.users.indexOf(user);
-      this.users.splice(userIndex, 1);
     }, err => {
       this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
     });

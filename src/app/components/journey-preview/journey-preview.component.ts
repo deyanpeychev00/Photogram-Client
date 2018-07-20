@@ -15,12 +15,18 @@ export class JourneyPreviewComponent implements OnInit {
 
   ngOnInit() {
     this.journeyService.getJourneyFeaturedImageFromServer(this.journey._id).subscribe((object: any) => {
-      this.journeyService.getFeaturedImageFile(object.data[0].fileName).subscribe((file: any) => {
-        const imageUrl = URL.createObjectURL(file);
-        let image: any = document.getElementById(this.journey._id);
-        image.src = imageUrl;
-        this.imageLoaded = true;
-      });
+      // find journey feature image
+      for(let obj of object.data){
+        if(obj.fileName !== ""){
+          this.journeyService.getFeaturedImageFile(obj.fileName).subscribe((file: any) => {
+            const imageUrl = URL.createObjectURL(file);
+            let image: any = document.getElementById(this.journey._id);
+            image.src = imageUrl;
+            this.imageLoaded = true;
+          });
+          break;
+        }
+      }
     });
   }
 }

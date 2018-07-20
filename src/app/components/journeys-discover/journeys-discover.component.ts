@@ -30,16 +30,15 @@ export class JourneysDiscoverComponent implements OnInit {
   }
   retreiveJourneys(){
     // console.log("Journeys Count: " + this.journeysCount);
-    this.journeyService.getAllJourneys(this.journeysCount, this.limitCount).subscribe(data => {
-      if(data.length < this.limitCount){
+    this.journeyService.getAllJourneys(this.journeysCount, this.limitCount).subscribe((res:any) => {
+      if(res.data.length < this.limitCount){
         this.upcommingResults = false;
       }
 
-      for (let el of data){
+      for (let el of res.data){
         this.journeysArr.push(el);
         this.journeysCount++;
       }
-      this.journeysArr.sort((a,b) =>  b._kmd.lmt - a._kmd.lmt );
     }, err => {
       this.isListening = false;
       this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
@@ -52,12 +51,12 @@ export class JourneysDiscoverComponent implements OnInit {
     this.journeysCount = 0;
     this.upcommingResults = true;
 
-    this.journeyService.getJourneysByAuthorName(SA, this.journeysCount, this.limitCount).subscribe(data => {
-      if(data.length < this.limitCount){
+    this.journeyService.getJourneysByAuthorName(SA, this.journeysCount, this.limitCount).subscribe((res: any) => {
+      if(res.data.length < this.limitCount){
         this.upcommingResults = false;
       }
 
-      for (let el of data){
+      for (let el of res.data){
         this.journeysArr.push(el);
         this.journeysCount++;
       }
@@ -73,12 +72,12 @@ export class JourneysDiscoverComponent implements OnInit {
     this.journeysCount = 0;
     this.upcommingResults = true;
 
-    this.journeyService.getJourneysInDateFrame(this.dateFrom, this.dateTo).subscribe(data => {
-        if(data.length < this.limitCount){
+    this.journeyService.getJourneysInDateFrame(this.dateFrom, this.dateTo).subscribe((res: any) => {
+        if(res.data.length < this.limitCount){
           this.upcommingResults = false;
         }
 
-        for (let el of data){
+        for (let el of res.data){
           this.journeysArr.push(el);
           this.journeysCount++;
         }
