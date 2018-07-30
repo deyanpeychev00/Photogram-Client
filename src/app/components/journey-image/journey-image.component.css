@@ -52,6 +52,19 @@
   .materialboxedimage{
     max-height: 100%;
   }
+  .btn-pad{
+    margin-top: 10px;
+  }
+
+  .camera-alt{
+    text-align: unset !important;
+  }
+  .delimeter{
+    margin: 20px 0 !important;
+  }
+  .modal-image{
+    padding: 0 10px !important;
+  }
 }
 
 .materialboxed{
@@ -193,9 +206,18 @@
 @media only screen and (max-width: 700px){
   .modal-content {
     width: 100%;
+    max-width: 100% !important;
+  }
+  .photoModal .col .row {
+    padding: 0 !important;
   }
   .pad-left{
-    padding-left: 20px;
+    padding-left: 20px !important;
+  }
+
+  .image-details{
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
@@ -219,3 +241,15 @@
   -o-transition-duration: 0.5s;
   transition-duration: 0.5s;
 }
+
+.camera-alt{
+  text-align: left;
+}
+
+.delimeter{
+  height: 2px;
+  color: white;
+  background-color: white;
+}
+
+

@@ -11,13 +11,12 @@
     <img class="modal-content modal-image" id="img-{{photo._id}}">
   </div>
   <div class="col s12 m12 l4">
-    <div class="white-text modal-content left col s12 m12 l12">
-
+    <div class="white-text image-details modal-content left col s12 m12 l12">
       <div class="row">
-        <div class="col s2 l2 m2">
+        <div class="col s4 l4 m4 camera-alt">
           <i class="material-icons medium" title="Устройство и модел">camera_alt</i>
         </div>
-        <div class="col s10 l10 m10 pull-left pad-left">
+        <div class="col s8 l8 m8 pull-left pad-left">
           <div class="row align-left">
             <b class="camera-model" title="Устройство и модел">{{photo.make}}</b>
           </div>
@@ -27,14 +26,18 @@
         </div>
       </div>
 
+      <div class="row col s12 m12 l12 delimeter">
+
+      </div>
+
       <div class="row">
         <div class="col s12 l12 m12">
-          <div class="col s1 m1 l1">
+          <div class="col s3 m1 l1">
             <div class="marg">
               <i class="material-icons" title="Време на заснемане">access_time</i>
             </div>
           </div>
-          <div class="col s11 l11 m11 align-left pad-left">
+          <div class="col s9 l11 m11 align-left pad-left">
             <div class="marg" title="Време на заснемане">
               {{photo.dateTaken}}
             </div>
@@ -44,12 +47,12 @@
 
       <div class="row">
         <div class="col s12 l12 m12">
-          <div class="col s1 m1 l1">
+          <div class="col s3 m1 l1">
             <div class="marg">
               <i class="material-icons" title="Място на заснемане">location_on</i>
             </div>
           </div>
-          <div class="col s11 l11 m11 align-left pad-left">
+          <div class="col s9 l11 m11 align-left pad-left">
             <div *ngIf="photo.location.length > 0" class="marg" title="Място на заснемане">
               {{photo.location[0]}} - {{photo.location[1]}}
             </div>
@@ -62,12 +65,12 @@
 
       <div class="row">
         <div class="col s12 l12 m12">
-          <div class="col s1 m1 l1">
+          <div class="col s3 m1 l1">
             <div class="marg">
               <i class="material-icons" title="Резолюция">photo_size_select_large</i>
             </div>
           </div>
-          <div class="col s11 l11 m11 align-left pad-left">
+          <div class="col s9 l11 m11 align-left pad-left">
             <div class="marg" title="Резолюция">
               {{photo.resolution[0]}} x {{photo.resolution[1]}}
             </div>
@@ -77,12 +80,12 @@
 
       <div class="row">
         <div class="col s12 l12 m12">
-          <div class="col s1 m1 l1">
+          <div class="col s3 m1 l1">
             <div class="marg">
               <i class="material-icons" title="Режим на светкавицата">flash_on</i>
             </div>
           </div>
-          <div class="col s11 l11 m11 align-left pad-left">
+          <div class="col s9 l11 m11 align-left pad-left">
             <div class="marg" title="Режим на светкавицата">
               {{photo.flash}}
             </div>
@@ -92,12 +95,12 @@
 
       <div class="row">
         <div class="col s12 l12 m12">
-          <div class="col s1 m1 l1">
+          <div class="col s3 m1 l1">
             <div class="marg" title="ISO">
               <b>ISO</b>
             </div>
           </div>
-          <div class="col s11 l11 m11 align-left pad-left">
+          <div class="col s9 l11 m11 align-left pad-left">
             <div class="marg" title="ISO">
               {{photo.iso}}
             </div>
@@ -107,12 +110,12 @@
 
       <div class="row">
         <div class="col s12 l12 m12">
-          <div class="col s1 m1 l1">
+          <div class="col s3 m1 l1">
             <div class="marg" title="Фокусно разстояние">
               <img class="adjustIcon" src="https://png.icons8.com/material/40/ffffff/focal-length.png">
             </div>
           </div>
-          <div class="col s11 l11 m11 align-left pad-left">
+          <div class="col s9 l11 m11 align-left pad-left">
             <div class="marg" title="Фокусно разстояние">
               {{photo.focalLength}} mm.
             </div>
@@ -122,9 +125,9 @@
 
       <div class="row">
         <div class="col s12 l12 m12 left left-align">
-          <button class="btn grey" (click)="rotateImageLeft('img-'+photo._id)"><i class="material-icons">rotate_left</i></button>
-          <button class="btn grey" (click)="rotateImageRight('img-'+photo._id)"><i class="material-icons">rotate_right</i></button>
-          <a id="download-{{photo._id}}" class="btn blue" download="asd.jpg" href="{{photo.fileName}}">Изтегли снимката</a>
+          <button class="btn grey btn-pad" (click)="rotateImageLeft('img-'+photo._id)"><i class="material-icons">rotate_left</i></button>
+          <button class="btn grey btn-pad" (click)="rotateImageRight('img-'+photo._id)"><i class="material-icons">rotate_right</i></button>
+          <a id="download-{{photo._id}}" class="btn blue btn-pad" download="asd.jpg" href="{{photo.fileName}}">Изтегли снимката</a>
         </div>
       </div>
     </div>

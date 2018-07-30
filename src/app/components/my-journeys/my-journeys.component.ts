@@ -38,7 +38,6 @@ export class MyJourneysComponent implements OnInit {
         this.journeysArr.push(el);
         this.journeysCount++;
       }
-      this.journeysArr.sort((a,b) =>  b._kmd.lmt - a._kmd.lmt );
     }, err => {
       this.isListening = false;
       this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
