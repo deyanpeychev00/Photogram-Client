@@ -152,44 +152,45 @@ export class AuthService {
   // Requests to server
   register(username, email, password, firstName, lastName) {
     const body = {username, password, firstName, lastName, email, journeys: [], roles: [], blocked: false};
-    this.http.post('http://localhost:8080/register', body).subscribe(responseData => {
+    const save = {username, email, firstName, lastName, roles: [], blocked: false, UID: ''};
+
+    this.http.get('http://localhost:8080/api').subscribe(responseData => {
       let response: any = responseData;
-      if (response.success) {
-        this.dataService.setUserLocalData(response.data.server);
-        this.toastr.successToast(response.msg);
+      this.http.post(`${response.host}/user/${response.key}/`, body, {
+        headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(`${response.key}:${response.secret}`))
+          .set('Content-Type', 'application/json')
+      }).subscribe((registerData: any) => {
+        this.dataService.setUserLocalData(registerData);
+        this.toastr.successToast('Добре дошли в Photogram!');
         this.router.navigate(['/journeys/discover']);
-      } else if (response.success) {
-        this.toastr.errorToast((response.msg ? response.msg : 'Възникна грешка. Моля опитайте отново.'));
-      }
+        save.UID = registerData._id;
+        this.http.post('http://localhost:8080/user/save', save).subscribe(saveData => {});
+      });
     });
   }
 
   login(username, password) {
+
     const body = {username, password};
-    this.http.post('http://localhost:8080/login', body).subscribe(data => {
-      let response: any = data;
-      if(response.success === true) {
-        this.dataService.setUserLocalData(response.data);
-        this.toastr.successToast(response.msg);
+
+    this.http.get('http://localhost:8080/api').subscribe(responseData => {
+      let response: any = responseData;
+      this.http.post(`${response.host}/user/${response.key}/login`, body, {
+        headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(`${response.key}:${response.secret}`))
+          .set('Content-Type', 'application/json')
+      }).subscribe((loginData: any) => {
+        this.dataService.setUserLocalData(loginData);
         this.router.navigate(['/journeys/discover']);
-      }else if(response.success === false){
-        this.toastr.errorToast((response.msg ? response.msg : 'Възникна грешка. Моля опитайте отново.'));
-      }
+      },
+        err => {
+          this.toastr.errorToast((err.error.description ? err.error.description : 'Unknown error occured. Please try again'));
+        });
     });
   }
 
-  async logout(){
+  async logout() {
     this.dataService.removeLocalData();
     await this.router.navigate(['/']);
-
-    this.http.get('http://localhost:8080/logout').subscribe(data => {
-      let response: any = data;
-      if(response.success){
-        this.toastr.toast(response.msg);
-      }else if(!response.success){
-        console.warn(response.msg ? response.msg : 'Възникна грешка. Моля опитайте отново.');
-      }
-    });
   }
 
 }

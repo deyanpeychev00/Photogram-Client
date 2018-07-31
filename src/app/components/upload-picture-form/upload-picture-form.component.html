@@ -1,5 +1,5 @@
 <div class="col s12 m12 l4">
-  <div class="card hoverable" [class.redCard]="!photo.hasExif" [class.greenCard]="photo.hasExif">
+  <div class="card hoverable" [class.redCard]="!photo.hasExif" [class.greenCard]="photo.hasExif" [class.orangeCard]="photo.location.length === 0" >
     <div class="card-image" *ngIf="photo.localID">
       <img src="{{photo.encoded}}" id="localIMG-{{photo.localID}}" class="previewImage activator materialboxed materialboxedimage upImg">
     </div>

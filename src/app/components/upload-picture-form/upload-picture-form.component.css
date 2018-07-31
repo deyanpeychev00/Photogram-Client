@@ -4,11 +4,15 @@
 }
 
 .redCard{
-  background: radial-gradient(#ffcdd2, #ffebee);
+  background: radial-gradient(#ffcdd2, #ffebee) !important;
 }
 
 .greenCard{
   background: radial-gradient(#c8e6c9, #e8f5e9);
+}
+
+.orangeCard{
+  background: radial-gradient(#ffe0b2, #fff3e0) !important;
 }
 
 .warning-message{
