@@ -54,7 +54,7 @@
           </div>
           <div class="col s9 l11 m11 align-left pad-left">
             <div *ngIf="photo.location.length > 0" class="marg" title="Място на заснемане">
-              {{photo.location[0]}} - {{photo.location[1]}}
+              <b>X:</b> {{photo.location[0]}} ; <b>Y:</b> {{photo.location[1]}}
             </div>
             <div *ngIf="photo.location.length === 0" class="marg" title="Място на заснемане">
               Неизвестно
@@ -71,8 +71,11 @@
             </div>
           </div>
           <div class="col s9 l11 m11 align-left pad-left">
-            <div class="marg" title="Резолюция">
+            <div *ngIf="photo.resolution.length > 0" class="marg" title="Резолюция">
               {{photo.resolution[0]}} x {{photo.resolution[1]}}
+            </div>
+            <div *ngIf="photo.resolution.length === 0" class="marg" title="Резолюция">
+              Неизвестна
             </div>
           </div>
         </div>
@@ -116,8 +119,11 @@
             </div>
           </div>
           <div class="col s9 l11 m11 align-left pad-left">
-            <div class="marg" title="Фокусно разстояние">
-              {{photo.focalLength}} mm.
+            <div *ngIf="photo.focalLength" class="marg" title="Фокусно разстояние">
+            {{photo.focalLength}} mm.
+          </div>
+            <div *ngIf="!photo.focalLength" class="marg" title="Фокусно разстояние">
+              Неизвестно
             </div>
           </div>
         </div>

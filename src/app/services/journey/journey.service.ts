@@ -36,10 +36,23 @@ export class JourneyService {
   extractFileLocation(pht): Array<Number>{
     if (pht.exifdata && (pht.exifdata.GPSLatitude || pht.exifdata.GPSLongitude)) {
       const gpsLat = pht.exifdata.GPSLatitude;
-      const dLatitude = (gpsLat[0] + gpsLat[1] / 60.0 + gpsLat[2] / 3600.0).toFixed(5);
+      let dLatitude = (gpsLat[0] + gpsLat[1] / 60.0 + gpsLat[2] / 3600.0).toFixed(5);
       const gpsLon = pht.exifdata.GPSLongitude;
-      const dLongitude = (gpsLon[0] + gpsLon[1] / 60.0 + gpsLon[2] / 3600.0).toFixed(5);
+      let dLongitude = (gpsLon[0] + gpsLon[1] / 60.0 + gpsLon[2] / 3600.0).toFixed(5);
+      if(pht.exifdata.GPSLatitudeRef === 'S'){
+        dLatitude *= -1;
+      }
+      if(pht.exifdata.GPSLongitudeRef === 'W'){
+        dLongitude *=-1;
+      }
       return [dLatitude,dLongitude];
+    }
+    return [];
+  }
+
+  extractFileResolution(pht): Array<Number>{
+    if(pht.exifdata.PixelXDimension && pht.exifdata.PixelYDimension){
+      return [pht.exifdata.PixelXDimension, pht.exifdata.PixelYDimension];
     }
     return [];
   }

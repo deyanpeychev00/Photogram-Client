@@ -127,3 +127,7 @@ h2{
 [type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:after{
   background-color: #2196f3;
 }
+
+.uploadedPhotosWrapper{
+  margin-bottom: 0 !important;
+}

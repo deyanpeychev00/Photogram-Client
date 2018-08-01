@@ -36,6 +36,7 @@ export class CreateJourneyComponent implements OnInit {
   }
 
   onPictureSelectorChange(ev) {
+    $('.uploadedPhotosWrapper').css('display', 'block');
     this.map.emptyMarkers();
     this.selectedPictures = [];
     this.selectedFiles = [];
@@ -62,7 +63,7 @@ export class CreateJourneyComponent implements OnInit {
             model: file.exifdata.Model ? file.exifdata.Model.toUpperCase() : '',
             dateTaken: file.exifdata.DateTimeOriginal,
             location: this.journeyService.extractFileLocation(file),
-            resolution: [file.exifdata.PixelXDimension, file.exifdata.PixelYDimension],
+            resolution: this.journeyService.extractFileResolution(file),
             flash: file.exifdata.Flash,
             iso: file.exifdata.ISOSpeedRatings,
             focalLength: file.exifdata.FocalLength,
@@ -133,6 +134,7 @@ export class CreateJourneyComponent implements OnInit {
     // this.selectedPictures = this.donePhotos = [];
     this.journeyName = this.journeyDescription = '';
     $('.uploadFileInput').val('');
+    $('.uploadedPhotosWrapper').css('display', 'none');
     this.map.clearMap();
   }
 

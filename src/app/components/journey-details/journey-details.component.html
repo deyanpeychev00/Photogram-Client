@@ -113,16 +113,17 @@
   </div>
 </div>
 
-<div class="grey lighten-4">
+<div *ngIf="journeyPictures.length" class="grey lighten-4">
   <div class="col center container journeyMainAndMap">
     <div class="uploadedPhotosWrapper center row" >
-      <div *ngIf="journeyPictures.length">
+      <div>
         <div class="divider"></div>
         <app-journey-image *ngFor="let photo of journeyPictures" [photo]="photo" class="col s12 m12 l3"></app-journey-image>
         <div class="divider"></div>
       </div>
     </div>
   </div>
+  <div class="divider"></div>
 </div>
 
 <div class="fixed-action-btn">
