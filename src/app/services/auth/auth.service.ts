@@ -165,6 +165,7 @@ export class AuthService {
         this.router.navigate(['/journeys/discover']);
         save.UID = registerData._id;
         this.http.post('http://localhost:8080/user/save', save).subscribe(saveData => {});
+        this.http.get('http://localhost:8080/storage/'+ localStorage.getItem('username')).subscribe();
       });
     });
   }
@@ -181,6 +182,7 @@ export class AuthService {
       }).subscribe((loginData: any) => {
         this.dataService.setUserLocalData(loginData);
         this.router.navigate(['/journeys/discover']);
+        this.http.get('http://localhost:8080/storage/'+ localStorage.getItem('username')).subscribe();
       },
         err => {
           this.toastr.errorToast((err.error.description ? err.error.description : 'Unknown error occured. Please try again'));

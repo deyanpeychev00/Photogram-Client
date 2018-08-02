@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 
 @Injectable()
@@ -13,6 +13,6 @@ export class ServerService {
     formData.append(file.name, file);
     let result = '';
 
-    return this.http.post('http://localhost:8080/images/upload', formData);
+    return this.http.post('http://localhost:8080/images/upload/'+localStorage.getItem('username'), formData);
   }
 }

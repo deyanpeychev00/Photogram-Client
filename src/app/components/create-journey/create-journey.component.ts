@@ -107,8 +107,10 @@ export class CreateJourneyComponent implements OnInit {
     for (let fileObj of this.selectedFiles) {
       this.serverService.uploadFileToServer(fileObj.file).subscribe((result: any) => {
         if(result.success){
+          console.log(result.data);
           this.processFileUploadResult(result.data.filename, fileObj, dPht);
         }else if (!result.success){
+          console.log(result);
           this.toastrService.errorToast(result.msg ? result.msg : 'Възникна грешка, моля опитайте отново');
           return false;
         }
