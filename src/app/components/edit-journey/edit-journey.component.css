@@ -51,6 +51,11 @@ button.blue {
 
 }
 
+button.disabled {
+  background: #dce8f1 !important;
+  margin-bottom: 20px;
+}
+
 .img-name {
   -o-text-overflow: ellipsis; /* Opera */
   text-overflow: ellipsis; /* IE, Safari (WebKit) */

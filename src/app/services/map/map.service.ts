@@ -25,7 +25,7 @@ export class MapService {
     shadowSize: [41, 41]
   });
 
-   transitIcon = new L.Icon({
+  transitIcon = new L.Icon({
     iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
@@ -86,19 +86,18 @@ export class MapService {
     this.initMap(id);
   }
 
-
   showRetrievedImage(pht) {
     let obj = {
       timestamp: pht.dateTaken, coordinates: pht.location, thumbnail: pht.encoded, position: pht.position, imgsrc: pht.fileName
     };
     if (obj.coordinates.length > 0) {
+      obj.coordinates = obj.coordinates.map(x => Number(x));
       this.currentMarkers.push(obj);
-
     }
     this.connectJourneyMarkers();
   }
 
-  connectEditMarkers(markers){
+  connectEditMarkers(markers) {
     this.currentMarkers = markers;
     // this.sortMarkers();
     this.connectJourneyMarkers();
@@ -117,28 +116,31 @@ export class MapService {
     this.clearNeedlessPolylines();
 
     for (let pht of this.currentMarkers) {
-      let popupHTML = `<img src="${pht.thumbnail || `${pht.imgsrc}`}" style="max-width: 100%; transform: scale(2); z-index: 1">`;
-      if (pht.position === 'START') {
-        const marker = L.marker(pht.coordinates , {type: 'marker', icon: this.startIcon})
-          .addTo(this.map);
-        if(pht.thumbnail || pht.imgsrc){
-          marker.bindPopup(popupHTML, this.popup);
-        }
-      } else if (pht.position === 'FINISH') {
-        const marker = L.marker(pht.coordinates, {type: 'marker', icon: this.finishIcon})
-          .addTo(this.map);
-        if(pht.thumbnail || pht.imgsrc){
-          marker.bindPopup(popupHTML, this.popup);
-        }
-      } else {
-        const marker = L.marker(pht.coordinates, {type: 'marker', icon: this.transitIcon})
-          .addTo(this.map);
-        if(pht.thumbnail || pht.imgsrc){
-          marker.bindPopup(popupHTML, this.popup);
+      if (pht.coordinates.length > 0) {
+        pht.coordinates = pht.coordinates.map(x => Number(x));
+        let popupHTML = `<img src="${pht.thumbnail || `${pht.imgsrc}`}" style="max-width: 100%; transform: scale(2); z-index: 1">`;
+        if (pht.position === 'START') {
+          const marker = L.marker(pht.coordinates, {type: 'marker', icon: this.startIcon})
+            .addTo(this.map);
+          if (pht.thumbnail || pht.imgsrc) {
+            marker.bindPopup(popupHTML, this.popup);
+          }
+        } else if (pht.position === 'FINISH') {
+          const marker = L.marker(pht.coordinates, {type: 'marker', icon: this.finishIcon})
+            .addTo(this.map);
+          if (pht.thumbnail || pht.imgsrc) {
+            marker.bindPopup(popupHTML, this.popup);
+          }
+        } else {
+          const marker = L.marker(pht.coordinates, {type: 'marker', icon: this.transitIcon})
+            .addTo(this.map);
+          if (pht.thumbnail || pht.imgsrc) {
+            marker.bindPopup(popupHTML, this.popup);
+          }
         }
       }
     }
-    const polyline = L.polyline(this.currentMarkers.map(x => x.coordinates), {color: 'red', weight: 2, type: 'polyline'}).addTo(this.map);
+    const polyline = L.polyline(this.currentMarkers.map(x => x.coordinates).filter(x => x.length > 0), {color: 'red', weight: 2, type: 'polyline'}).addTo(this.map);
     try {
       this.map.fitBounds(this.currentMarkers.map(x => x.coordinates));
     } catch (e) {

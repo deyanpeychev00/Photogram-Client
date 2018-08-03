@@ -32,6 +32,9 @@ export class AdminPanelComponent implements OnInit {
   searchedJourneyName = '';
   searchedJourneyAuthor = '';
 
+  images = [];
+  imagesLoaded = false;
+
   ngOnInit() {
     if (!this.auth.pathAuthProtector()) {
       return;
@@ -50,7 +53,6 @@ export class AdminPanelComponent implements OnInit {
       this.journeysShow = this.journeys;
     }
   }
-
   showSearchedUser(flag){
     if(flag === 'user'){
       [this.searchedID, this.searchedEmail, this.searchedFirstName, this.searchedLastName] = ['','','',''];
@@ -60,7 +62,6 @@ export class AdminPanelComponent implements OnInit {
       this.journeysShow = this.journeys.filter( j => j.author.toLowerCase().includes(this.searchedJourneyAuthor.toLowerCase()));
     }
   }
-
   showSearchedStatus(flag){
     if(flag === 'blocked'){
       this.usersShow = this.users.filter( u => u.blocked === true);
@@ -68,7 +69,6 @@ export class AdminPanelComponent implements OnInit {
       this.usersShow = this.users.filter( u => u.blocked === false);
     }
   }
-
   showSearchedID(flag){
     if(flag==='user'){
       [this.searchedUser, this.searchedEmail, this.searchedFirstName, this.searchedLastName] = ['','','',''];
@@ -78,27 +78,22 @@ export class AdminPanelComponent implements OnInit {
       this.journeysShow = this.journeys.filter( j => j._id.toLowerCase().includes(this.searchedJourneyID.toLowerCase()));
     }
   }
-
   showSearchedEmail(){
     [this.searchedUser, this.searchedID, this.searchedFirstName, this.searchedLastName] = ['','','',''];
     this.usersShow = this.users.filter( u => u.email.toLowerCase().includes(this.searchedEmail.toLowerCase()));
   }
-
   showSearchedFirstName(){
     [this.searchedUser, this.searchedEmail, this.searchedID, this.searchedLastName] = ['','','',''];
     this.usersShow = this.users.filter( u => u.firstName.toLowerCase().includes(this.searchedFirstName.toLowerCase()));
   }
-
   showSearchedLastName(){
     [this.searchedUser, this.searchedEmail, this.searchedID, this.searchedFirstName] = ['','','',''];
     this.usersShow = this.users.filter( u => u.lastName.toLowerCase().includes(this.searchedLastName.toLowerCase()));
   }
-
   showSearchedJourneyName(){
     [this.searchedJourneyID, this.searchedJourneyAuthor] = ['',''];
     this.journeysShow = this.journeys.filter( j => j.name.toLowerCase().includes(this.searchedJourneyName.toLowerCase()));
   }
-
   openTab(evt: any, tabName) {
     let i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName('tabcontent');
@@ -116,6 +111,8 @@ export class AdminPanelComponent implements OnInit {
       this.getAllUsers();
     } else if (tabName === 'journeys') {
       this.getAllJourneys();
+    } else if (tabName === 'images'){
+      this.getAllImages();
     }
   }
 
@@ -128,7 +125,6 @@ export class AdminPanelComponent implements OnInit {
       this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
     });
   }
-
   getAllJourneys() {
     this.journeyService.getAllJourneysAdmin().subscribe((res:any) => {
       if(res.success){
@@ -143,6 +139,14 @@ export class AdminPanelComponent implements OnInit {
       this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
     });
   }
+  getAllImages(){
+    this.journeyService.getAllImages().subscribe((images:any) => {
+      this.images = images.data;
+      this.imagesLoaded = true;
+    }, err =>{
+      this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
+    });
+  }
 
   showJourneyModal(journeyId) {
     this.currentJourneyId = journeyId;
@@ -153,7 +157,6 @@ export class AdminPanelComponent implements OnInit {
       }
     };
   }
-
   showUserModal(username, ID, DID){
     this.currentUsername = username;
     this.currentUserID = ID;
@@ -165,11 +168,9 @@ export class AdminPanelComponent implements OnInit {
       }
     };
   }
-
   closeModal(id) {
     document.getElementById(id).style.display = 'none';
   }
-
   deleteJourney(MID, JID = this.currentJourneyId) {
     // MID => modal ID ; JID => journey ID
 
@@ -199,19 +200,19 @@ export class AdminPanelComponent implements OnInit {
     });
 
   }
-
-
   deleteImage(e) {
     this.journeyService.deleteImageFromServer(e).subscribe((res:any) => {
       if(res.success){
-        this.journeyService.removePhotoFromDatabase(e._id);
+        this.journeyService.removePhotoFromDatabase(e._id).subscribe(data => {
+          this.getAllImages();
+        }, err => {
+          this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка при изтриването на снимка, моля опитайте отново'));
+        });
       }else{
         this.toastr.errorToast(res.msg ? res.msg : "Възникна грешка, моля опитайте отново");
       }
     });
   }
-
-
   deleteUser(MID,UNAME = this.currentUsername, UID = this.currentUserID, DID = this.databaseUserID){
     this.closeModal(MID);
     // 1. Delete all user's journeys
@@ -228,11 +229,14 @@ export class AdminPanelComponent implements OnInit {
       if(res.success){
         this.admin.deleteUserFromDataBase(DID).subscribe((dres: any) => {
           if(dres.success){
-            this.toastr.successToast('Успешно изтрихте потребителя');
-
             let user = this.users.find(x => x.UID === UID);
             let userIndex = this.users.indexOf(user);
             this.users.splice(userIndex, 1);
+            this.admin.removeUserDirectory(UNAME).subscribe(cb => {
+              if(cb === null){
+                this.toastr.successToast('Успешно изтрихте потребителя');
+              }
+            });
           }
         },err => {
             this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
@@ -243,7 +247,6 @@ export class AdminPanelComponent implements OnInit {
       this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
     });
   }
-
   changeBlockedStatus(id){
     let user = this.users.find(x => x._id === id);
     let userIndex = this.users.indexOf(user);
@@ -257,7 +260,6 @@ export class AdminPanelComponent implements OnInit {
         this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
       });
   }
-
   sortByID(type, table){
     if(table === 'users'){
       if(type === 'asc'){
@@ -275,7 +277,6 @@ export class AdminPanelComponent implements OnInit {
       }
     }
   }
-
   sortByName(type, table){
     if(table === 'users'){
       if(type === 'asc'){
@@ -300,7 +301,6 @@ export class AdminPanelComponent implements OnInit {
       }
     }
   }
-
   sortByEmail(type){
     if(type === 'asc'){
       this.usersShow.sort(function(a,b) {return (a.email > b.email) ? 1 : ((b.email > a.email) ? -1 : 0);} );
@@ -309,7 +309,6 @@ export class AdminPanelComponent implements OnInit {
       this.usersShow.sort(function(a,b) {return (a.email > b.email) ? -1 : ((b.email > a.email) ? 1 : 0);} );
     }
   }
-
   sortByNames(type, col){
     if(col === 'first'){
       if(type === 'asc'){
@@ -327,5 +326,4 @@ export class AdminPanelComponent implements OnInit {
       }
     }
   }
-
 }

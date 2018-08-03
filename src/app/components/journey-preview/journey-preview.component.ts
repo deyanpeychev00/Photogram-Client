@@ -9,12 +9,18 @@ export class JourneyPreviewComponent implements OnInit {
   @Input() journeyCount;
   featuredImage;
   imageLoaded = false;
+  hasFeaturedImage = true;
 
   constructor(private journeyService: JourneyService) {
   }
 
   ngOnInit() {
     this.journeyService.getJourneyFeaturedImageFromServer(this.journey._id).subscribe((object: any) => {
+      if(object.data.length === 0){
+        this.hasFeaturedImage = false;
+        this.imageLoaded = true;
+        return;
+      }
       // find journey feature image
       for(let obj of object.data){
         if(obj.fileName !== ""){

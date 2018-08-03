@@ -23,6 +23,7 @@ export class EditJourneyComponent implements OnInit {
   journeyID;
   journeyPictures = [];
   imageMarkers: Array<any> = [];
+  imagesLoaded = false;
 
   constructor(private auth: AuthService, private map: MapService, private toastrService: ToastrService, private journeyService: JourneyService, private dataService: DataService, private activatedRoute: ActivatedRoute, private toastr: ToastrService, private router: Router, private serverService: ServerService) {
   }
@@ -48,6 +49,7 @@ export class EditJourneyComponent implements OnInit {
       // get journey photos from db
       this.journeyService.getJourneyPhotos(this.journeyID).subscribe(picsData => {
         let pictures: any = picsData;
+        this.imagesLoaded = true;
         // create image object for map rendering
         for (let pic of pictures.data) {
           let imgObj = {
@@ -97,7 +99,7 @@ export class EditJourneyComponent implements OnInit {
     for (let pic of oldPics) {
       this.journeyPictures.push(pic);
       this.imageMarkers.push({
-        ID: pic.localID, coordinates: pic.location, timestamp: pic.dateTaken, thumbnail: ''
+        ID: pic.localID, coordinates: pic.location || pic.coordinates, timestamp: pic.dateTaken, thumbnail: ''
       });
     }
     // handle file input changes
@@ -177,7 +179,7 @@ export class EditJourneyComponent implements OnInit {
           // update journey itself
           this.journeyService.updateJourney(this.journey).subscribe(data => {
             this.toastr.successToast('Промените бяха успешно записани');
-            this.router.navigate(['/journeys/myjourneys']);
+            $('.btnUpdate').addClass('disabled');
           }, err => {
             this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
           });
@@ -189,7 +191,7 @@ export class EditJourneyComponent implements OnInit {
         // update journey itself
         this.journeyService.updateJourney(this.journey).subscribe(data => {
           this.toastr.successToast('Промените бяха успешно записани');
-          this.router.navigate(['/journeys/myjourneys']);
+          $('.btnUpdate').addClass('disabled');
         }, err => {
           this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
         });
@@ -296,7 +298,7 @@ export class EditJourneyComponent implements OnInit {
     }
     this.journeyService.deleteImageFromServer(e).subscribe((res:any) => {
       if(res.success){
-        this.journeyService.removePhotoFromDatabase(e._id);
+        this.journeyService.removePhotoFromDatabase(e._id).subscribe();
       }else{
         this.toastr.errorToast(res.msg ? res.msg : "Възникна грешка, моля опитайте отново");
       }

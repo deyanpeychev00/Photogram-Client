@@ -25,4 +25,8 @@ export class AdminService {
   deleteUserFromDataBase(id): Observable<any>{
     return this.http.delete(`${this.serverURL}/users/delete/database/${id}`);
   }
+
+  removeUserDirectory(uname): Observable<any>{
+    return this.http.get(`${this.serverURL}/users/delete/storage/${uname}`);
+  }
 }

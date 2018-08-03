@@ -5,7 +5,12 @@
         <div class="progress" *ngIf="!imageLoaded">
           <div class="indeterminate"></div>
         </div>
-        <img id="{{journey._id}}"/>
+        <div *ngIf="hasFeaturedImage">
+          <img id="{{journey._id}}"/>
+        </div>
+        <div *ngIf="!hasFeaturedImage">
+          <img src="../../../assets/images/track_api.png"/>
+        </div>
         <a class="btn-floating btn-large halfway-fab waves-effect waves-light big show-more-button" routerLink="/journeys/show/{{journey._id}}"><i class="material-icons">menu</i></a>
       </div>
       <div class="card-content">

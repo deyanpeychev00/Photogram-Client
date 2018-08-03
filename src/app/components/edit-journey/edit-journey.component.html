@@ -30,7 +30,7 @@
         </div>
       </form>
       <div class="uploadedPhotosWrapper">
-          <div *ngIf="!selectedPictures.length && !journeyPictures.length" class="preloader-wrapper small active">
+          <div *ngIf="!selectedPictures.length && !journeyPictures.length && !imagesLoaded" class="preloader-wrapper small active">
             <div class="spinner-layer spinner-blue-only">
               <div class="circle-clipper left">
                 <div class="circle"></div>
@@ -62,7 +62,7 @@
     <div class="col s12 m12 center row">
       <div id="uploadJourneyMap"></div>
     </div>
-    <button class="btn yellow" (click)="saveEdits()">Запиши промените</button>
+    <button class="btn yellow btnUpdate" (click)="saveEdits()">Запиши промените</button>
     <button class="btn red" id="myBtn" (click)="showModal()">Изтрий</button>
     <button class="btn grey" (click)="cancelCreateJourney()">Отмени</button>
   </div>

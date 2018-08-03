@@ -91,6 +91,10 @@ export class JourneyService {
   getJourneysInDateFrame(from, to): Observable<any> {
     return this.http.get(`${this.serverURL}/journeys/timeframe/${from}/${to}`);
   }
+  getAllImages(): Observable<any>{
+    return this.http.get(`${this.serverURL}/images/all`);
+  }
+
   // POST
   uploadImageToKinveyCollections(image, journeyID): Observable<any> {
     return this.http.post(`${this.serverURL}/images/kinvey/upload`, {
@@ -126,10 +130,7 @@ export class JourneyService {
     return this.http.post(`${this.serverURL}/images/delete`, img);
   }
   removePhotoFromDatabase(photoID) {
-    this.http.delete(`${this.serverURL}/images/kinvey/delete/${photoID}`).subscribe(data => {
-    }, err => {
-      this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка при изтриването на снимка, моля опитайте отново'));
-    });
+    return this.http.delete(`${this.serverURL}/images/kinvey/delete/${photoID}`)
   }
   deleteJourney(journeyID): Observable<any> {
     return this.http.delete(`${this.serverURL}/journeys/delete/${journeyID}`);

@@ -17,6 +17,8 @@ import {Page404Component} from '../../components/page404/page404.component';
 import {AdminPanelComponent} from '../../components/admin-panel/admin-panel.component';
 import {FiltersContainerComponent} from '../../components/filters-container/filters-container.component';
 import {ProfileComponent} from '../../components/profile/profile.component';
+import { EditPictureFormComponent } from '../../components/edit-picture-form/edit-picture-form.component';
+import { AdminImageComponent } from '../../components/admin-image/admin-image.component';
 
 export const ComponentsExport = [
   AppComponent,
@@ -37,5 +39,7 @@ export const ComponentsExport = [
   Page404Component,
   AdminPanelComponent,
   FiltersContainerComponent,
-  ProfileComponent
+  ProfileComponent,
+  EditPictureFormComponent,
+  AdminImageComponent
 ];

@@ -1,6 +1,7 @@
 <div class="tab">
   <button class="tablinks" (click)="openTab($event, 'users')">Потребители</button>
   <button class="tablinks" (click)="openTab($event, 'journeys')">Пътешествия</button>
+  <button class="tablinks" (click)="openTab($event, 'images')">Изображения</button>
 </div>
 
 <div id="users" class="tabcontent">
@@ -220,5 +221,44 @@
       <button class="btn grey" (click)="closeModal('journeyModal')">Отмени</button>
     </div>
   </div>
+
+</div>
+
+<div id="images" class="tabcontent">
+  <div class="divider"></div>
+  <!--Preloader-->
+  <div class="center">
+    <div *ngIf="imagesLoaded === false" class="preloader-wrapper small active">
+      <div class="spinner-layer spinner-blue-only">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!images.length && imagesLoaded === true">
+    <div class="red-text center">
+      Няма намерени снимки
+    </div>
+  </div>
+
+  <div *ngIf="images.length && imagesLoaded === true">
+      <div class="uploadedPhotosWrapper center row" >
+        <div>
+          <div class="divider"></div>
+          <app-admin-image *ngFor="let photo of images" [photo]="photo" (delete)="deleteImage($event)" class="col s12 m6 l2"></app-admin-image>
+          <div class="divider"></div>
+        </div>
+      </div>
+    <div class="divider"></div>
+  </div>
+
 
 </div>
