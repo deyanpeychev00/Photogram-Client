@@ -5,13 +5,15 @@ import {DataService} from '../data/data.service';
 import {Router} from '@angular/router';
 import {ToastrService} from '../toastr/toastr.service';
 import {AdminService} from '../admin/admin.service';
+import {UtilityService} from '../utility/utility.service';
 
 @Injectable()
 export class AuthService {
 
   emailRegex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  serverURL = this.util.getServerUrl();
 
-  constructor(private http: HttpClient, private dataService: DataService, private router: Router, private toastr: ToastrService, private admin: AdminService) {
+  constructor(private http: HttpClient, private dataService: DataService, private router: Router, private toastr: ToastrService, private admin: AdminService, private util: UtilityService) {
   }
 
   validateRegisterForm(username, email, password, repeatedPassword, firstName, lastName) {
@@ -154,7 +156,7 @@ export class AuthService {
     const body = {username, password, firstName, lastName, email, journeys: [], roles: [], blocked: false};
     const save = {username, email, firstName, lastName, roles: [], blocked: false, UID: ''};
 
-    this.http.get('http://localhost:8080/api').subscribe(responseData => {
+    this.http.get(`${this.serverURL}/api`).subscribe(responseData => {
       let response: any = responseData;
       this.http.post(`${response.host}/user/${response.key}/`, body, {
         headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(`${response.key}:${response.secret}`))
@@ -164,8 +166,8 @@ export class AuthService {
         this.toastr.successToast('Добре дошли в Photogram!');
         this.router.navigate(['/journeys/discover']);
         save.UID = registerData._id;
-        this.http.post('http://localhost:8080/user/save', save).subscribe(saveData => {});
-        this.http.get('http://localhost:8080/storage/'+ localStorage.getItem('username')).subscribe();
+        this.http.post(`${this.serverURL}/user/save`, save).subscribe(saveData => {});
+        this.http.get(`${this.serverURL}/storage/`+ localStorage.getItem('username')).subscribe();
       });
     });
   }
@@ -174,7 +176,7 @@ export class AuthService {
 
     const body = {username, password};
 
-    this.http.get('http://localhost:8080/api').subscribe(responseData => {
+    this.http.get(`${this.serverURL}/api`).subscribe(responseData => {
       let response: any = responseData;
       this.http.post(`${response.host}/user/${response.key}/login`, body, {
         headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(`${response.key}:${response.secret}`))
@@ -182,7 +184,7 @@ export class AuthService {
       }).subscribe((loginData: any) => {
         this.dataService.setUserLocalData(loginData);
         this.router.navigate(['/journeys/discover']);
-        this.http.get('http://localhost:8080/storage/'+ localStorage.getItem('username')).subscribe();
+        this.http.get(`${this.serverURL}/storage/`+ localStorage.getItem('username')).subscribe();
       },
         err => {
           this.toastr.errorToast((err.error.description ? err.error.description : 'Unknown error occured. Please try again'));

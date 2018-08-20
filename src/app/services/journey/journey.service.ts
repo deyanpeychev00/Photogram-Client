@@ -4,12 +4,13 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {DataService} from '../data/data.service';
 import {ToastrService} from '../toastr/toastr.service';
 import {Router} from '@angular/router';
+import {UtilityService} from '../utility/utility.service';
 
 @Injectable()
 export class JourneyService {
-  serverURL = 'http://localhost:8080';
+  serverURL = this.util.getServerUrl();
 
-  constructor(private http: HttpClient, private toastr: ToastrService, private router: Router) {
+  constructor(private http: HttpClient, private toastr: ToastrService, private router: Router, private util: UtilityService) {
   }
   // Service functions
   uploadJourney(name, description, images) {

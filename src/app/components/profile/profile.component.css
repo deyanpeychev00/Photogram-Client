@@ -1,0 +1,98 @@
+.divider{
+  height: 32px;
+  color: transparent;
+  background-color: transparent;
+}
+
+.user-data-container{
+  min-height: 300px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+  background: #ffffff;
+  border-radius: 5px;
+
+  animation: fadein 2s;
+  -moz-animation: fadein 2s; /* Firefox */
+  -webkit-animation: fadein 2s; /* Safari and Chrome */
+  -o-animation: fadein 2s; /* Opera */
+}
+
+.user-data-wrapper{
+  padding-top: 10px;
+
+
+}
+
+.user-role-wrapper{
+  text-align: right;
+  margin-top: 20px;
+  margin-right: 10px;
+}
+
+span.user-role{
+  background-color: #cccccc;
+  border-radius: 25px;
+  padding: 5px 10px;
+  color: white;
+  font-weight: 600;
+}
+
+.user-name{
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+.username{
+  font-size: 18px;
+  margin-top: 0px;
+  color: #888888;
+}
+
+.data-wrapper{
+  background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(224,224,224,1) 100%);
+}
+
+.additional-heading{
+  font-size: 18px;
+  color: black;
+  margin-bottom: 0;
+}
+.additional-text{
+  font-size: 20px;
+  color: black;
+  font-weight: 600;
+  margin-top: 0;
+}
+
+@keyframes fadein {
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
+}
+@-moz-keyframes fadein { /* Firefox */
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
+}
+@-webkit-keyframes fadein { /* Safari and Chrome */
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
+}
+@-o-keyframes fadein { /* Opera */
+  from {
+    opacity:0;
+  }
+  to {
+    opacity: 1;
+  }
+}

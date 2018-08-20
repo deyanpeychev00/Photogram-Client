@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {DataService} from '../data/data.service';
+import {UtilityService} from '../utility/utility.service';
 @Injectable()
 export class AdminService {
-  serverURL = 'http://localhost:8080';
-  constructor(private data: DataService,private http: HttpClient) { }
+  serverURL = this.util.getServerUrl();
+  constructor(private data: DataService,private http: HttpClient, private util: UtilityService) { }
 
   getAllUsers(): Observable<any>{
     return this.http.get(`${this.serverURL}/users/all`);

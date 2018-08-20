@@ -1,1 +1,52 @@
-<h1>Profile</h1>
+<!--Preloader-->
+<div *ngIf="!userDetailsLoaded" class="container center">
+  <div class="divider"></div>
+  <div *ngIf="!userDetailsLoaded" class="preloader-wrapper small active">
+    <div class="spinner-layer spinner-blue-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div>
+      <div class="gap-patch">
+        <div class="circle"></div>
+      </div>
+      <div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="userDetailsLoaded" class="data-wrapper">
+  <div class="container center row">
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="container row">
+      <div *ngIf="userDetailsLoaded" class="col s12 m12 l12 user-data-container">
+        <div class="row user-role-wrapper">
+          <span class="user-role">{{this.role}}</span>
+        </div>
+        <div class="row user-data-wrapper center">
+          <p class="user-name">{{this.name}}</p>
+          <p class="username">{{this.username}}</p>
+        </div>
+        <div class="row user-data-wrapper center">
+          <div class="col s12 m12 l6 "><p class="additional-heading">Пътешествия</p><p class="additional-text">{{this.journeysCount}}</p></div>
+          <div class="col s12 m12 l6"><p class="additional-heading">Имейл</p><p class="additional-text">{{this.email}}</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="container">
+    <div class="journeysWrapper center">
+      <app-journey-preview *ngFor="let journey of journeysArr" [journey]="journey" [journeyCount]="journeysCount" class="center row container"></app-journey-preview>
+    </div>
+  </div>
+</div>
+
+
+
