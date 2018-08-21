@@ -30,8 +30,18 @@
           <p class="username">{{this.username}}</p>
         </div>
         <div class="row user-data-wrapper center">
-          <div class="col s12 m12 l6 "><p class="additional-heading">Пътешествия</p><p class="additional-text">{{this.journeysCount}}</p></div>
-          <div class="col s12 m12 l6"><p class="additional-heading">Имейл</p><p class="additional-text">{{this.email}}</p></div>
+          <div class="col s12 m12 l6 ">
+            <p class="additional-heading">Пътешествия</p>
+            <p class="additional-text">{{this.journeysCount}}</p>
+            <span>
+                <a class="waves-effect waves-light btn-small green" routerLink="/journeys/create"><i class="material-icons left">add</i>Качи</a>
+            </span>
+          </div>
+          <div class="col s12 m12 l6"><p class="additional-heading">Имейл</p>
+            <p class="additional-text">{{this.email}}</p></div>
+          <span>
+            <a class="waves-effect waves-light btn-small orange" (click)="showModal('emailModal')"><i class="material-icons left">edit</i>Промени</a>
+          </span>
         </div>
       </div>
     </div>
@@ -40,10 +50,31 @@
   </div>
 </div>
 
+
+<!-- Email change Modal -->
+<div id="emailModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" (click)="closeModal('emailModal')">&times;</span>
+    <div class="email-modal-container">
+      <div class="input-field">
+        <input id="email_inline" type="email" [ngModel]="newEmail" (ngModelChange)="onEmailChange($event)">
+        <label for="email_inline">E-mail</label>
+        <span class="helper-text">Моля въведете вашият нов e-mail</span>
+      </div>
+    </div>
+
+    <button id="updateEmailButton" class="btn orange" (click)="updateUserEmail()">Промени</button>
+    <button class="btn grey" (click)="closeModal('emailModal')">Отмени</button>
+  </div>
+</div>
+
+
 <div class="container">
   <div class="container">
     <div class="journeysWrapper center">
-      <app-journey-preview *ngFor="let journey of journeysArr" [journey]="journey" [journeyCount]="journeysCount" class="center row container"></app-journey-preview>
+      <app-journey-preview *ngFor="let journey of journeysArr" [journey]="journey" [journeyCount]="journeysCount"
+                           class="center row container"></app-journey-preview>
     </div>
   </div>
 </div>

@@ -16,6 +16,17 @@ export class AuthService {
   constructor(private http: HttpClient, private dataService: DataService, private router: Router, private toastr: ToastrService, private admin: AdminService, private util: UtilityService) {
   }
 
+  validateEmail(email){
+    if (!this.emailRegex.test(email) || email === '' || email === null || email === undefined) {
+      return {
+        success: false, error: 'Невалиден имейл.'
+      };
+    }
+    return {
+      success: true, error: ''
+    };
+  }
+
   validateRegisterForm(username, email, password, repeatedPassword, firstName, lastName) {
     // check username
     if (username === '' || username === null || username === undefined || username.length < 6) {
