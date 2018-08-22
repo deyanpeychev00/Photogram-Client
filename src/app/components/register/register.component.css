@@ -1,0 +1,28 @@
+.divider-reg{
+  height: 32px !important;
+  color: transparent !important;
+  background-color: transparent !important;
+}
+
+.avatar-placeholder{
+  height: 150px;
+  width: 150px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+}
+
+.upload-button{
+  height: 4rem;
+  line-height: 4rem;
+}
+
+input.file-path{
+  width: 100%;
+}
+
+.shrink-bottom{
+  margin-bottom: 0;
+}
+
+#userAvatar{
+  display: none;
+}

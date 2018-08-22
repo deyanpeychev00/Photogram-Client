@@ -9,12 +9,44 @@
 
     <!-- Login Form -->
     <form (ngSubmit)="submitRegister()">
-      <input type="text" class="fadeIn second form-control" id="inputUsername" placeholder="Потребителско име" required  [(ngModel)]="username" name="username">
-      <input type="text" class="fadeIn second form-control" id="inputEmail" placeholder="Имейл" name="email"  [(ngModel)]="email" required>
-      <input type="text" class="fadeIn second form-control" id="inputFirstName" placeholder="Име" required  [(ngModel)]="firstName" name="firstName">
-      <input type="text" class="fadeIn second form-control" id="inputLastName" placeholder="Фамилия" required  [(ngModel)]="lastName" name="lastName">
-      <input type="password" class="fadeIn second form-control" id="inputPassword" placeholder="Парола" required [(ngModel)]="password" name="password">
-      <input type="password" class="fadeIn second form-control" id="repeatedPassword" placeholder="Потвърдете паролата" required [(ngModel)]="repeatedPassword" name="repeatedPassword">
+      <input type="text" class="fadeIn second form-control" id="inputUsername" placeholder="Потребителско име" required
+             [(ngModel)]="username" name="username">
+      <input type="text" class="fadeIn second form-control" id="inputEmail" placeholder="Имейл" name="email"
+             [(ngModel)]="email" required>
+      <input type="text" class="fadeIn second form-control" id="inputFirstName" placeholder="Име" required
+             [(ngModel)]="firstName" name="firstName">
+      <input type="text" class="fadeIn second form-control" id="inputLastName" placeholder="Фамилия" required
+             [(ngModel)]="lastName" name="lastName">
+      <input type="password" class="fadeIn second form-control" id="inputPassword" placeholder="Парола" required
+             [(ngModel)]="password" name="password">
+      <input type="password" class="fadeIn second form-control" id="repeatedPassword" placeholder="Потвърдете паролата"
+             required [(ngModel)]="repeatedPassword" name="repeatedPassword">
+      <div>
+        <div class="container center">
+          <div class="divider-reg"></div>
+          <div class="row shrink-bottom">
+            <img *ngIf="!avatarUploaded" src="../../../assets/images/default-avatar.png"
+                 class="responsive-image circle avatar-placeholder"/>
+            <div>
+              <img id="userAvatar" class="responsive-image circle avatar-placeholder"/>
+            </div>
+          </div>
+          <div class="row shrink-bottom">
+            <div class="file-field input-field">
+              <div class="btn btn-large waves-effect waves-light blue upload-button">
+                  <span>
+                      <i class="material-icons">file_upload</i>
+                  </span>
+                <input type="file" accept=".jpg, .jpeg, .png" (change)="onPictureSelectorChange($event)">
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path" type="text" disabled>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <input type="submit" class="fadeIn fourth" value="Регистрация">
     </form>
 
