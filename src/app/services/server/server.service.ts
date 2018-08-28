@@ -18,4 +18,19 @@ export class ServerService {
 
     return this.http.post(`${this.serverURL}/images/upload/`+localStorage.getItem('username'), formData);
   }
+
+  uploadAvatarToServer(username, file){
+    let formData = new FormData();
+    formData.append(file.name, file);
+    let result = '';
+
+    return this.http.post(`${this.serverURL}/avatar/upload/`+ username, formData);
+  }
+
+  getUserAvatar(avatarName){
+    return this.http.get(`${this.serverURL}/avatar/get/` + avatarName ,{
+        responseType: 'blob',
+        headers: new HttpHeaders().append('Content-Type', 'application/json')
+    });
+  }
 }

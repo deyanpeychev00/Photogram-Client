@@ -16,6 +16,10 @@ export class AdminService {
     return this.http.get(`${this.serverURL}/users/single/${id}`);
   }
 
+  getUserByUsername(username): Observable<any>{
+    return this.http.get(`${this.serverURL}/users/username/${username}`);
+  }
+
   updateUser(id, user): Observable<any>{
     return this.http.put(`${this.serverURL}/users/update`, user);
   }

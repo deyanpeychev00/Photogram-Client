@@ -130,9 +130,20 @@ export class AuthService {
   }
 
   validatePostPicture(file) {
-    if (file.size > 10 * 1000000) {
+    if (file.size > 10 * 1000000.0) {
       return {
         isValid: false, msg: 'Снимката трябва да е под 10MB.'
+      };
+    }
+    return {
+      isValid: true, msg: ''
+    };
+  }
+
+  validateAvatarSize(size){
+    if (size > 1 * 1000000.0) {
+      return {
+        isValid: false, msg: 'Снимката трябва да е под 1MB.'
       };
     }
     return {
@@ -163,9 +174,9 @@ export class AuthService {
   }
 
   // Requests to server
-  register(username, email, password, firstName, lastName) {
-    const body = {username, password, firstName, lastName, email, journeys: [], roles: [], blocked: false};
-    const save = {username, email, firstName, lastName, roles: [], blocked: false, UID: ''};
+  register(username, email, password, firstName, lastName, avatarFilename) {
+    const body = {username, password, firstName, lastName, email, journeys: [], roles: [], blocked: false, avatar: avatarFilename};
+    const save = {username, email, firstName, lastName, roles: [], blocked: false, UID: '', avatar: avatarFilename};
 
     this.http.get(`${this.serverURL}/api`).subscribe(responseData => {
       let response: any = responseData;

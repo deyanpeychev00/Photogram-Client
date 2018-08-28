@@ -18,9 +18,14 @@
 
 .user-data-wrapper{
   padding-top: 10px;
-
-
 }
+
+.avatar-placeholder{
+  height: 150px;
+  width: 150px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+}
+
 
 .user-role-wrapper{
   text-align: right;
@@ -147,4 +152,8 @@ input[type=email]:not(.browser-default):focus:not([readonly]){
 
 input[type=email]:not(.browser-default):focus:not([readonly]) + label {
   color: #2196f3;
+}
+
+#userAvatarProfile{
+  display: none;
 }

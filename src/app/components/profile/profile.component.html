@@ -26,6 +26,11 @@
           <span class="user-role">{{this.role}}</span>
         </div>
         <div class="row user-data-wrapper center">
+          <img *ngIf="!userHasAvatar" src="../../../assets/images/default-avatar.png" class="responsive-image circle avatar-placeholder"/>
+          <div>
+            <img id="userAvatarProfile" class="avatar responsive-image circle avatar-placeholder"/>
+          </div>
+          <div>
           <p class="user-name">{{this.name}}</p>
           <p class="username">{{this.username}}</p>
         </div>

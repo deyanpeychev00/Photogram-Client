@@ -38,3 +38,7 @@
 .progress .indeterminate{
   background-color: #2196f3;
 }
+
+.userAvatar{
+  display: none;
+}

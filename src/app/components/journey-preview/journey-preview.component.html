@@ -17,7 +17,7 @@
         <span class="card-title">{{journey.name}}</span>
         <p>{{journey.caption}}</p>
         <div class="card-author">
-          <span class="chip">Автор: <b>{{journey.author}}</b></span>
+          <span class="chip">Автор: <b>{{journey.author}}</b> <img *ngIf="!userHasAvatar" src="../../../assets/images/default-avatar.png"/> <img class="userAvatar" id="userAvatar-{{journey.author}}"/></span>
         </div>
       </div>
     </div>
