@@ -34,4 +34,9 @@ export class AdminService {
   removeUserDirectory(uname): Observable<any>{
     return this.http.get(`${this.serverURL}/users/delete/storage/${uname}`);
   }
+
+  removeUserAvatar(aname): Observable<any>{
+    return this.http.get(`${this.serverURL}/users/delete/avatar/${aname}`);
+  }
+
 }

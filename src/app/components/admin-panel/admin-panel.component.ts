@@ -213,6 +213,7 @@ export class AdminPanelComponent implements OnInit {
       }
     });
   }
+
   deleteUser(MID,UNAME = this.currentUsername, UID = this.currentUserID, DID = this.databaseUserID){
     this.closeModal(MID);
     // 1. Delete all user's journeys
@@ -229,12 +230,17 @@ export class AdminPanelComponent implements OnInit {
       if(res.success){
         this.admin.deleteUserFromDataBase(DID).subscribe((dres: any) => {
           if(dres.success){
-            let user = this.users.find(x => x.UID === UID);
-            let userIndex = this.users.indexOf(user);
-            this.users.splice(userIndex, 1);
             this.admin.removeUserDirectory(UNAME).subscribe(cb => {
               if(cb === null){
+                let searcheduser = this.users.find(u => u.username === UNAME);
+                if(searcheduser.avatar && searcheduser.avatar !== ""){
+                  this.admin.removeUserAvatar(searcheduser.avatar).subscribe(cba => {});
+                }
+                let user = this.users.find(x => x.UID === UID);
+                let userIndex = this.users.indexOf(user);
+                this.users.splice(userIndex, 1);
                 this.toastr.successToast('Успешно изтрихте потребителя');
+                return;
               }
             });
           }

@@ -188,6 +188,7 @@ export class AuthService {
         this.toastr.successToast('Добре дошли в Photogram!');
         this.router.navigate(['/journeys/discover']);
         save.UID = registerData._id;
+        save.avatar = body.avatar;
         this.http.post(`${this.serverURL}/user/save`, save).subscribe(saveData => {});
         this.http.get(`${this.serverURL}/storage/`+ localStorage.getItem('username')).subscribe();
       });
