@@ -167,7 +167,7 @@ export class EditJourneyComponent implements OnInit {
     } else {
       this.toastr.toast('Запазване на промените...');
 
-      // upload new pictures
+      //      upload new pictures
       let photosToAdd = this.donePhotos.filter(p => p.previouslyAdded !== true);
 
       if(photosToAdd.length > 0){
@@ -178,6 +178,8 @@ export class EditJourneyComponent implements OnInit {
           this.journey.caption = this.journeyDescription;
           // update journey itself
           this.journeyService.updateJourney(this.journey).subscribe(data => {
+            console.log("OUTPUT:");
+            console.log(data);
             this.toastr.successToast('Промените бяха успешно записани');
             $('.btnUpdate').addClass('disabled');
           }, err => {
@@ -190,6 +192,8 @@ export class EditJourneyComponent implements OnInit {
         this.journey.caption = this.journeyDescription;
         // update journey itself
         this.journeyService.updateJourney(this.journey).subscribe(data => {
+          console.log("OUTPUT:");
+          console.log(data);
           this.toastr.successToast('Промените бяха успешно записани');
           $('.btnUpdate').addClass('disabled');
         }, err => {
@@ -211,7 +215,7 @@ export class EditJourneyComponent implements OnInit {
           // process the file upload result (server response)
           let photoForKinvey = this.processFileUploadResult(result.data.filename, fileObj, dPht);
           // upload image details to db
-          this.journeyService.uploadImageToKinveyCollections(photoForKinvey, this.journeyID).subscribe(data=>{});
+          this.journeyService.uploadImageToKinveyCollections(photoForKinvey, this.journeyID).subscribe(data=>{console.log(data);});
         } else if (!result.success) {
           this.toastrService.errorToast(result.msg ? result.msg : 'Възникна грешка, моля опитайте отново');
           return false;
@@ -272,6 +276,8 @@ export class EditJourneyComponent implements OnInit {
 
     // delete journey itself
     this.journeyService.deleteJourney(this.journeyID).subscribe(data => {
+      console.log("OUTPUT: ");
+      console.log(data);
       this.toastr.successToast('Успешно изтрихте пътешествието');
       this.router.navigate(['/journeys/myjourneys']);
     }, err => {
@@ -297,8 +303,13 @@ export class EditJourneyComponent implements OnInit {
       }
     }
     this.journeyService.deleteImageFromServer(e).subscribe((res:any) => {
+      console.log("S OUTPUT: ");
+      console.log(res);
       if(res.success){
-        this.journeyService.removePhotoFromDatabase(e._id).subscribe();
+        this.journeyService.removePhotoFromDatabase(e._id).subscribe((d: any) => {
+          console.log("DB OUTPUT: ");
+          console.log(d);
+        });
       }else{
         this.toastr.errorToast(res.msg ? res.msg : "Възникна грешка, моля опитайте отново");
       }

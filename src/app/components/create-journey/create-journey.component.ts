@@ -72,7 +72,7 @@ export class CreateJourneyComponent implements OnInit {
             fileName: ''
           };
           if (Object.keys(file.exifdata).length > 0) {
-            this.selectedFiles.push({file, fileID: imgObj.localID});
+            this.selectedFiles.push({file, fileID: imgObj.localID, details: imgObj});
           }
           this.selectedPictures.push(imgObj);
         });
@@ -91,41 +91,14 @@ export class CreateJourneyComponent implements OnInit {
     if (!validateJourney.isValid) {
       this.toastrService.errorToast(validateJourney.msg);
     } else {
-      if (this.uploadFiles(this.donePhotos)) {
-        this.sendRequestToServer();
-      }
+      this.journeyService.createJourney(this.journeyName, this.journeyDescription, this.selectedFiles).subscribe((res: any) =>{
+        console.log(res);
+      }, err => {});
     }
+
+    // this.clearForm();
   }
 
-  sendRequestToServer() {
-    this.journeyService.uploadJourney(this.journeyName, this.journeyDescription, this.donePhotos);
-    this.clearForm();
-  }
-
-  uploadFiles(dPht) {
-    for (let fileObj of this.selectedFiles) {
-      this.serverService.uploadFileToServer(fileObj.file).subscribe((result: any) => {
-        if(result.success){
-          console.log(result.data);
-          this.processFileUploadResult(result.data.filename, fileObj, dPht);
-        }else if (!result.success){
-          console.log(result);
-          this.toastrService.errorToast(result.msg ? result.msg : 'Възникна грешка, моля опитайте отново');
-          return false;
-        }
-      });
-    }
-    return true;
-  }
-
-  processFileUploadResult(fileName, fileObj, dPht){
-      for (let i = 0; i < dPht.length; i++) {
-        if(this.donePhotos[i].localID === fileObj.fileID){
-          this.donePhotos[i].fileName = fileName;
-          break;
-        }
-    }
-  }
 
   cancelCreateJourney() {
     window.history.back();

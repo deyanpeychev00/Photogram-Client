@@ -11,7 +11,8 @@ import {UtilityService} from '../utility/utility.service';
 export class AuthService {
 
   emailRegex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  serverURL = this.util.getServerUrl();
+  serverURL = this.util.getServerUrl().local;
+  phpURL = this.util.getServerUrl().remote;
 
   constructor(private http: HttpClient, private dataService: DataService, private router: Router, private toastr: ToastrService, private admin: AdminService, private util: UtilityService) {
   }
@@ -29,6 +30,11 @@ export class AuthService {
 
   validateRegisterForm(username, email, password, repeatedPassword, firstName, lastName) {
     // check username
+    if(username.indexOf('/') !== -1 || username.indexOf('\\') !== -1){
+      return {
+        success: false, error: 'Невалидно потребителско име.'
+      };
+    }
     if (username === '' || username === null || username === undefined || username.length < 6) {
       return {
         success: false, error: 'Потребителското име трябва да е минимум 6 символа.'
@@ -114,19 +120,7 @@ export class AuthService {
   }
 
   blockProtector() {
-    this.admin.getSingleUser(localStorage.getItem('userId')).subscribe(userData => {
-      if (userData.data[0].blocked === true) {
-        this.router.navigate(['/']);
-        this.toastr.errorToast('Вашият профил е блокиран. Не можете да създавате пътешествия.');
-        return false;
-      }
-      return true;
-    }, err => {
-      this.toastr.errorToast('Възникна грешка, моля опитайте отново');
-      return false;
-    });
-
-    return true;
+    return localStorage.getItem('status');
   }
 
   validatePostPicture(file) {
@@ -185,26 +179,66 @@ export class AuthService {
           .set('Content-Type', 'application/json')
       }).subscribe((registerData: any) => {
         this.dataService.setUserLocalData(registerData);
+        console.log(registerData);
         this.toastr.successToast('Добре дошли в Photogram!');
         this.router.navigate(['/journeys/discover']);
         save.UID = registerData._id;
         save.avatar = body.avatar;
-        this.http.post(`${this.serverURL}/user/save`, save).subscribe(saveData => {});
-        this.http.get(`${this.serverURL}/storage/`+ localStorage.getItem('username')).subscribe();
       });
     });
   }
 
-  login(username, password) {
+  processRegistration(avatar, username, email, password, firstName, lastName){
+    const body = {username, password, firstName, lastName, email, journeys: [], roles: [], blocked: false/*, avatar: avatar*/};
 
+    let formData = new FormData();
+    formData.append('user_avatar', avatar);
+    formData.append('register_data', JSON.stringify(body));
+
+    this.http.post(`${this.phpURL}/register.php`, formData, {}).subscribe((res: any) => {
+      if(res === null){
+        this.toastr.errorToast('Възникна грешка, моля опитайте по-късно.');
+        return;
+      }
+      if(res.success){
+        this.dataService.setUserLocalData(res.data);
+        this.toastr.successToast(res.msg);
+        this.router.navigate(['/journeys/discover']);
+      }else{
+        this.toastr.errorToast(res.msg);
+      }
+    });
+
+  }
+
+  login(username, password) {
     const body = {username, password};
 
-    this.http.get(`${this.serverURL}/api`).subscribe(responseData => {
+    this.http.post(`${this.phpURL}/login.php`, body, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    }).subscribe((res: any) => {
+      console.log(res);
+      if(res === null){
+        this.toastr.errorToast('Възникна грешка, моля опитайте по-късно.');
+        return;
+      }
+      if(res.success){
+        this.dataService.setUserLocalData(res.data);
+        this.toastr.successToast(res.msg);
+        this.router.navigate(['/journeys/discover']);
+      }else{
+        this.toastr.errorToast(res.msg);
+      }
+    }, (err:any) => {
+
+    });
+    /*this.http.get(`${this.serverURL}/api`).subscribe(responseData => {
       let response: any = responseData;
       this.http.post(`${response.host}/user/${response.key}/login`, body, {
         headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(`${response.key}:${response.secret}`))
           .set('Content-Type', 'application/json')
       }).subscribe((loginData: any) => {
+        console.log(loginData);
         this.dataService.setUserLocalData(loginData);
         this.router.navigate(['/journeys/discover']);
         this.http.get(`${this.serverURL}/storage/`+ localStorage.getItem('username')).subscribe();
@@ -212,7 +246,7 @@ export class AuthService {
         err => {
           this.toastr.errorToast((err.error.description ? err.error.description : 'Unknown error occured. Please try again'));
         });
-    });
+    });*/
   }
 
   async logout() {

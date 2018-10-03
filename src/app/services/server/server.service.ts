@@ -7,7 +7,7 @@ import {UtilityService} from '../utility/utility.service';
 @Injectable()
 export class ServerService {
 
-  serverURL = this.util.getServerUrl();
+  serverURL = this.util.getServerUrl().local;
 
   constructor(private http: HttpClient, private util: UtilityService) { }
 

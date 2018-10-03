@@ -80,8 +80,11 @@ export class RegisterComponent implements OnInit {
     image.src = imageUrl;
     image.style.display = 'inline-block';
   }
+
   uploadAvatar(){
-      this.serverService.uploadAvatarToServer(this.username, this.avatar).subscribe((result: any) => {
+    this.auth.processRegistration(this.avatar, this.username, this.email, this.password, this.firstName, this.lastName);
+
+     /* this.serverService.uploadAvatarToServer(this.username, this.avatar).subscribe((result: any) => {
         if(result.success){
          this.processRegister(result.data.filename);
         }else if (!result.success){
@@ -89,7 +92,7 @@ export class RegisterComponent implements OnInit {
           this.toastr.errorToast(result.msg ? result.msg : 'Възникна грешка, моля опитайте отново');
           return false;
         }
-      });
+      });*/
     return true;
   }
 

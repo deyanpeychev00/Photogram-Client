@@ -6,6 +6,9 @@ export class UtilityService {
   constructor() { }
 
   getServerUrl() {
-    return `http://localhost:8080`;
+    return {
+      local: `http://localhost:8080`,
+      remote: `http://photogram.sliven.org`
+    };
   }
 }

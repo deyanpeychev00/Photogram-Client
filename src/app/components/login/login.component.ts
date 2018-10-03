@@ -20,7 +20,6 @@ export class LoginComponent implements OnInit {
   }
 
   submitLogin() {
-    this.toastr.toast('Влизане..');
     this.auth.login(this.username, this.password);
   }
 }

@@ -31,6 +31,9 @@ export class JourneysDiscoverComponent implements OnInit {
   retreiveJourneys(){
     // console.log("Journeys Count: " + this.journeysCount);
     this.journeyService.getAllJourneys(this.journeysCount, this.limitCount).subscribe((res:any) => {
+      console.log("OUTPUT: ");
+      console.log(res);
+
       if(res.data.length < this.limitCount){
         this.upcommingResults = false;
       }

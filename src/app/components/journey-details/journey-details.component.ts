@@ -37,6 +37,8 @@ export class JourneyDetailsComponent implements OnInit {
       this.journeyID = params['id'];
     });
     this.journeyService.getCurrentJourney(this.journeyID).subscribe((res: any) => {
+      console.log("OUTPUT:");
+      console.log(res);
       if(res.success){
         this.journey = res.data[0];
         this.journeyRating = this.calculateJourneyRating(this.journey);

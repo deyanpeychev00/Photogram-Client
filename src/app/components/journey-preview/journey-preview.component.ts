@@ -29,6 +29,7 @@ export class JourneyPreviewComponent implements OnInit {
 
 
     this.journeyService.getJourneyFeaturedImageFromServer(this.journey._id).subscribe((object: any) => {
+      console.log(object);
       if(object.data.length === 0){
         this.hasFeaturedImage = false;
         this.imageLoaded = true;

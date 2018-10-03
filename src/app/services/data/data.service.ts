@@ -16,13 +16,13 @@ export class DataService {
 
   setUserLocalData(data) {
     if (data.roles.length > 0) {
-      localStorage.setItem('role', data._id);
+      localStorage.setItem('role', data.roles[0]);
     } else {
       localStorage.setItem('role', 'init');
     }
-    localStorage.setItem('authtoken', data._kmd.authtoken);
+    localStorage.setItem('authtoken', data.auth_token || "");
     localStorage.setItem('username', data.username);
-    localStorage.setItem('userId', data._id);
+    localStorage.setItem('userId', data.id);
     localStorage.setItem('logged', 'true');
     localStorage.setItem('status', 'false');
   }
