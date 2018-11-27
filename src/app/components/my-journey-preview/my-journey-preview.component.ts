@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {JourneyService} from '../../services/journey/journey.service';
+import {DataService} from '../../services/data/data.service';
 
 @Component({
   selector: 'app-my-journey-preview',
@@ -9,27 +10,12 @@ import {JourneyService} from '../../services/journey/journey.service';
 export class MyJourneyPreviewComponent implements OnInit {
   @Input() journey;
   @Input() journeyCount;
-  featuredImage;
-  imageLoaded = false;
-  hasFeaturedImage = true;
+  featuredImageSrc;
 
-  constructor(private journeyService: JourneyService) { }
+  constructor(private journeyService: JourneyService, private dataService: DataService) { }
 
   ngOnInit() {
-    this.journeyService.getJourneyFeaturedImageFromServer(this.journey._id).subscribe((object: any) => {
-      if(object.data.length === 0){
-        this.hasFeaturedImage = false;
-        this.imageLoaded = true;
-        return;
-      }
-      this.journeyService.getFeaturedImageFile(object.data[0].fileName).subscribe((file: any) => {
-        const imageUrl = URL.createObjectURL(file);
-        let image: any = document.getElementById(this.journey._id);
-        image.src = imageUrl;
-        this.imageLoaded = true;
-        this.hasFeaturedImage = true;
-      });
-    });
+    this.featuredImageSrc = this.dataService.getAPI().uploads + this.journey.featuredImage;
   }
 
 }

@@ -1,0 +1,126 @@
+<div class="divider"></div>
+<!--Preloader-->
+<div class="center">
+  <div *ngIf="usersLoaded === false" class="preloader-wrapper small active">
+    <div class="spinner-layer spinner-blue-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div>
+      <div class="gap-patch">
+        <div class="circle"></div>
+      </div>
+      <div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table *ngIf="usersLoaded === true" class="stripped responsive-table centered">
+  <thead>
+  <tr>
+    <th>ID
+      <i class="material-icons selectable" (click)="sortByID('asc', 'users')">arrow_drop_up</i>
+      <i class="material-icons selectable" (click)="sortByID('desc', 'users')">arrow_drop_down</i>
+    </th>
+    <th>Потребителско име
+      <i class="material-icons selectable" (click)="sortByName('asc', 'users')">arrow_drop_up</i>
+      <i class="material-icons selectable" (click)="sortByName('desc', 'users')">arrow_drop_down</i>
+    </th>
+    <th>Имейл
+      <i class="material-icons selectable" (click)="sortByEmail('asc')">arrow_drop_up</i>
+      <i class="material-icons selectable" (click)="sortByEmail('desc')">arrow_drop_down</i>
+    </th>
+    <th>Име
+      <i class="material-icons selectable" (click)="sortByNames('asc', 'first')">arrow_drop_up</i>
+      <i class="material-icons selectable" (click)="sortByNames('desc', 'first')">arrow_drop_down</i>
+    </th>
+    <th>Фамилия
+      <i class="material-icons selectable" (click)="sortByNames('asc', 'last')">arrow_drop_up</i>
+      <i class="material-icons selectable" (click)="sortByNames('desc', 'last')">arrow_drop_down</i>
+    </th>
+    <th>Статус</th>
+    <th>Опции</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr class="table-search">
+    <td>
+      <form (ngSubmit)="showSearchedID('user')" class="container">
+        <div class="center">
+          <input type="text" name="searchedID" placeholder=""
+                 [(ngModel)]="searchedID">
+        </div>
+      </form>
+    </td>
+    <td>
+      <form (ngSubmit)="showSearchedUser('user')" class="container">
+        <div class="center">
+          <input type="text" name="searchedUser" placeholder=""
+                 [(ngModel)]="searchedUser">
+        </div>
+      </form>
+    </td>
+    <td>
+      <form (ngSubmit)="showSearchedEmail()" class="container">
+        <div class="center">
+          <input type="text" name="searchedEmail" placeholder=""
+                 [(ngModel)]="searchedEmail">
+        </div>
+      </form>
+    </td>
+    <td>
+      <form (ngSubmit)="showSearchedFirstName()" class="container">
+        <div class="center">
+          <input type="text" name="searchedFirstName" placeholder=""
+                 [(ngModel)]="searchedFirstName">
+        </div>
+      </form>
+    </td>
+    <td>
+      <form (ngSubmit)="showSearchedLastName()" class="container">
+        <div class="center">
+          <input type="text" name="searchedLastName" placeholder=""
+                 [(ngModel)]="searchedLastName">
+        </div>
+      </form>
+    </td>
+    <td>
+      <a class="btn red user-operate white-text" (click)="showSearchedStatus('blocked')"><b>Блокиран</b></a>
+      <a class="btn green user-operate white-text" (click)="showSearchedStatus('active')"><b>Активен</b></a>
+    </td>
+    <td>
+      <a class="btn white user-operate grey-text" (click)="resetSearch('user')"><b>Изчисти филтрите</b></a>
+    </td>
+  </tr>
+  <tr *ngFor="let user of usersShow">
+    <td>{{user.id}}</td>
+    <td>{{user.username}}</td>
+    <td>{{user.email}}</td>
+    <td>{{user.firstName}}</td>
+    <td>{{user.lastName}}</td>
+    <td>
+        <span *ngIf="!user.blocked">
+              <a class="btn orange user-operate" (click)="changeBlockedStatus(user.id)">Блокирай</a>
+          </span>
+      <span *ngIf="user.blocked">
+              <a class="btn green user-operate" (click)="changeBlockedStatus(user.id)">Отблокирай</a>
+          </span>
+    </td>
+    <td>
+      <a class="btn red user-operate" (click)="showUserModal(user.id)">Изтрий</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<div id="usersModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" (click)="closeModal('usersModal')">&times;</span>
+    <p>Сигурни ли сте, че искате да изтриете потребителя? Всички пътешествия на този потребител ще бъдат автоматично
+      изтрити.</p>
+    <button class="btn red" (click)="deleteUser('usersModal')">Изтрий</button>
+    <button class="btn grey" (click)="closeModal('usersModal')">Отмени</button>
+  </div>
+</div>

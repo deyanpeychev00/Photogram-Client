@@ -11,13 +11,14 @@ import {ActivatedRoute, NavigationEnd, Params, Router} from '@angular/router';
 })
 export class JourneysDiscoverComponent implements OnInit {
   journeysArr = [];
-  searchedJourney: string;
+  searchedAuthor: string;
   isListening = true;
   journeysCount = 0;
   upcommingResults = true;
   limitCount = 5;
   dateFrom;
   dateTo;
+  flag: string;
 
   constructor(private auth: AuthService, private journeyService: JourneyService, private toastr: ToastrService, private activatedRoute: ActivatedRoute, private router: Router) {
   }
@@ -29,11 +30,8 @@ export class JourneysDiscoverComponent implements OnInit {
     this.retreiveJourneys();
   }
   retreiveJourneys(){
-    // console.log("Journeys Count: " + this.journeysCount);
-    this.journeyService.getAllJourneys(this.journeysCount, this.limitCount).subscribe((res:any) => {
-      console.log("OUTPUT: ");
-      console.log(res);
-
+    this.journeyService.getAllJourneys(this.journeysCount).subscribe((res:any) => {
+      this.flag = "all";
       if(res.data.length < this.limitCount){
         this.upcommingResults = false;
       }
@@ -49,12 +47,16 @@ export class JourneysDiscoverComponent implements OnInit {
 
   }
 
-  getJourneysByAuthorName(SA = this.searchedJourney){
-    this.journeysArr = [];
-    this.journeysCount = 0;
-    this.upcommingResults = true;
+  getJourneysByAuthorName(SA = this.searchedAuthor, retrieved = false){
+    this.flag="user";
+    this.searchedAuthor = SA;
+    if(!retrieved){
+      this.journeysArr = [];
+      this.journeysCount = 0;
+      this.upcommingResults = true;
+    }
 
-    this.journeyService.getJourneysByAuthorName(SA, this.journeysCount, this.limitCount).subscribe((res: any) => {
+    this.journeyService.getUserJourneys(SA, this.journeysCount).subscribe((res: any) => {
       if(res.data.length < this.limitCount){
         this.upcommingResults = false;
       }
@@ -69,13 +71,15 @@ export class JourneysDiscoverComponent implements OnInit {
     });
   }
 
-  searchJourneysInDateFrame(ev){
+  searchJourneysInDateFrame(ev, retrieved = false){
+    this.flag = "date";
     [this.dateFrom, this.dateTo] = [ev[0],ev[1]];
-    this.journeysArr = [];
-    this.journeysCount = 0;
-    this.upcommingResults = true;
-
-    this.journeyService.getJourneysInDateFrame(this.dateFrom, this.dateTo).subscribe((res: any) => {
+    if(!retrieved){
+      this.journeysArr = [];
+      this.journeysCount = 0;
+      this.upcommingResults = true;
+    }
+    this.journeyService.getJourneysInDateFrame(this.dateFrom, this.dateTo, this.journeysCount).subscribe((res: any) => {
         if(res.data.length < this.limitCount){
           this.upcommingResults = false;
         }
@@ -87,13 +91,23 @@ export class JourneysDiscoverComponent implements OnInit {
     },
       err => {
         this.isListening = false;
+        this.upcommingResults = false;
+        console.log(err);
         this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
       });
   }
 
   loadMoreJourneys() {
-    if(this.isListening){
-      this.retreiveJourneys();
+    if(this.isListening && this.upcommingResults){
+      if(this.flag === "all"){
+        this.retreiveJourneys();
+      }
+      if(this.flag === "user"){
+        this.getJourneysByAuthorName(this.searchedAuthor, true);
+      }
+      if(this.flag === "date"){
+        this.searchJourneysInDateFrame([this.dateFrom, this.dateTo], true);
+      }
     }
   }
 

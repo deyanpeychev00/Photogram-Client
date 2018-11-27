@@ -1,60 +1,55 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {MapService} from '../../services/map/map.service';
 import {JourneyService} from '../../services/journey/journey.service';
-import { DomSanitizer } from '@angular/platform-browser';
+import {DomSanitizer} from '@angular/platform-browser';
+import {DataService} from '../../services/data/data.service';
 
 declare const $: any;
 
 @Component({
-  selector: 'app-edit-picture-form',
-  templateUrl: './edit-picture-form.component.html',
-  styleUrls: ['./edit-picture-form.component.css']
+  selector: 'app-edit-picture-form', templateUrl: './edit-picture-form.component.html', styleUrls: ['./edit-picture-form.component.css']
 })
 export class EditPictureFormComponent implements OnInit {
   @Input() photo;
   @Output() delete: EventEmitter<any> = new EventEmitter();
 
-  photoModal:any;
-  imgContainer:any;
-  modalImg:any;
+  photoModal: any;
   imgLocation: string;
-  angle = 0;
+  oldComment: string;
 
-  constructor(private mapService: MapService, private journeyService: JourneyService, private sanitizer: DomSanitizer) { }
-
-  ngOnInit() {
-    this.journeyService.getFeaturedImageFile(this.photo.fileName).subscribe(file => {
-      const imageUrl = URL.createObjectURL(file);
-      let image: any = document.getElementById('img-clicker-'+this.photo.localID);
-      this.sanitizer.bypassSecurityTrustUrl(imageUrl);
-      image.src = imageUrl;
-      this.photo.fileName = imageUrl;
-      this.mapService.showRetrievedImage(this.photo);
-    });
+  constructor(private mapService: MapService, private journeyService: JourneyService, private sanitizer: DomSanitizer, private dataService: DataService) {
   }
 
-  deleteImage(){
-    this.closeImageModal();
+  ngOnInit() {
+    this.oldComment = this.photo.comment || "";
+    this.photo.forUpdate = false;
+    this.imgLocation = this.dataService.getAPI().uploads + this.photo.fileName;
+    this.photo.location = this.photo.location.filter(l => l !== 0);
+    this.photo.resolution = this.photo.resolution.filter(r => r !== 0);
+    this.mapService.showRetrievedImage(this.photo, this.imgLocation);
+  }
+
+  deleteImage() {
+    this.closeModal('modal');
     this.delete.emit(this.photo);
   }
 
-  showImageModal(){
-    this.closeImageModal();
+  showModal(modalID) {
+    this.photoModal = document.getElementById(modalID);
+    this.photoModal.style.display = 'block';
 
-    this.photoModal = document.getElementById(this.photo.localID);
-    this.imgContainer = document.getElementById('img-clicker-'+this.photo.localID);
-    this.modalImg = document.getElementById("img-"+this.photo.localID);
-
-    this.photoModal.style.display = "block";
-    let imageModal: any = this.modalImg;
-    let imageContainer: any = this.imgContainer;
-    imageModal.src = imageContainer.src;
   }
 
-  closeImageModal() {
-    this.photoModal = document.getElementsByClassName("photoModal");
-    for(let modal of this.photoModal){
-      modal.style.display = "none";
+  closeModal(modalClass) {
+    this.photoModal = document.getElementsByClassName(modalClass);
+
+    for (let modal of this.photoModal) {
+      modal.style.display = 'none';
     }
+  }
+
+  updateImageComment(newComment){
+    this.photo.comment = newComment;
+    this.photo.forUpdate = this.oldComment !== newComment;
   }
 }

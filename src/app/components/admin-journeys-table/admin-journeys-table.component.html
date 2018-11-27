@@ -1,0 +1,87 @@
+<div class="divider"></div>
+  <!--Preloader-->
+  <div class="center">
+    <div *ngIf="journeysLoaded === false" class="preloader-wrapper small active">
+      <div class="spinner-layer spinner-blue-only">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <table *ngIf="journeysLoaded === true" class="stripped responsive-table centered">
+    <thead>
+    <tr>
+      <th>ID
+        <i class="material-icons selectable" (click)="sortByID('asc', 'journeys')">arrow_drop_up</i>
+        <i class="material-icons selectable" (click)="sortByID('desc', 'journeys')">arrow_drop_down</i>
+      </th>
+      <th>Име
+        <i class="material-icons selectable" (click)="sortByName('asc', 'journeys')">arrow_drop_up</i>
+        <i class="material-icons selectable" (click)="sortByName('desc', 'journeys')">arrow_drop_down</i>
+      </th>
+      <th>Автор
+        <i class="material-icons selectable" (click)="sortByName('asc', 'journeys-author')">arrow_drop_up</i>
+        <i class="material-icons selectable" (click)="sortByName('desc', 'journeys-author')">arrow_drop_down</i>
+      </th>
+      <th>Опции</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="table-search">
+      <td>
+        <form (ngSubmit)="showSearchedID('journey')" class="container">
+          <div class="center">
+            <input type="text" name="searchedJourneyID" placeholder="Въведете ID"
+                   [(ngModel)]="searchedJourneyID">
+          </div>
+        </form>
+      </td>
+      <td>
+        <form (ngSubmit)="showSearchedJourneyName()" class="container">
+          <div class="center">
+            <input type="text" name="searchedJourneyName" placeholder="Въведете име"
+                   [(ngModel)]="searchedJourneyName">
+          </div>
+        </form>
+      </td>
+      <td>
+        <form (ngSubmit)="showSearchedUser('journey')" class="container">
+          <div class="center">
+            <input type="text" name="searchedJourneyAuthor" placeholder="Въведете потребителско име"
+                   [(ngModel)]="searchedJourneyAuthor">
+          </div>
+        </form>
+      </td>
+      <td>
+        <a class="btn white user-operate grey-text" (click)="resetSearch('journey')"><b>Изчисти филтрите</b></a>
+      </td>
+    </tr>
+    <tr *ngFor="let journey of journeysShow">
+      <td>{{journey.id}}</td>
+      <td>{{journey.name}}</td>
+      <td>{{journey.author}}</td>
+      <td>
+        <a class="btn red user-operate" (click)="showJourneyModal(journey.id)">Изтрий</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Journeys Modal -->
+  <div id="journeyModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close" (click)="closeModal('journeyModal')">&times;</span>
+      <p>Сигурни ли сте, че искате да изтриете пътешествието?</p>
+      <button class="btn red" (click)="deleteJourney('journeyModal')">Изтрий</button>
+      <button class="btn grey" (click)="closeModal('journeyModal')">Отмени</button>
+    </div>
+  </div>

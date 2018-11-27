@@ -1,7 +1,7 @@
 <div id="leftSidenav" class="leftSidenav">
   <a href="javascript:void(0)" class="closebtn" (click)="closeNav()"><i class="small material-icons">close</i></a>
-  <a *ngIf="logged" routerLink="/profile-demo" class="homebtn" (click)="closeNav()"><i class="small material-icons">person</i></a>
-  <a *ngIf="!logged" class="menu-item" routerLink="/login" (click)="closeNav()"><i class="tiny material-icons menu-icon">person</i> Логин</a>
+  <a *ngIf="logged" routerLink="/profile" class="homebtn" (click)="closeNav()"><i class="small material-icons">person</i></a>
+  <a *ngIf="!logged" class="menu-item" routerLink="/login" (click)="closeNav()"><i class="tiny material-icons menu-icon">person</i> Вход</a>
   <a *ngIf="!logged" class="menu-item" routerLink="/register" (click)="closeNav()"><i class="tiny material-icons menu-icon">person_add</i> Регистрация</a>
 
   <a *ngIf="admin"  class="menu-item admin-item" routerLink="/admin" (click)="closeNav()"><i class="tiny material-icons menu-icon">verified_user</i> Администрация</a>

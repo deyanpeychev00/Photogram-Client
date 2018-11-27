@@ -7,7 +7,7 @@
     <div class="row">
       <div class="divider"></div>
       <div class="divider"></div>
-      <div class="filter">
+      <div >
         <div class="divider"></div>
         <div class="grey-text text-darken-3 filter-caption filter-heading">
           <div class="container">
@@ -34,7 +34,7 @@
         <div class="divider"></div>
       </div>
 
-      <div class="filter">
+      <div>
         <div class="divider"></div>
         <div class="grey-text text-darken-3 filter-caption filter-heading">
           <div class="container">
@@ -43,8 +43,8 @@
         </div>
         <div class="container center">
           <div class="divider"></div>
-          <input type="date" class="datepicker" [(ngModel)]="dateFrom">
-          <input type="date" class="datepicker" [(ngModel)]="dateTo">
+          От: <input type="date" class="datepicker" [(ngModel)]="dateFrom">
+          До: <input type="date" class="datepicker" [(ngModel)]="dateTo">
           <button [class.disabled]="dateFrom === '' || dateTo === '' || dateFrom === dateTo"
                   class="btn green lighten-1 waves-effect waves-light" (click)="DateSearchSend()" name="action">Търсене
           </button>

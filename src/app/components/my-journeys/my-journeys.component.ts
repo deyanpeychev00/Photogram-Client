@@ -29,7 +29,7 @@ export class MyJourneysComponent implements OnInit {
   }
 
   retreiveJourneys(){
-    this.journeyService.getMyJourneys(localStorage.getItem('username'), this.journeysCount, this.limitCount).subscribe((res: any) => {
+    this.journeyService.getUserJourneys(localStorage.getItem('username'), this.journeysCount).subscribe((res: any) => {
       if(res.data.length < this.limitCount){
         this.upcommingResults = false;
       }
@@ -46,7 +46,7 @@ export class MyJourneysComponent implements OnInit {
   }
 
   loadMoreJourneys() {
-    if(this.isListening){
+    if(this.isListening && !this.upcommingResults){
       this.retreiveJourneys();
     }
   }

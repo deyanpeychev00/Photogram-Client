@@ -86,9 +86,9 @@ export class MapService {
     this.initMap(id);
   }
 
-  showRetrievedImage(pht) {
+  showRetrievedImage(pht, imagePath) {
     let obj = {
-      timestamp: pht.dateTaken, coordinates: pht.location, thumbnail: pht.encoded, position: pht.position, imgsrc: pht.fileName
+      timestamp: pht.dateTaken, coordinates: pht.location, thumbnail: pht.encoded, position: pht.position, imgsrc: imagePath || pht.fileName
     };
     if (obj.coordinates.length > 0) {
       obj.coordinates = obj.coordinates.map(x => Number(x));
@@ -168,7 +168,7 @@ export class MapService {
   reDrawPointsOnPrevPicDelete(photo) {
     this.emptyMarkers();
     if (photo.prepareDelete === false || photo.prepareDelete === undefined) {
-      this.showRetrievedImage(photo);
+      this.showRetrievedImage(photo, undefined);
     }
   }
 }

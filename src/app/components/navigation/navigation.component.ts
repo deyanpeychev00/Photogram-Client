@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, NavigationEnd, NavigationStart} from '@angular/router';
 import {ToastrService} from '../../services/toastr/toastr.service';
 import {AuthService} from '../../services/auth/auth.service';
 import {DataService} from '../../services/data/data.service';
@@ -10,25 +10,36 @@ import {DataService} from '../../services/data/data.service';
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit {
-  logged = this.auth.isLogged();
+  logged = localStorage.getItem('logged');
   username = localStorage.getItem('username');
   admin = this.auth.isAdmin();
-  blocked = this.auth.isBlocked();
+  blocked: any;
 
   constructor(private router: Router, private toastr: ToastrService, private auth: AuthService, private dataService: DataService) {
-    router.events.subscribe((val) => {
-      this.logged = this.auth.isLogged();
-      this.username = localStorage.getItem('username');
-      this.admin = this.auth.isAdmin();
-      this.blocked = this.auth.isBlocked();
-    });
+    if(this.logged){
+      router.events.subscribe((val) => {
+        this.logged = localStorage.getItem('logged');
+        this.username = localStorage.getItem('username');
+        this.admin = this.auth.isAdmin();
+        if(this.logged){
+          this.auth.isBlocked().subscribe((res: any) => {
+            this.blocked = res.data.blocked;
+          });
+        }
+
+      });
+    }
   }
 
   ngOnInit() {
-    this.logged = this.auth.isLogged();
+    this.logged = localStorage.getItem('logged');
     this.username = localStorage.getItem('username');
     this.admin = this.auth.isAdmin();
-    this.blocked = this.auth.isBlocked();
+    if(this.logged){
+      this.auth.isBlocked().subscribe((res: any) => {
+        this.blocked =  res.data.blocked;
+      });
+    }
   }
 
   openNav() {

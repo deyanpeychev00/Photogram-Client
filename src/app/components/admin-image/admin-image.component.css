@@ -35,8 +35,13 @@
 }
 
 .materialboxedimage{
-  max-height: 200px;
-  min-height: 200px;
+  max-height: 350px;
+  min-height: 350px;
+}
+
+
+.modal-image{
+  max-height: 800px !important;
 }
 
 @media all and (max-width: 782px){
@@ -252,5 +257,18 @@
   color: white;
   background-color: white;
 }
+
+.photoComment{
+  margin-top: -30px;
+}
+
+@media screen and (max-width: 783px){
+  .photoComment{
+    margin-top: -10px;
+    margin-left: -13px;
+    font-size: 14px;
+  }
+}
+
 
 

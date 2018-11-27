@@ -1,14 +1,17 @@
 <div class="card">
   <div class="card-image hoverable">
-    <img id="img-clicker-{{photo._id}}" class="materialboxed materialboxedimage" (click)="showImageModal()"/>
+    <img id="img-clicker-{{photo.id}}" src="{{imagePath}}" class="materialboxed materialboxedimage" (click)="showImageModal()"/>
   </div>
 </div>
 
 <!-- The Modal -->
-<div id="{{photo._id}}" class="modal photoModal">
+<div id="{{photo.id}}" class="modal photoModal">
   <span class="close" (click)="closeImageModal()">&times;</span>
   <div class="col s12 m12 l8">
-    <img class="modal-content modal-image" id="img-{{photo._id}}">
+    <img class="modal-content modal-image" id="img-{{photo.id}}" src="{{imagePath}}">
+    <div class="modal-content">
+      <p class="white-text left photoComment">{{photo.comment}}</p>
+    </div>
   </div>
   <div class="col s12 m12 l4">
     <div class="white-text image-details modal-content left col s12 m12 l12">
@@ -54,7 +57,7 @@
           </div>
           <div class="col s9 l11 m11 align-left pad-left">
             <div *ngIf="photo.location.length > 0" class="marg" title="Място на заснемане">
-              <b>X:</b> {{photo.location[0]}} ; <b>Y:</b> {{photo.location[1]}}
+              <b>X:</b> {{photo.location[0]}}     <b>Y:</b> {{photo.location[1]}}
             </div>
             <div *ngIf="photo.location.length === 0" class="marg" title="Място на заснемане">
               Неизвестно
@@ -131,9 +134,9 @@
 
       <div class="row">
         <div class="col s12 l12 m12 left left-align">
-          <button class="btn grey btn-pad" (click)="rotateImageLeft('img-'+photo._id)"><i class="material-icons">rotate_left</i></button>
-          <button class="btn grey btn-pad" (click)="rotateImageRight('img-'+photo._id)"><i class="material-icons">rotate_right</i></button>
-          <a id="download-{{photo._id}}" class="btn blue btn-pad" download="asd.jpg" href="{{photo.fileName}}">Изтегли снимката</a>
+<!--          <button class="btn grey btn-pad" (click)="rotateImageLeft('img-'+photo.id)"><i class="material-icons">rotate_left</i></button>
+          <button class="btn grey btn-pad" (click)="rotateImageRight('img-'+photo.id)"><i class="material-icons">rotate_right</i></button>-->
+          <a id="download-{{photo.id}}" class="btn blue btn-pad"  href="{{imagePath}}" target="_blank" download="asd.jpg">Изтегли снимката</a>
         </div>
       </div>
     </div>

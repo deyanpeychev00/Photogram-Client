@@ -36,9 +36,9 @@ export class FiltersContainerComponent implements OnInit {
       return;
     }
     if(new Date(this.dateFrom) < new Date(this.dateTo)){
-      this.searchInDateFrame.emit([new Date(this.dateFrom).toISOString(), new Date(this.dateTo).toISOString()]);
+      this.searchInDateFrame.emit([new Date(this.dateFrom).toISOString().substr(0, 10), new Date(this.dateTo).toISOString().substr(0, 10)]);
     }else{
-      this.searchInDateFrame.emit([new Date(this.dateTo).toISOString(), new Date(this.dateFrom).toISOString()]);
+      this.searchInDateFrame.emit([new Date(this.dateTo).toISOString().substr(0, 10), new Date(this.dateFrom).toISOString().substr(0, 10)]);
     }
 
   }

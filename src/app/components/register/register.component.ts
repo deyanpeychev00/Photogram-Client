@@ -34,16 +34,9 @@ export class RegisterComponent implements OnInit {
       this.toastr.errorToast(message.error);
       return;
     }
-    if(this.avatarUploaded){
-      this.uploadAvatar();
-    }else{
-      this.processRegister('');
-    }
-  }
 
-  processRegister(avatarFilename){
-    this.toastr.toast('Регистриране..');
-    this.auth.register(this.username, this.email, this.password, this.firstName, this.lastName, avatarFilename);
+    this.auth.register(this.avatarUploaded, this.avatar, this.username, this.email, this.password, this.firstName, this.lastName);
+    return true;
   }
 
   onPictureSelectorChange(e){
@@ -80,20 +73,4 @@ export class RegisterComponent implements OnInit {
     image.src = imageUrl;
     image.style.display = 'inline-block';
   }
-
-  uploadAvatar(){
-    this.auth.processRegistration(this.avatar, this.username, this.email, this.password, this.firstName, this.lastName);
-
-     /* this.serverService.uploadAvatarToServer(this.username, this.avatar).subscribe((result: any) => {
-        if(result.success){
-         this.processRegister(result.data.filename);
-        }else if (!result.success){
-          console.log(result);
-          this.toastr.errorToast(result.msg ? result.msg : 'Възникна грешка, моля опитайте отново');
-          return false;
-        }
-      });*/
-    return true;
-  }
-
 }

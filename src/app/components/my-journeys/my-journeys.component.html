@@ -4,10 +4,10 @@
   <!--Journeys and preloader container-->
   <div class="container">
     <div class="row center container">
-      <!--Journeys-->
-      <div class="journeysWrapper" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="0" (scrolled)="loadMoreJourneys()">
-        <app-my-journey-preview *ngFor="let journey of journeysArr" [journey]="journey" [journeyCount]="journeysCount" class="center row container"></app-my-journey-preview>
-      </div>
+        <!--Journeys-->
+        <div infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="0" (scrolled)="loadMoreJourneys()">
+          <app-my-journey-preview *ngFor="let journey of journeysArr" [journey]="journey" [journeyCount]="journeysCount" class="journeysWrapper center row container"></app-my-journey-preview>
+        </div>
     </div>
 
     <!--Preloader-->

@@ -88,8 +88,16 @@ export class AuthService {
   }
 
   isBlocked() {
-    return localStorage.getItem('status') === 'true';
+    return this.blockProtector();
   }
+
+
+  blockProtector() {
+    return this.http.get(`${this.phpURL}/api/users/single.php`, {
+      headers: new HttpHeaders().set('Authentication', `Bearer ${localStorage.getItem('authtoken')}`)
+    });
+  }
+
 
   pathProtector() {
     if (this.isLogged()) {
@@ -117,10 +125,6 @@ export class AuthService {
     }
 
     return true;
-  }
-
-  blockProtector() {
-    return localStorage.getItem('status');
   }
 
   validatePostPicture(file) {
@@ -162,40 +166,29 @@ export class AuthService {
       };
     }
 
+    for(let image of images){
+      if (image.comment && image.comment.length > 60){
+        return {
+          isValid: false, msg: 'Коментарът към снимката не може да бъде повече от 60 символа.'
+        };
+      }
+    }
+
     return {
       isValid: true, msg: ''
     };
   }
 
-  // Requests to server
-  register(username, email, password, firstName, lastName, avatarFilename) {
-    const body = {username, password, firstName, lastName, email, journeys: [], roles: [], blocked: false, avatar: avatarFilename};
-    const save = {username, email, firstName, lastName, roles: [], blocked: false, UID: '', avatar: avatarFilename};
-
-    this.http.get(`${this.serverURL}/api`).subscribe(responseData => {
-      let response: any = responseData;
-      this.http.post(`${response.host}/user/${response.key}/`, body, {
-        headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(`${response.key}:${response.secret}`))
-          .set('Content-Type', 'application/json')
-      }).subscribe((registerData: any) => {
-        this.dataService.setUserLocalData(registerData);
-        console.log(registerData);
-        this.toastr.successToast('Добре дошли в Photogram!');
-        this.router.navigate(['/journeys/discover']);
-        save.UID = registerData._id;
-        save.avatar = body.avatar;
-      });
-    });
-  }
-
-  processRegistration(avatar, username, email, password, firstName, lastName){
-    const body = {username, password, firstName, lastName, email, journeys: [], roles: [], blocked: false/*, avatar: avatar*/};
+  register(hasAvatar, avatar, username, email, password, firstName, lastName){
+    const body = {username, password, firstName, lastName, email, journeys: [], roles: [], blocked: false};
 
     let formData = new FormData();
-    formData.append('user_avatar', avatar);
+    if(hasAvatar){
+      formData.append('user_avatar', avatar);
+    }
     formData.append('register_data', JSON.stringify(body));
 
-    this.http.post(`${this.phpURL}/register.php`, formData, {}).subscribe((res: any) => {
+    this.http.post(`${this.phpURL}/api/register.php`, formData, {}).subscribe((res: any) => {
       if(res === null){
         this.toastr.errorToast('Възникна грешка, моля опитайте по-късно.');
         return;
@@ -207,6 +200,8 @@ export class AuthService {
       }else{
         this.toastr.errorToast(res.msg);
       }
+    }, err => {
+      this.toastr.errorToast('Възникна грешка, моля опитайте по-късно.');
     });
 
   }
@@ -214,10 +209,9 @@ export class AuthService {
   login(username, password) {
     const body = {username, password};
 
-    this.http.post(`${this.phpURL}/login.php`, body, {
+    this.http.post(`${this.phpURL}/api/login.php`, body, {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     }).subscribe((res: any) => {
-      console.log(res);
       if(res === null){
         this.toastr.errorToast('Възникна грешка, моля опитайте по-късно.');
         return;

@@ -5,6 +5,7 @@ import {AuthService} from '../../services/auth/auth.service';
 import {ToastrService} from '../../services/toastr/toastr.service';
 import {ServerService} from '../../services/server/server.service';
 import {DomSanitizer} from '@angular/platform-browser';
+import {DataService} from '../../services/data/data.service';
 
 
 @Component({
@@ -15,46 +16,56 @@ export class ProfileComponent implements OnInit {
   email: string;
   role: string;
   name: string;
-  journeysCount: number;
   journeysArr = [];
   userDetailsLoaded = false;
-  userHasAvatar = false;
   userObj: any;
   newEmail = '';
+  userAvatar = '';
+  isListening = true;
+  journeysCount = 0;
+  upcommingResults = true;
+  limitCount = 5;
 
-
-  constructor(private adminService: AdminService, private journeyService: JourneyService, private auth: AuthService, private toastr: ToastrService, private serverService: ServerService, private sanitizer: DomSanitizer) {
+  constructor(private dataService: DataService, private adminService: AdminService, private journeyService: JourneyService, private auth: AuthService, private toastr: ToastrService, private serverService: ServerService, private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
-    this.adminService.getSingleUser(localStorage.getItem('userId')).subscribe((userData: any) => {
-      let details = this.userObj = userData.data[0];
+    this.adminService.getUserByUsername(localStorage.getItem('username')).subscribe((res: any) => {
+      console.log(res);
+      this.userObj = res.data;
+      this.userDetailsLoaded = true;
+      this.name = this.userObj.firstName + ' ' + this.userObj.lastName;
+      this.username = res.data.username;
+      this.email = res.data.email;
+      this.role = res.data.roles.length > 0 ? 'Админ' : 'Потребител';
+      this.userAvatar = this.dataService.getAPI().avatars + res.data.avatar;
+      this.retreiveUserJourneys();
 
-      this.username = '@' + details.username;
-      this.email = details.email;
-      this.role = details.roles.length !== 0 ? 'Админ' : 'Потребител';
-      this.name = details.firstName + ' ' + details.lastName;
-      this.journeyService.getUserJourneys(localStorage.getItem('username')).subscribe((journeysData: any) => {
-        this.journeysCount = journeysData.data.length;
-        if (details.avatar && details.avatar !== '') {
-          this.displayAvatarPlaceholder(details.avatar);
-        } else {
-          this.userHasAvatar = false;
-        }
-        this.userDetailsLoaded = true;
-        this.journeysArr = journeysData.data;
-      });
     });
   }
 
-  displayAvatarPlaceholder(avname) {
-    this.userHasAvatar = true;
-    this.serverService.getUserAvatar(avname).subscribe(file => {
-      const imageUrl = URL.createObjectURL(file);
-      let image: any = document.getElementById('userAvatarProfile');
-      image.src = imageUrl;
-      image.style.display = 'inline-block';
+
+  retreiveUserJourneys(){
+    this.journeyService.getUserJourneys(this.username, this.journeysCount).subscribe((res: any) => {
+      if(res.data.length < this.limitCount){
+        this.upcommingResults = false;
+      }
+
+      for (let el of res.data){
+        this.journeysArr.push(el);
+        this.journeysCount++;
+      }
+    }, err => {
+      this.isListening = false;
+      this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
     });
+
+  }
+
+  loadMoreJourneys() {
+    if (this.isListening && !this.upcommingResults) {
+      this.retreiveUserJourneys();
+    }
   }
 
   closeModal(id) {
@@ -93,7 +104,7 @@ export class ProfileComponent implements OnInit {
 
   updateUserEmail() {
     this.userObj.email = this.newEmail;
-    this.adminService.updateUser(this.userObj.UID, this.userObj).subscribe((successObj) => {
+    this.adminService.updateUser(this.userObj).subscribe((successObj) => {
       console.log(successObj);
       this.email = this.newEmail;
       this.toastr.successToast('Промените бяха записани успешно');

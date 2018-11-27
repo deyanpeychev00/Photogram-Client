@@ -153,6 +153,11 @@
   transition-duration: 0.5s;
 }
 
+
+.modal-image{
+  max-height: 800px !important;
+}
+
 .tooltip {
   position: relative;
   display: inline-block;
@@ -194,4 +199,26 @@
     width: 150%;
     margin-bottom: 20px;
   }
+}
+.camera-alt{
+  text-align: left;
+}
+.delimeter{
+  height: 2px;
+  color: white;
+  background-color: white;
+}
+
+.imageCommentWrapper{
+  margin-top: -10px;
+  padding-bottom: 10px;
+}
+
+input[type=text]:not(.browser-default):focus:not([readonly]), textarea:focus:not([readonly]) {
+  border-color: dodgerblue;
+  box-shadow: 0 1px 0 0 dodgerblue;
+}
+
+input[type=text]:not(.browser-default):focus:not([readonly])+label, textarea:not(.browser-default):focus:not([readonly])+label{
+  color: dodgerblue;
 }

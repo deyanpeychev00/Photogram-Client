@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {Router, NavigationEnd, NavigationStart} from '@angular/router';
 import {AuthService} from '../../services/auth/auth.service';
 import {MapService} from '../../services/map/map.service';
 import {EXIF} from 'exif-js';
@@ -20,17 +21,22 @@ export class CreateJourneyComponent implements OnInit {
   journeyName: string;
   journeyDescription: string;
 
+
   constructor(private auth: AuthService, private map: MapService, private toastrService: ToastrService,
-              private journeyService: JourneyService, private dataService: DataService, private serverService: ServerService) {
+              private journeyService: JourneyService, private dataService: DataService, private serverService: ServerService, private router: Router) {
   }
 
   ngOnInit() {
     if (!this.auth.pathAuthProtector()) {
       return;
     }
-    if (!this.auth.blockProtector()) {
-      return;
-    }
+    this.auth.isBlocked().subscribe((res: any) => {
+      if(res.data.blocked){
+        this.toastrService.errorToast('Профилът ви е блокиран. Не можете да създавате пътешествия.');
+        this.router.navigate(['journeys/discover']);
+        return;
+      }
+    });
     this.map.setEmptyMap('uploadJourneyMap');
     this.selectedPictures = this.donePhotos = this.selectedFiles = [];
   }
@@ -91,9 +97,22 @@ export class CreateJourneyComponent implements OnInit {
     if (!validateJourney.isValid) {
       this.toastrService.errorToast(validateJourney.msg);
     } else {
+      this.toastrService.toast('Създаване на пътешествието..');
+
       this.journeyService.createJourney(this.journeyName, this.journeyDescription, this.selectedFiles).subscribe((res: any) =>{
-        console.log(res);
-      }, err => {});
+        if(res == null){
+          this.toastrService.errorToast('Възникна грешка, моля опитайте по-късно.');
+          return;
+        }
+        if(res.success){
+          this.toastrService.successToast(res.msg);
+          this.clearForm();
+          return;
+        }else{
+          this.toastrService.errorToast(res.msg);
+          return;
+        }
+      }, err => {this.toastrService.errorToast('Възникна грешка, моля опитайте по-късно.');});
     }
 
     // this.clearForm();

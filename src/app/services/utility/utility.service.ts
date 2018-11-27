@@ -8,7 +8,7 @@ export class UtilityService {
   getServerUrl() {
     return {
       local: `http://localhost:8080`,
-      remote: `http://photogram.sliven.org`
+      remote: `https://photogram.sliven.org`
     };
   }
 }

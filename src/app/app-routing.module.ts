@@ -12,8 +12,8 @@ const routes: Routes = [
   {path: 'journeys/show/:id', component: ExportComponentsObj.JourneyDetails},
   {path: 'journeys/edit/:id', component: ExportComponentsObj.EditJourney},
   {path: 'admin', component: ExportComponentsObj.AdminPanel},
-  {path: 'profile', redirectTo: 'page-not-found'},
-  {path: 'profile-demo', component: ExportComponentsObj.Profile},
+  {path: 'profile', component: ExportComponentsObj.Profile},
+  {path: 'users/:username', component: ExportComponentsObj.UserPage},
   {path: 'page-not-found', component: ExportComponentsObj.Page404 },
   { path: '**', redirectTo: 'page-not-found'}
 ];

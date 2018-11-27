@@ -1,7 +1,7 @@
 <div class="col s12 m12 l4">
   <div class="card hoverable" [class.redCard]="!photo.hasExif" [class.greenCard]="photo.hasExif" [class.orangeCard]="photo.location.length === 0 && photo.hasExif" >
-    <div class="card-image" *ngIf="photo.localID">
-      <img src="{{photo.encoded}}" id="localIMG-{{photo.localID}}" class="previewImage activator materialboxed materialboxedimage upImg">
+    <div class="card-image" *ngIf="photo.localID || photo.id">
+      <img src="{{photo.encoded}}" id="localIMG-{{photo.localID}}" class="previewImage activator materialboxed materialboxedimage upImg ">
     </div>
     <div class="card-reveal">
       <span class="card-title grey-text text-darken-4 row"><i class="material-icons right">close</i></span>
@@ -22,6 +22,9 @@
         Тази снимка няма да бъде добавена към пътешествието, поради липса на EXIF данни.
       </div>
     </div>
+  </div>
+  <div class="imageCommentWrapper">
+    <input id="imageComment" type="text" name="imageComment" maxlength="60" placeholder="Коментар" (input)="updateImageComment($event.target.value)">
   </div>
 </div>
 

@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import {MapService} from '../../services/map/map.service';
 import {JourneyService} from '../../services/journey/journey.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import {DataService} from '../../services/data/data.service';
 
 declare const $:any;
 @Component({
@@ -12,41 +13,24 @@ declare const $:any;
 export class JourneyImageComponent implements OnInit {
   @Input() photo;
   photoModal:any;
-  imgContainer:any;
   modalImg:any;
-  imgLocation: string;
   angle = 0;
-  downloadName: string;
-  constructor(private mapService: MapService, private journeyService: JourneyService, private sanitizer: DomSanitizer) { }
+  imagePath: string;
+  constructor(private mapService: MapService, private journeyService: JourneyService, private sanitizer: DomSanitizer, private dataService: DataService) { }
 
   ngOnInit() {
-    this.journeyService.getFeaturedImageFile(this.photo.fileName).subscribe(file => {
-      const imageUrl = URL.createObjectURL(file);
-      this.sanitizer.bypassSecurityTrustStyle(imageUrl);
-      let image: any = document.getElementById('img-clicker-' + this.photo._id);
-      image.src = imageUrl;
-      this.downloadName = this.photo.fileName;
-      this.photo.fileName = imageUrl;
-      this.mapService.showRetrievedImage(this.photo);
-    });
+    this.imagePath = this.dataService.getAPI().uploads + this.photo.fileName;
+    this.photo.location = this.photo.location.filter(l => l !== 0);
+    this.photo.resolution = this.photo.resolution.filter(r => r !== 0);
+    this.mapService.showRetrievedImage(this.photo, this.imagePath);
   }
 
 // Get the image and insert it inside the modal - use its "alt" text as a caption
 
   showImageModal(){
-    this.closeImageModal();
-
-    this.photoModal = document.getElementById(this.photo._id);
-    this.imgContainer = document.getElementById('img-clicker-'+this.photo._id);
-    this.modalImg = document.getElementById("img-"+this.photo._id);
-    let downloadBtn:any = document.getElementById('download-'+this.photo._id);
-
+    this.photoModal = document.getElementById(this.photo.id);
+    this.modalImg = document.getElementById("img-"+this.photo.id);
     this.photoModal.style.display = "block";
-    let imageModal: any = this.modalImg;
-    let imageContainer: any = this.imgContainer;
-    imageModal.src = imageContainer.src;
-    downloadBtn.download = this.downloadName;
-    downloadBtn.href = imageContainer.src;
   }
 
 

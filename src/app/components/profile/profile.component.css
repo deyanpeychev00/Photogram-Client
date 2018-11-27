@@ -48,7 +48,7 @@ span.user-role{
   margin-top: 0;
 }
 .username{
-  font-size: 18px;
+  font-size: 14px;
   margin-top: 0px;
   color: #888888;
 }
@@ -67,6 +67,11 @@ span.user-role{
   color: black;
   font-weight: 600;
   margin-top: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 @keyframes fadein {

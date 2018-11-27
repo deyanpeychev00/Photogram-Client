@@ -5,38 +5,33 @@ import {DataService} from '../data/data.service';
 import {UtilityService} from '../utility/utility.service';
 @Injectable()
 export class AdminService {
-  serverURL = this.util.getServerUrl();
+  phpURL = this.util.getServerUrl().remote;
   constructor(private data: DataService,private http: HttpClient, private util: UtilityService) { }
 
   getAllUsers(): Observable<any>{
-    return this.http.get(`${this.serverURL}/users/all`);
-  }
-
-  getSingleUser(id): Observable<any>{
-    return this.http.get(`${this.serverURL}/users/single/${id}`);
+    return this.http.get(`${this.phpURL}/api/users/all.php`, {
+      headers: new HttpHeaders().set('Authentication', `Bearer ${localStorage.getItem('authtoken')}`)
+    });
   }
 
   getUserByUsername(username): Observable<any>{
-    return this.http.get(`${this.serverURL}/users/username/${username}`);
+    return this.http.get(`${this.phpURL}/api/users/get-user.php/${username}`, {
+      headers: new HttpHeaders()
+        .set('Authentication', `Bearer ${localStorage.getItem('authtoken')}`)
+    });
   }
 
-  updateUser(id, user): Observable<any>{
-    return this.http.put(`${this.serverURL}/users/update`, user);
+  updateUser(user): Observable<any>{
+    return this.http.put(`${this.phpURL}/api/users/update.php`, user, {
+      headers: new HttpHeaders()
+        .set('Authentication', `Bearer ${localStorage.getItem('authtoken')}`)
+    });
   }
 
-  deleteUserFromServer(id): Observable<any>{
-    return this.http.delete(`${this.serverURL}/users/delete/server/${id}`);
+  deleteUser(id): Observable<any>{
+    return this.http.delete(`${this.phpURL}/api/users/delete.php/${id}`, {
+      headers: new HttpHeaders()
+        .set('Authentication', `Bearer ${localStorage.getItem('authtoken')}`)
+    });
   }
-  deleteUserFromDataBase(id): Observable<any>{
-    return this.http.delete(`${this.serverURL}/users/delete/database/${id}`);
-  }
-
-  removeUserDirectory(uname): Observable<any>{
-    return this.http.get(`${this.serverURL}/users/delete/storage/${uname}`);
-  }
-
-  removeUserAvatar(aname): Observable<any>{
-    return this.http.get(`${this.serverURL}/users/delete/avatar/${aname}`);
-  }
-
 }

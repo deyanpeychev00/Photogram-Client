@@ -37,29 +37,14 @@ export class JourneyDetailsComponent implements OnInit {
       this.journeyID = params['id'];
     });
     this.journeyService.getCurrentJourney(this.journeyID).subscribe((res: any) => {
-      console.log("OUTPUT:");
-      console.log(res);
       if(res.success){
-        this.journey = res.data[0];
+        this.journey = res.journey;
         this.journeyRating = this.calculateJourneyRating(this.journey);
-        this.journeyLoaded = true;
-        this.ratingsLoaded = true;
-        this.journeyService.getJourneyPhotos(this.journeyID).subscribe((picsData:any) => {
-          if(picsData.success){
-            this.journeyPictures = picsData.data;
-            this.journeyPicturesResponse = true;
-          }else{
-            this.toastr.errorToast((picsData.msg ? picsData.msg : 'Възникна грешка при зареждането на снимките. Моля опитайте отново.'));
-          }
-        }, picsErr => {
-          this.toastr.errorToast((picsErr.error.description ? picsErr.error.description : 'Възникна грешка при зареждането на снимките, моля презаредете страницата.'));
-          this.journeyPicturesResponse = true;
-        });
+        this.journeyPictures = res.images;
+        this.journeyLoaded = this.ratingsLoaded = this.journeyPicturesResponse = true;
       }else{
         this.toastr.errorToast((res.msg ? res.msg : 'Възникна грешка, моля опитайте отново.'));
-
       }
-
     }, err => {
       this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново.'));
     });
@@ -90,9 +75,16 @@ export class JourneyDetailsComponent implements OnInit {
     this.closeModal();
     this.journey.ratings[Number(this.userRating) - 1]++;
     this.journey.totalReviewers++;
-    this.journeyService.updateJourney(this.journey).subscribe(data => {
-      this.ratingsLoaded = true;
-      this.calculateJourneyRating(this.journey);
+    this.journeyService.updateJourney(this.journey).subscribe((res:any) => {
+      if(res === null || !res.success){
+        this.toastr.errorToast(res.msg);
+        return;
+      }
+      if(res.success){
+        this.ratingsLoaded = true;
+        this.calculateJourneyRating(this.journey);
+        this.toastr.toast('Вашият глас беше отчетен');
+      }
     }, err => this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново.')));
   }
 

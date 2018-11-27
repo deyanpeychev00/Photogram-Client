@@ -1,14 +1,17 @@
 <div class="card">
   <div class="card-image hoverable">
-    <img id="img-clicker-{{photo._id}}" class="materialboxed materialboxedimage" (click)="showImageModal()"/>
+    <img src="{{this.imagePath}}" class="materialboxed materialboxedimage" (click)="showImageModal()"/>
   </div>
 </div>
 
 <!-- The Modal -->
-<div id="{{photo._id}}" class="modal photoModal">
+<div id="{{photo.id}}" class="modal photoModal">
   <span class="close" (click)="closeImageModal()">&times;</span>
   <div class="col s12 m12 l8">
-    <img class="modal-content modal-image" id="img-{{photo._id}}">
+    <img class="modal-content modal-image" src="{{this.imagePath}}">
+    <div class="modal-content">
+      <p class="white-text left photoComment">{{photo.comment}}</p>
+    </div>
   </div>
   <div class="col s12 m12 l4">
     <div class="white-text image-details modal-content left col s12 m12 l12">

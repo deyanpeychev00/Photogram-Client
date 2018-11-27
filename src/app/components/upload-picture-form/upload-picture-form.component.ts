@@ -1,4 +1,4 @@
-import { Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 import {MapService} from '../../services/map/map.service';
 
 declare const $: any;
@@ -10,10 +10,17 @@ declare const $: any;
 })
 export class UploadPictureFormComponent implements OnInit {
   @Input() photo;
-  constructor(private mapService: MapService) { }
+
+  constructor(private mapService: MapService) {
+  }
 
   ngOnInit() {
-      this.mapService.showRetrievedImage(this.photo);
+    this.photo.comment = '';
+    this.mapService.showRetrievedImage(this.photo, undefined);
+  }
+
+  updateImageComment(newComment) {
+    this.photo.comment = newComment;
   }
 
 }

@@ -6,11 +6,10 @@ export class DataService {
   constructor() {
   }
 
-  getKinveyCredentials() {
+  getAPI() {
     return {
-      host: 'https://baas.kinvey.com',
-      appKey: 'kid_SkTVZzDAz',
-      appSecret: '6e521a85c8ee4f30a0d5281f9cd8c54e',
+      avatars: 'https://photogram.sliven.org/uploads/avatars/',
+      uploads: 'https://photogram.sliven.org/uploads/users/'
     };
   }
 
@@ -20,11 +19,12 @@ export class DataService {
     } else {
       localStorage.setItem('role', 'init');
     }
-    localStorage.setItem('authtoken', data.auth_token || "");
+
+    localStorage.setItem('authtoken', data.auth_token || '');
     localStorage.setItem('username', data.username);
     localStorage.setItem('userId', data.id);
     localStorage.setItem('logged', 'true');
-    localStorage.setItem('status', 'false');
+    localStorage.setItem('status', data.blocked);
   }
 
   removeLocalData() {

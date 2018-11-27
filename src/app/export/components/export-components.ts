@@ -19,6 +19,10 @@ import {FiltersContainerComponent} from '../../components/filters-container/filt
 import {ProfileComponent} from '../../components/profile/profile.component';
 import { EditPictureFormComponent } from '../../components/edit-picture-form/edit-picture-form.component';
 import { AdminImageComponent } from '../../components/admin-image/admin-image.component';
+import { AdminImagesTableComponent} from '../../components/admin-images-table/admin-images-table.component';
+import {AdminJourneysTableComponent} from '../../components/admin-journeys-table/admin-journeys-table.component';
+import {AdminUsersTableComponent} from '../../components/admin-users-table/admin-users-table.component';
+import {UserPageComponent} from '../../components/user-page/user-page.component';
 
 export const ComponentsExport = [
   AppComponent,
@@ -41,5 +45,9 @@ export const ComponentsExport = [
   FiltersContainerComponent,
   ProfileComponent,
   EditPictureFormComponent,
-  AdminImageComponent
+  AdminImageComponent,
+  AdminUsersTableComponent,
+  AdminJourneysTableComponent,
+  AdminImagesTableComponent,
+  UserPageComponent
 ];

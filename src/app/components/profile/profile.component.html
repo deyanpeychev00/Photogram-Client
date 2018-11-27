@@ -26,20 +26,21 @@
           <span class="user-role">{{this.role}}</span>
         </div>
         <div class="row user-data-wrapper center">
-          <img *ngIf="!userHasAvatar" src="../../../assets/images/default-avatar.png" class="responsive-image circle avatar-placeholder"/>
-          <div>
-            <img id="userAvatarProfile" class="avatar responsive-image circle avatar-placeholder"/>
-          </div>
+          <img src="{{userAvatar}}" class="responsive-image circle avatar-placeholder"/>
           <div>
           <p class="user-name">{{this.name}}</p>
-          <p class="username">{{this.username}}</p>
+          <p class="username">({{this.username}})</p>
         </div>
         <div class="row user-data-wrapper center">
           <div class="col s12 m12 l6 ">
             <p class="additional-heading">Пътешествия</p>
-            <p class="additional-text">{{this.journeysCount}}</p>
+            <p class="additional-text">{{this.userObj.totalJourneys}}</p>
             <span>
-                <a class="waves-effect waves-light btn-small green" routerLink="/journeys/create"><i class="material-icons left">add</i>Качи</a>
+                <a class="waves-effect waves-light btn-small green" routerLink="/journeys/create" [ngClass]="{'disabled': userObj.blocked}"><i class="material-icons left">add</i>Качи</a>
+              <br/>
+               <span *ngIf="userObj.blocked" class="red-text" style="font-size: 12px;" title="Вашият профил е блокиран. Не можете да създавате пътешествия">
+                    Вашият профил е блокиран. Не можете да създавате пътешествия.
+                  </span>
             </span>
           </div>
           <div class="col s12 m12 l6"><p class="additional-heading">Имейл</p>
@@ -77,9 +78,11 @@
 
 <div class="container">
   <div class="container">
-    <div class="journeysWrapper center">
-      <app-journey-preview *ngFor="let journey of journeysArr" [journey]="journey" [journeyCount]="journeysCount"
-                           class="center row container"></app-journey-preview>
+    <div class="journeysWrapper center container">
+      <!--Journeys-->
+      <div class="journeysWrapper" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="0" (scrolled)="loadMoreJourneys()">
+        <app-my-journey-preview *ngFor="let journey of journeysArr" [journey]="journey" [journeyCount]="journeysCount" class="center row container"></app-my-journey-preview>
+      </div>
     </div>
   </div>
 </div>
