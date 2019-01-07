@@ -108,7 +108,7 @@
           </span>
     </td>
     <td>
-      <a class="btn red user-operate" (click)="showUserModal(user.id)">Изтрий</a>
+      <a *ngIf="myID != user.id" class="btn red user-operate" (click)="showUserModal(user.id)">Изтрий</a>
     </td>
   </tr>
   </tbody>

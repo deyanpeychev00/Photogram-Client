@@ -23,6 +23,7 @@ import { AdminImagesTableComponent} from '../../components/admin-images-table/ad
 import {AdminJourneysTableComponent} from '../../components/admin-journeys-table/admin-journeys-table.component';
 import {AdminUsersTableComponent} from '../../components/admin-users-table/admin-users-table.component';
 import {UserPageComponent} from '../../components/user-page/user-page.component';
+import {MostVisitedComponent} from '../../components/most-visited/most-visited.component';
 
 export const ExportComponentsObj = {
   App: AppComponent,
@@ -49,5 +50,6 @@ export const ExportComponentsObj = {
   AdminImagesTable: AdminImagesTableComponent,
   AdminUsersTable: AdminUsersTableComponent,
   AdminJourneysTable: AdminJourneysTableComponent,
-  UserPage: UserPageComponent
+  UserPage: UserPageComponent,
+  MostVisitedPlaces: MostVisitedComponent
 };

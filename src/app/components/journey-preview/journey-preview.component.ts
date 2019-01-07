@@ -1,6 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {JourneyService} from '../../services/journey/journey.service';
-import {ServerService} from '../../services/server/server.service';
 import {AdminService} from '../../services/admin/admin.service';
 import {DataService} from '../../services/data/data.service';
 
@@ -13,7 +12,7 @@ export class JourneyPreviewComponent implements OnInit {
   authorAvatarSrc;
   featuredImageSrc;
 
-  constructor(private journeyService: JourneyService, private serverService: ServerService, private adminService: AdminService, private dataService: DataService) {
+  constructor(private journeyService: JourneyService, private adminService: AdminService, private dataService: DataService) {
   }
 
   ngOnInit(){

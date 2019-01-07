@@ -31,7 +31,7 @@ h2{
 }
 
 .journeyMainDetails, #journeyImagesMap{
-  height: 400px;
+  height: 450px;
   z-index: 0;
 }
 
@@ -43,7 +43,7 @@ h2{
     margin-top: 0;
   }
   #journeyImagesMap{
-    height: 300px;
+    height: 400px;
   }
 }
 

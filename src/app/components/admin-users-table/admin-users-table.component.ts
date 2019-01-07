@@ -8,6 +8,7 @@ import {ToastrService} from '../../services/toastr/toastr.service';
   styleUrls: ['./admin-users-table.component.css', './../admin-panel/admin-panel.component.css']
 })
 export class AdminUsersTableComponent implements OnInit {
+  myID = localStorage.getItem('userId');
   users = [];
   usersShow = [];
   usersLoaded = false;

@@ -1,7 +1,8 @@
 <div class="col s12 m12 l4">
   <div class="card hoverable" [class.redCard]="!photo.hasExif" [class.greenCard]="photo.hasExif" [class.orangeCard]="photo.location.length === 0 && photo.hasExif" >
     <div class="card-image" *ngIf="photo.localID || photo.id">
-      <img src="{{photo.encoded}}" id="localIMG-{{photo.localID}}" class="previewImage activator materialboxed materialboxedimage upImg ">
+      <img *ngIf="photo.hasExif" alt="Photogram Image taken with {{photo.make}} {{photo.model}}" src="{{photo.encoded}}" id="localIMG-{{photo.localID}}" class="previewImage activator materialboxed materialboxedimage upImg ">
+      <img *ngIf="!photo.hasExif" alt="Photogram Image" src="{{photo.encoded}}" id="localIMG-{{photo.localID}}" class="previewImage activator materialboxed materialboxedimage upImg ">
     </div>
     <div class="card-reveal">
       <span class="card-title grey-text text-darken-4 row"><i class="material-icons right">close</i></span>

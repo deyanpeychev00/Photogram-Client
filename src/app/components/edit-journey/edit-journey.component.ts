@@ -6,7 +6,6 @@ import {ToastrService} from '../../services/toastr/toastr.service';
 import {JourneyService} from '../../services/journey/journey.service';
 import {DataService} from '../../services/data/data.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {ServerService} from '../../services/server/server.service';
 
 declare const $: any;
 
@@ -24,7 +23,8 @@ export class EditJourneyComponent implements OnInit {
   journeyPictures = [];
   imageMarkers: Array<any> = [];
 
-  constructor(private auth: AuthService, private map: MapService, private toastrService: ToastrService, private journeyService: JourneyService, private dataService: DataService, private activatedRoute: ActivatedRoute, private toastr: ToastrService, private router: Router, private serverService: ServerService) {
+  constructor(private auth: AuthService, private map: MapService, private toastrService: ToastrService, private journeyService: JourneyService,
+              private dataService: DataService, private activatedRoute: ActivatedRoute, private toastr: ToastrService, private router: Router) {
   }
 
   ngOnInit() {
@@ -46,12 +46,14 @@ export class EditJourneyComponent implements OnInit {
       this.journeyName = this.journey.name;
       this.journeyDescription = this.journey.description;
       for (let pic of res.images) {
+        pic.displayType = 'edit';
         this.journeyPictures.push(pic);
         this.imageMarkers.push({
           ID: pic.id,
           coordinates: pic.location || pic.coordinates,
           timestamp: pic.dateTaken,
-          thumbnail: this.dataService.getAPI().uploads + pic.fileName
+          thumbnail: this.dataService.getAPI().uploads + pic.fileName,
+          displayType: 'edit'
         });
       }
     }, err => {
@@ -71,14 +73,20 @@ export class EditJourneyComponent implements OnInit {
 
     // push the existing journey image in markers and images arrays
     for (let pic of oldPics) {
+      pic.displayType = 'edit';
       this.journeyPictures.push(pic);
       this.imageMarkers.push({
         ID: pic.id,
         coordinates: pic.location || pic.coordinates,
         timestamp: pic.dateTaken,
-        thumbnail: this.dataService.getAPI().uploads + pic.fileName || ''
+        thumbnail: this.dataService.getAPI().uploads + pic.fileName || '',
+        displayType: 'edit',
+        make: pic.make,
+        model: pic.model,
+        id: pic.id
       });
     }
+
     // handle file input changes
     for (let i = 0; i < files.length; i++) {
       const file: any = files[i];
@@ -109,13 +117,14 @@ export class EditJourneyComponent implements OnInit {
             hasExif: Object.keys(file.exifdata).length > 0,
             showSize: true,
             encoded: fileReader.result,
-            fileName: ''
+            fileName: '',
+            displayType: 'create'
           };
           // push file object to array of selected files for upload and to markers array for live update of the journey
           this.selectedFiles.push({file, fileID: imgObj.id, details: imgObj});
           this.selectedPictures.push(imgObj);
           this.imageMarkers.push({
-            ID: imgObj.id, coordinates: imgObj.location, timestamp: imgObj.dateTaken, thumbnail: imgObj.encoded
+            ID: imgObj.id, coordinates: imgObj.location, timestamp: imgObj.dateTaken, thumbnail: imgObj.encoded, displayType: imgObj.displayType
           });
         });
 

@@ -1,7 +1,8 @@
 <div class="col s12 m12 l4">
   <div class="card hoverable">
     <div class="card-image">
-      <img src="{{imgLocation}}" class="materialboxed materialboxedimage upImg" (click)="showModal(photo.id)">
+      <img *ngIf="photo.comment !== ''"src="{{imgLocation}}" class="materialboxed materialboxedimage upImg" alt="{{photo.comment}}" (click)="showModal(photo.id)">
+      <img *ngIf="photo.comment == ''" src="{{imgLocation}}" class="materialboxed materialboxedimage upImg" alt="Photogram Image taken with {{photo.make}} {{photo.model}}" (click)="showModal(photo.id)">
     </div>
   </div>
   <div class="imageCommentWrapper">
@@ -135,7 +136,7 @@
 
       <div class="row">
         <div class="col s12 l12 m12 left left-align">
-          <div ><button class="btn red" (click)="showModal('deleteModal')">Изтрий снимката</button>
+          <div ><button class="btn red" (click)="showModal(this.deleteModalID)">Изтрий снимката</button>
             <br/>
             <div class="row">
               <div class="col s12 l12 m12">
@@ -159,7 +160,7 @@
 </div>
 
 <!-- Delete Image Modal -->
-<div id="deleteModal" class="modal deleteModal white-text">
+<div id="deleteModal-{{photo.id}}" class="modal deleteModal white-text">
   <!-- Modal content -->
   <div class="delete-modal-content">
     <p>Сигурни ли сте, че искате да изтриете снимката?</p>

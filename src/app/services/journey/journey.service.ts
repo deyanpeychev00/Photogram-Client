@@ -1,14 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {DataService} from '../data/data.service';
 import {ToastrService} from '../toastr/toastr.service';
 import {Router} from '@angular/router';
 import {UtilityService} from '../utility/utility.service';
 
 @Injectable()
 export class JourneyService {
-  serverURL = this.util.getServerUrl().local;
   phpURL = this.util.getServerUrl().remote;
 
   constructor(private http: HttpClient, private toastr: ToastrService, private router: Router, private util: UtilityService) {
@@ -61,6 +59,7 @@ export class JourneyService {
     return [];
   }
 
+  // RETRIEVE
   getCurrentJourney(journeyID): Observable<any> {
     return this.http.get(`${this.phpURL}/api/journeys/single.php/${journeyID}`, {
       headers: new HttpHeaders().set('Authentication', `Bearer ${localStorage.getItem('authtoken')}`)
@@ -71,13 +70,11 @@ export class JourneyService {
       headers: new HttpHeaders().set('Authentication', `Bearer ${localStorage.getItem('authtoken')}`)
     });
   }
-
   getAllJourneys(skipJourneyCount): Observable<any> {
     return this.http.get(`${this.phpURL}/api/journeys/all.php/${skipJourneyCount}`, {
       headers: new HttpHeaders().set('Authentication', `Bearer ${localStorage.getItem('authtoken')}`)
     });
   }
-
   getUserJourneys(username, skipJourneyCount): Observable<any>{
     return this.http.get(`${this.phpURL}/api/journeys/all.php/${skipJourneyCount}?username=${username}`, {
       headers: new HttpHeaders().set('Authentication', `Bearer ${localStorage.getItem('authtoken')}`)
@@ -90,6 +87,11 @@ export class JourneyService {
   }
   getAllImages(skipImagesCount): Observable<any>{
     return this.http.get(`${this.phpURL}/api/images/all.php/${skipImagesCount}`,{
+      headers: new HttpHeaders().set('Authentication', `Bearer ${localStorage.getItem('authtoken')}`)
+    });
+  }
+  getAllImagesLocations(): Observable<any>{
+    return this.http.get(`${this.phpURL}/api/images/locations.php`,{
       headers: new HttpHeaders().set('Authentication', `Bearer ${localStorage.getItem('authtoken')}`)
     });
   }

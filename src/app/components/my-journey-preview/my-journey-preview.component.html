@@ -4,7 +4,7 @@
       <div class="card-image">
         <div>
           <a routerLink="/journeys/edit/{{journey.id}}">
-            <img src="{{featuredImageSrc}}"/>
+            <img alt="{{journey.name}}, uploaded by {{journey.author}}" src="{{featuredImageSrc}}"/>
           </a>
         </div>
         <a class="btn-floating btn-large halfway-fab waves-effect waves-light big red" routerLink="/journeys/edit/{{journey.id}}"><i class="material-icons">mode_edit</i></a>

@@ -1,14 +1,16 @@
 <div class="card">
   <div class="card-image hoverable">
-    <img id="img-clicker-{{photo.id}}" src="{{imagePath}}" class="materialboxed materialboxedimage" (click)="showImageModal()"/>
+    <img *ngIf="photo.comment !== ''" alt="{{photo.comment}}" id="img-clicker-{{photo.id}}" src="{{imagePath}}" class="materialboxed materialboxedimage" (click)="showImageModal()"/>
+    <img *ngIf="photo.comment == ''" alt="Photogram Image taken with {{photo.make}} {{photo.model}}" id="img-clicker-{{photo.id}}" src="{{imagePath}}" class="materialboxed materialboxedimage" (click)="showImageModal()"/>
   </div>
 </div>
 
 <!-- The Modal -->
 <div id="{{photo.id}}" class="modal photoModal">
-  <span class="close" (click)="closeImageModal()">&times;</span>
+  <span class="close" (click)="closeImageModal('photoModal')">&times;</span>
   <div class="col s12 m12 l8">
-    <img class="modal-content modal-image" id="img-{{photo.id}}" src="{{imagePath}}">
+    <img *ngIf="photo.comment !== ''" alt="{{photo.comment}}" class="modal-content modal-image" id="img-{{photo.id}}" src="{{imagePath}}">
+    <img *ngIf="photo.comment == ''" alt="Photogram Image taken with {{photo.make}} {{photo.model}}" class="modal-content modal-image" id="img-{{photo.id}}" src="{{imagePath}}">
     <div class="modal-content">
       <p class="white-text left photoComment">{{photo.comment}}</p>
     </div>
@@ -134,8 +136,6 @@
 
       <div class="row">
         <div class="col s12 l12 m12 left left-align">
-<!--          <button class="btn grey btn-pad" (click)="rotateImageLeft('img-'+photo.id)"><i class="material-icons">rotate_left</i></button>
-          <button class="btn grey btn-pad" (click)="rotateImageRight('img-'+photo.id)"><i class="material-icons">rotate_right</i></button>-->
           <a id="download-{{photo.id}}" class="btn blue btn-pad"  href="{{imagePath}}" target="_blank" download="asd.jpg">Изтегли снимката</a>
         </div>
       </div>

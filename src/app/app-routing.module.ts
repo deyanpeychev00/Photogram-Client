@@ -15,6 +15,7 @@ const routes: Routes = [
   {path: 'profile', component: ExportComponentsObj.Profile},
   {path: 'users/:username', component: ExportComponentsObj.UserPage},
   {path: 'page-not-found', component: ExportComponentsObj.Page404 },
+  {path: 'most-visited-places', component: ExportComponentsObj.MostVisitedPlaces},
   { path: '**', redirectTo: 'page-not-found'}
 ];
 

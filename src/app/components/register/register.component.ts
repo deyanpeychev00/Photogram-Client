@@ -4,7 +4,6 @@ import {AuthService} from '../../services/auth/auth.service';
 import {Router} from '@angular/router';
 import {DataService} from '../../services/data/data.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import {ServerService} from '../../services/server/server.service';
 declare const $: any;
 
 @Component({
@@ -22,7 +21,7 @@ export class RegisterComponent implements OnInit {
   avatarUploaded = false;
   avatar: any;
 
-  constructor(private toastr: ToastrService, private auth: AuthService, private router: Router, private dataService: DataService, private sanitizer: DomSanitizer, private serverService: ServerService) { }
+  constructor(private toastr: ToastrService, private auth: AuthService, private router: Router, private dataService: DataService, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.auth.pathProtector();

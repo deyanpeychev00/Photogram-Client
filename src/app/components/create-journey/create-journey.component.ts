@@ -6,7 +6,6 @@ import {EXIF} from 'exif-js';
 import {ToastrService} from '../../services/toastr/toastr.service';
 import {JourneyService} from '../../services/journey/journey.service';
 import {DataService} from '../../services/data/data.service';
-import {ServerService} from '../../services/server/server.service';
 
 declare const $: any;
 
@@ -23,7 +22,7 @@ export class CreateJourneyComponent implements OnInit {
 
 
   constructor(private auth: AuthService, private map: MapService, private toastrService: ToastrService,
-              private journeyService: JourneyService, private dataService: DataService, private serverService: ServerService, private router: Router) {
+              private journeyService: JourneyService, private dataService: DataService, private router: Router) {
   }
 
   ngOnInit() {
@@ -37,8 +36,8 @@ export class CreateJourneyComponent implements OnInit {
         return;
       }
     });
-    this.map.setEmptyMap('uploadJourneyMap');
     this.selectedPictures = this.donePhotos = this.selectedFiles = [];
+    this.map.setEmptyMap('uploadJourneyMap');
   }
 
   onPictureSelectorChange(ev) {
@@ -75,7 +74,8 @@ export class CreateJourneyComponent implements OnInit {
             hasExif: Object.keys(file.exifdata).length > 0,
             showSize: true,
             encoded: fileReader.result,
-            fileName: ''
+            fileName: '',
+            displayType: 'create'
           };
           if (Object.keys(file.exifdata).length > 0) {
             this.selectedFiles.push({file, fileID: imgObj.localID, details: imgObj});

@@ -3,8 +3,6 @@ import {AdminService} from '../../services/admin/admin.service';
 import {JourneyService} from '../../services/journey/journey.service';
 import {AuthService} from '../../services/auth/auth.service';
 import {ToastrService} from '../../services/toastr/toastr.service';
-import {ServerService} from '../../services/server/server.service';
-import {DomSanitizer} from '@angular/platform-browser';
 import {DataService} from '../../services/data/data.service';
 
 
@@ -26,7 +24,7 @@ export class ProfileComponent implements OnInit {
   upcommingResults = true;
   limitCount = 5;
 
-  constructor(private dataService: DataService, private adminService: AdminService, private journeyService: JourneyService, private auth: AuthService, private toastr: ToastrService, private serverService: ServerService, private sanitizer: DomSanitizer) {
+  constructor(private dataService: DataService, private adminService: AdminService, private journeyService: JourneyService, private auth: AuthService, private toastr: ToastrService) {
   }
 
   ngOnInit() {

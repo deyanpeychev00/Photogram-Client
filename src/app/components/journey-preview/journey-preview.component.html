@@ -4,7 +4,7 @@
       <div class="card-image">
         <div>
           <a routerLink="/journeys/show/{{journey.id}}">
-            <img src="{{featuredImageSrc}}"/>
+            <img alt="{{journey.name}}, uploaded by {{journey.author}}" src="{{featuredImageSrc}}"/>
           </a>
         </div>
         <a class="btn-floating btn-large halfway-fab waves-effect waves-light big show-more-button" routerLink="/journeys/show/{{journey.id}}"><i class="material-icons">menu</i></a>

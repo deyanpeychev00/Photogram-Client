@@ -1,0 +1,33 @@
+#densityMap {
+  z-index: 0;
+}
+
+#selector_menu{
+  position: absolute;
+  top: 150px;
+  left: 10px;
+  z-index: 1;
+  background: white;
+  padding: 10px;
+  font-weight: 600 !important;
+  border-radius: 2px;
+  border: 2px solid rgba(0,0,0,0.2);
+  background-clip: padding-box;
+}
+
+.btn{
+  margin-bottom: 10px;
+  float: right;
+}
+
+.divider{
+  height: 80px;
+  background: transparent;
+}
+
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:after{
+  background-color: #2196f3 !important;
+  border-color: #2196f3 !important;
+}
+
+

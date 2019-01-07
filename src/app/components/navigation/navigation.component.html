@@ -9,6 +9,7 @@
   <a *ngIf="logged && blocked"  class="red-text warning-text" >Профилът ви е блокиран, не можете да създавате пътешествия</a>
   <a *ngIf="logged"  class="menu-item" routerLink="/journeys/discover" (click)="closeNav()"><i class="tiny material-icons menu-icon">dashboard</i> Всички пътувания</a>
   <a *ngIf="logged"  class="menu-item" routerLink="/journeys/myjourneys" (click)="closeNav()"><i class="tiny material-icons menu-icon">folder_shared</i> Моите пътувания</a>
+  <a *ngIf="logged"  class="menu-item" routerLink="/most-visited-places" (click)="closeNav()"><i class="tiny material-icons menu-icon">map</i> Най-посещавани места</a>
   <a *ngIf="logged"  class="menu-item" (click)="logOut()" (click)="closeNav()"><i class="tiny material-icons menu-icon">exit_to_app</i> Изход</a>
 </div>
 

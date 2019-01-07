@@ -37,6 +37,5 @@ export class AdminPanelComponent implements OnInit {
     evt.currentTarget.className += ' active';
 
     this.tab = tabName;
-    console.log(this.tab);
   }
 }

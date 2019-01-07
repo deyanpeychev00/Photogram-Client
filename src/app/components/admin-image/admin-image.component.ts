@@ -3,6 +3,7 @@ import {JourneyService} from '../../services/journey/journey.service';
 import {MapService} from '../../services/map/map.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {DataService} from '../../services/data/data.service';
+import {UtilityService} from '../../services/utility/utility.service';
 
 declare const $: any;
 
@@ -11,14 +12,12 @@ declare const $: any;
 })
 export class AdminImageComponent implements OnInit {
   @Input() photo;
-  photoModal: any;
-  imgContainer: any;
-  modalImg: any;
   imagePath: string;
 
   @Output() delete: EventEmitter<any> = new EventEmitter();
 
-  constructor(private mapService: MapService, private journeyService: JourneyService, private sanitizer: DomSanitizer, private dataService: DataService) {
+  constructor(private mapService: MapService, private journeyService: JourneyService, private sanitizer: DomSanitizer, private dataService: DataService,
+              private util: UtilityService) {
   }
 
   ngOnInit() {
@@ -30,24 +29,19 @@ export class AdminImageComponent implements OnInit {
 // Get the image and insert it inside the modal - use its "alt" text as a caption
 
   showImageModal() {
-    this.closeImageModal();
-
-    this.photoModal = document.getElementById(this.photo.id);
-    this.photoModal.style.display = 'block';
+    this.util.closeImageModal('photoModal');
+    this.util.showImageModal(this.photo.id);
+    console.log(this.photo);
   }
 
   deleteImage() {
-    this.closeImageModal();
+    this.util.closeImageModal('photoModal');
     this.delete.emit(this.photo.id);
   }
 
 // When the user clicks on <span> (x), close the modal
   closeImageModal() {
-    this.photoModal = document.getElementsByClassName('photoModal');
-    for (let modal of this.photoModal) {
-      modal.style.display = 'none';
-    }
-
+    this.util.closeImageModal('photoModal');
   }
 
 }
