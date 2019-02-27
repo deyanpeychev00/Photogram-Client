@@ -1,142 +1,191 @@
 <div class="card">
   <div class="card-image hoverable">
-    <img *ngIf="photo.comment !== ''" alt="{{photo.comment}}" id="img-clicker-{{photo.id}}" src="{{imagePath}}" class="materialboxed materialboxedimage" (click)="showImageModal()"/>
-    <img *ngIf="photo.comment == ''" alt="Photogram Image taken with {{photo.make}} {{photo.model}}" id="img-clicker-{{photo.id}}" src="{{imagePath}}" class="materialboxed materialboxedimage" (click)="showImageModal()"/>
+    <img *ngIf="photo.comment !== ''" alt="{{photo.comment}}" id="img-clicker-{{photo.id}}" src="{{imagePath}}"
+         class="materialboxed materialboxedimage" (click)="showImageModal()"/>
+    <img *ngIf="photo.comment == ''" alt="Photogram Image taken with {{photo.make}} {{photo.model}}"
+         id="img-clicker-{{photo.id}}" src="{{imagePath}}" class="materialboxed materialboxedimage"
+         (click)="showImageModal()"/>
   </div>
 </div>
 
 <!-- The Modal -->
 <div id="{{photo.id}}" class="modal photoModal">
-  <span class="close" (click)="closeImageModal('photoModal')">&times;</span>
-  <div class="col s12 m12 l8">
-    <img *ngIf="photo.comment !== ''" alt="{{photo.comment}}" class="modal-content modal-image" id="img-{{photo.id}}" src="{{imagePath}}">
-    <img *ngIf="photo.comment == ''" alt="Photogram Image taken with {{photo.make}} {{photo.model}}" class="modal-content modal-image" id="img-{{photo.id}}" src="{{imagePath}}">
-    <div class="modal-content">
-      <p class="white-text left photoComment">{{photo.comment}}</p>
+  <div class="imageInfoContainer">
+    <span class="close" (click)="closeImageModal('photoModal')">&times;</span>
+    <div class="col s12 m12 l8">
+      <img *ngIf="photo.comment !== ''" alt="{{photo.comment}}" class="modal-content modal-image" id="img-{{photo.id}}"
+           src="{{imagePathLarge}}">
+      <img *ngIf="photo.comment == ''" alt="Photogram Image taken with {{photo.make}} {{photo.model}}"
+           class="modal-content modal-image" id="img-{{photo.id}}" src="{{imagePathLarge}}">
+      <div class="modal-content">
+        <p class="white-text left photoComment"><b class="text-enlarge" *ngIf="photo.comment.length > 0">Допълнителна информация: </b> {{photo.comment}}</p>
+      </div>
+    </div>
+    <div class="col s12 m12 l4">
+      <div class="white-text image-details modal-content left col s12 m12 l12">
+        <div class="row">
+          <div class="col s4 l4 m4 camera-alt">
+            <i class="material-icons medium" title="Устройство и модел">camera_alt</i>
+          </div>
+          <div class="col s8 l8 m8 pull-left pad-left">
+            <div class="row align-left">
+              <b class="camera-model" title="Устройство и модел">{{photo.make}}</b>
+            </div>
+            <div class="row align-left" title="Устройство и модел">
+              {{photo.model}}
+            </div>
+          </div>
+        </div>
+
+        <div class="row col s12 m12 l12 delimeter">
+
+        </div>
+
+        <div class="row">
+          <div class="col s12 l12 m12">
+            <div class="col s3 m1 l1">
+              <div class="marg">
+                <i class="material-icons" title="Време на заснемане">access_time</i>
+              </div>
+            </div>
+            <div class="col s9 l11 m11 align-left pad-left">
+              <div class="marg" title="Време на заснемане">
+                {{photo.dateTaken}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12 l12 m12">
+            <div class="col s3 m1 l1">
+              <div class="marg">
+                <i class="material-icons" title="Място на заснемане">location_on</i>
+              </div>
+            </div>
+            <div class="col s9 l11 m11 align-left pad-left">
+              <div *ngIf="photo.location.length > 0" class="marg" title="Място на заснемане">
+                <b>X:</b> {{photo.location[0]}} <b>Y:</b> {{photo.location[1]}}
+              </div>
+              <div *ngIf="photo.location.length === 0" class="marg" title="Място на заснемане">
+                Неизвестно
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12 l12 m12">
+            <div class="col s3 m1 l1">
+              <div class="marg">
+                <i class="material-icons" title="Резолюция">photo_size_select_large</i>
+              </div>
+            </div>
+            <div class="col s9 l11 m11 align-left pad-left">
+              <div *ngIf="photo.resolution.length > 0" class="marg" title="Резолюция">
+                {{photo.resolution[0]}} x {{photo.resolution[1]}}
+              </div>
+              <div *ngIf="photo.resolution.length === 0" class="marg" title="Резолюция">
+                Неизвестна
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12 l12 m12">
+            <div class="col s3 m1 l1">
+              <div class="marg">
+                <i class="material-icons" title="Режим на светкавицата">flash_on</i>
+              </div>
+            </div>
+            <div class="col s9 l11 m11 align-left pad-left">
+              <div class="marg" title="Режим на светкавицата">
+                {{photo.flash}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12 l12 m12">
+            <div class="col s3 m1 l1">
+              <div class="marg" title="ISO">
+                <b>ISO</b>
+              </div>
+            </div>
+            <div class="col s9 l11 m11 align-left pad-left">
+              <div class="marg" title="ISO">
+                {{photo.iso}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12 l12 m12">
+            <div class="col s3 m1 l1">
+              <div class="marg" title="Фокусно разстояние">
+                <img class="adjustIcon" src="https://png.icons8.com/material/40/ffffff/focal-length.png">
+              </div>
+            </div>
+            <div class="col s9 l11 m11 align-left pad-left">
+              <div *ngIf="photo.focalLength" class="marg" title="Фокусно разстояние">
+                {{photo.focalLength}} mm.
+              </div>
+              <div *ngIf="!photo.focalLength" class="marg" title="Фокусно разстояние">
+                Неизвестно
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12 l12 m12 left left-align">
+            <a id="download-{{photo.id}}" class="btn blue btn-pad" href="{{imagePathOriginal}}" target="_blank"
+               download="asd.jpg">Изтегли снимката</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="col s12 m12 l4">
-    <div class="white-text image-details modal-content left col s12 m12 l12">
-      <div class="row">
-        <div class="col s4 l4 m4 camera-alt">
-          <i class="material-icons medium" title="Устройство и модел">camera_alt</i>
-        </div>
-        <div class="col s8 l8 m8 pull-left pad-left">
-          <div class="row align-left">
-            <b class="camera-model" title="Устройство и модел">{{photo.make}}</b>
+  <div class="commentsContainer col s12 m12 l12">
+    <div class="container">
+      <div class="row center delimeter"></div>
+
+      <div class="row addCommentWrapper">
+        <form class="col s12 m12 l12 white-text">
+          <div class="row">
+            <div class="input-field col s12 ">
+              <textarea id="icon_prefix2" class="materialize-textarea commentTextarea" (keyup)="prepareComment($event)"></textarea>
+              <label for="icon_prefix2">Коментирайте снимката</label>
+              <a class="waves-effect waves-light btn-small blue" (click)="submitComment()">Коментирай</a>
+            </div>
           </div>
-          <div class="row align-left" title="Устройство и модел">
-            {{photo.model}}
-          </div>
-        </div>
+        </form>
       </div>
 
-      <div class="row col s12 m12 l12 delimeter">
-
-      </div>
-
-      <div class="row">
-        <div class="col s12 l12 m12">
-          <div class="col s3 m1 l1">
-            <div class="marg">
-              <i class="material-icons" title="Време на заснемане">access_time</i>
+      <div *ngFor="let a of imageComments">
+        <div class="col s12 m12 l12">
+          <div class="white-text">
+            <div class="row commentWrapper">
+              <div class="row col s12 m12 l1 ">
+                  <a routerLink="/users/{{a.user}}">
+                    <img src="{{a.avatarSrc}}" width="60" height="60" alt=""
+                         class="circle responsive-img">
+                  </a>
+              </div>
+              <div class="row col s12 m12 l11 left">
+                <span class="white-text commentAuthor">
+                  <a routerLink="/users/{{a.user}}"><b>{{a.name}} </b>({{a.user}})</a><span class="grey-text"> | Добавен на: {{a.date}}</span>
+                </span>
+                <br>
+                <span class="white-text commentContent">
+                {{a.comment}}
+              </span>
+              </div>
             </div>
           </div>
-          <div class="col s9 l11 m11 align-left pad-left">
-            <div class="marg" title="Време на заснемане">
-              {{photo.dateTaken}}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col s12 l12 m12">
-          <div class="col s3 m1 l1">
-            <div class="marg">
-              <i class="material-icons" title="Място на заснемане">location_on</i>
-            </div>
-          </div>
-          <div class="col s9 l11 m11 align-left pad-left">
-            <div *ngIf="photo.location.length > 0" class="marg" title="Място на заснемане">
-              <b>X:</b> {{photo.location[0]}}     <b>Y:</b> {{photo.location[1]}}
-            </div>
-            <div *ngIf="photo.location.length === 0" class="marg" title="Място на заснемане">
-              Неизвестно
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col s12 l12 m12">
-          <div class="col s3 m1 l1">
-            <div class="marg">
-              <i class="material-icons" title="Резолюция">photo_size_select_large</i>
-            </div>
-          </div>
-          <div class="col s9 l11 m11 align-left pad-left">
-            <div *ngIf="photo.resolution.length > 0" class="marg" title="Резолюция">
-              {{photo.resolution[0]}} x {{photo.resolution[1]}}
-            </div>
-            <div *ngIf="photo.resolution.length === 0" class="marg" title="Резолюция">
-              Неизвестна
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col s12 l12 m12">
-          <div class="col s3 m1 l1">
-            <div class="marg">
-              <i class="material-icons" title="Режим на светкавицата">flash_on</i>
-            </div>
-          </div>
-          <div class="col s9 l11 m11 align-left pad-left">
-            <div class="marg" title="Режим на светкавицата">
-              {{photo.flash}}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col s12 l12 m12">
-          <div class="col s3 m1 l1">
-            <div class="marg" title="ISO">
-              <b>ISO</b>
-            </div>
-          </div>
-          <div class="col s9 l11 m11 align-left pad-left">
-            <div class="marg" title="ISO">
-              {{photo.iso}}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col s12 l12 m12">
-          <div class="col s3 m1 l1">
-            <div class="marg" title="Фокусно разстояние">
-              <img class="adjustIcon" src="https://png.icons8.com/material/40/ffffff/focal-length.png">
-            </div>
-          </div>
-          <div class="col s9 l11 m11 align-left pad-left">
-            <div *ngIf="photo.focalLength" class="marg" title="Фокусно разстояние">
-            {{photo.focalLength}} mm.
-          </div>
-            <div *ngIf="!photo.focalLength" class="marg" title="Фокусно разстояние">
-              Неизвестно
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col s12 l12 m12 left left-align">
-          <a id="download-{{photo.id}}" class="btn blue btn-pad"  href="{{imagePath}}" target="_blank" download="asd.jpg">Изтегли снимката</a>
         </div>
       </div>
     </div>

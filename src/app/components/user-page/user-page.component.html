@@ -32,10 +32,12 @@
             <p class="username">({{this.userObj.username}})</p>
           </div>
           <div class="row user-data-wrapper center">
-            <div class="col s12 m12 l12 ">
+            <div class="col s12 m12 l6">
               <p class="additional-heading">Пътешествия</p>
               <p class="additional-text">{{this.userObj.totalJourneys}}</p>
             </div>
+            <div class="col s12 m12 l6"><p class="additional-heading">Имейл</p>
+              <p class="additional-text">{{this.userObj.email}}</p></div>
           </div>
         </div>
       </div>
@@ -44,16 +46,22 @@
     </div>
   </div>
 
-  <div class="container">
-    <div class="container">
-      <div class="journeysWrapper center">
+  <div class="row">
+    <div class="center container">
+
+      <div class="divider" id="pageTop"></div>
+      <!--Journeys and preloader container-->
+      <div class=" center">
         <!--Journeys-->
-        <div class="journeysWrapper" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="0" (scrolled)="loadMoreJourneys()">
-          <app-journey-preview *ngFor="let journey of journeysArr" [journey]="journey" [journeyCount]="journeysCount" class="center row container"></app-journey-preview>
-        </div>
+        <span class="journeysWrapper center" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="0"
+              (scrolled)="loadMoreJourneys()">
+          <app-journey-preview *ngFor="let journey of journeysArr" [journey]="journey" [journeyCount]="journeysCount"
+                               class="center container"></app-journey-preview>
+        </span>
       </div>
     </div>
   </div>
+</div>
 
 
 

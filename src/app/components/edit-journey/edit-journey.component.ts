@@ -6,6 +6,7 @@ import {ToastrService} from '../../services/toastr/toastr.service';
 import {JourneyService} from '../../services/journey/journey.service';
 import {DataService} from '../../services/data/data.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
+import {UtilityService} from '../../services/utility/utility.service';
 
 declare const $: any;
 
@@ -22,9 +23,14 @@ export class EditJourneyComponent implements OnInit {
   journeyID;
   journeyPictures = [];
   imageMarkers: Array<any> = [];
+  uploadingImagesProcess = false;
+  uploadedImagesCount = 0;
+  invalidImagesCount = 0;
+  imagesForUpload = 0;
 
   constructor(private auth: AuthService, private map: MapService, private toastrService: ToastrService, private journeyService: JourneyService,
-              private dataService: DataService, private activatedRoute: ActivatedRoute, private toastr: ToastrService, private router: Router) {
+              private dataService: DataService, private activatedRoute: ActivatedRoute, private toastr: ToastrService, private router: Router,
+              private util: UtilityService) {
   }
 
   ngOnInit() {
@@ -69,7 +75,10 @@ export class EditJourneyComponent implements OnInit {
     this.selectedPictures = [];
     this.journeyPictures = [];
     this.imageMarkers = [];
+    this.uploadedImagesCount = this.invalidImagesCount = 0;
     const files: Array<File> = ev.target.files;
+    this.imagesForUpload = files.length;
+    this.uploadingImagesProcess = files.length > 0;
 
     // push the existing journey image in markers and images arrays
     for (let pic of oldPics) {
@@ -87,53 +96,37 @@ export class EditJourneyComponent implements OnInit {
       });
     }
 
-    // handle file input changes
-    for (let i = 0; i < files.length; i++) {
-      const file: any = files[i];
-      // validate image size limits
+    for (let i = 1; i <= files.length; i++) {
+      const file: any = files[i-1];
       const validator = this.auth.validatePostPicture(file);
       if (!validator.isValid) {
-        this.toastrService.toast(validator.msg);
-        continue;
-      }
-      // read the file for future encoding
-      const fileReader: FileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = (e) => {
-        // extract file EXIF data
-        EXIF.getData(file, () => {
-          let imgObj = {
-            position: 'TRANSIT',
-            id: btoa(file.name),
-            size: file.size / 1024,
-            make: file.exifdata.Make ? file.exifdata.Make.toUpperCase() : '',
-            model: file.exifdata.Model ? file.exifdata.Model.toUpperCase() : '',
-            dateTaken: file.exifdata.DateTimeOriginal,
-            location: this.journeyService.extractFileLocation(file),
-            resolution: [file.exifdata.PixelXDimension, file.exifdata.PixelYDimension],
-            flash: file.exifdata.Flash,
-            iso: file.exifdata.ISOSpeedRatings,
-            focalLength: file.exifdata.FocalLength,
-            hasExif: Object.keys(file.exifdata).length > 0,
-            showSize: true,
-            encoded: fileReader.result,
-            fileName: '',
-            displayType: 'create'
-          };
-          // push file object to array of selected files for upload and to markers array for live update of the journey
-          this.selectedFiles.push({file, fileID: imgObj.id, details: imgObj});
-          this.selectedPictures.push(imgObj);
-          this.imageMarkers.push({
-            ID: imgObj.id, coordinates: imgObj.location, timestamp: imgObj.dateTaken, thumbnail: imgObj.encoded, displayType: imgObj.displayType
+        this.toastrService.errorToast(validator.msg);
+        this.invalidImagesCount++;
+      }else{
+        const fileReader: FileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+        fileReader.onload = (e) => {
+          this.journeyService.validateImage(file).subscribe((res: any) => {
+            if(res !== null && res.success){
+              let imgObj = this.util.generateUploadedFileObject(file, res, fileReader.result);
+              if (res.data.hasExif) {
+                this.selectedFiles.push({file, fileID: imgObj.localID, details: imgObj});
+              }
+              this.selectedPictures.push(imgObj);
+              this.uploadedImagesCount++;
+              $('.determinate').css('width', `${(this.uploadedImagesCount*100)/(files.length-this.invalidImagesCount)}%`);
+            }else if(!res.success){
+              this.toastrService.errorToast('Възникна грешка, моля опитайте отново.');
+              return;
+            }
           });
-        });
-
-      };
-      fileReader.onerror = (error) => {
-        this.toastrService.toast('Възникна проблем при качването на снимка.');
-      };
+        };
+        fileReader.onerror = (error) => {
+          console.error(error);
+          this.toastrService.toast('Възникна проблем при качването на снимка.');
+        };
+      }
     }
-
     // live connection of the markers
     this.map.connectEditMarkers(this.imageMarkers);
   }

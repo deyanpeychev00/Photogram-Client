@@ -12,26 +12,31 @@ export class JourneyService {
   constructor(private http: HttpClient, private toastr: ToastrService, private router: Router, private util: UtilityService) {
   }
 
-  createJourney(name, description, files){
+  validateImage(file){
     let fd = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      fd.append(`images[]`, JSON.stringify({
-          make: files[i].details.make,
-          model: files[i].details.model,
-          dateTaken: files[i].details.dateTaken,
-          location: files[i].details.location,
-          resolution: files[i].details.resolution,
-          flash: files[i].details.flash,
-          iso: files[i].details.iso.length && files[i].details.iso.length > 0 ? files[i].details.iso[0] : files[i].details.iso,
-          focalLength: files[i].details.focalLength,
-          size: files[i].details.size,
-          comment: files[i].details.comment
-        }));
-      fd.append(`${i}`, files[i].file);
-    }
+    fd.append(`imageToValidate`, file);
+
+    return this.http.post(`${this.phpURL}/api/images/validator.php`, fd, {
+      headers: new HttpHeaders().set('Authentication', `Bearer ${localStorage.getItem('authtoken')}`)
+    });
+  }
+
+
+  createJourney(name, description){
+    let fd = new FormData();
     fd.append('journey-data', JSON.stringify({name, description}));
 
     return this.http.post(`${this.phpURL}/api/journeys/create.php`, fd, {
+      headers: new HttpHeaders().set('Authentication', `Bearer ${localStorage.getItem('authtoken')}`)
+    });
+  }
+
+  uploadImage(file, comment, journeyID){
+    let fd = new FormData();
+    fd.append(`imageToUpload`, file);
+    fd.append(`imageDetails`, JSON.stringify({comment, journeyID}));
+
+    return this.http.post(`${this.phpURL}/api/images/upload.php`, fd, {
       headers: new HttpHeaders().set('Authentication', `Bearer ${localStorage.getItem('authtoken')}`)
     });
   }
@@ -97,25 +102,19 @@ export class JourneyService {
   }
 
   // UPDATE
-  updateJourney(journey, files = [], forUpdate = []): Observable<any> {
+  updateJourney(journey, forUpload = [], forUpdate = []): Observable<any> {
     let fd = new FormData();
 
-    for (let i = 0; i < files.length; i++) {
-      fd.append(`imagesForUpload[]`, JSON.stringify({
-        make: files[i].details.make,
-        model: files[i].details.model,
-        dateTaken: files[i].details.dateTaken,
-        location: files[i].details.location,
-        resolution: files[i].details.resolution,
-        flash: files[i].details.flash,
-        iso: files[i].details.iso.length && files[i].details.iso.length > 0 ? files[i].details.iso[0] : files[i].details.iso,
-        focalLength: files[i].details.focalLength,
-        size: files[i].details.size,
-      }));
-      fd.append(`${i}`, files[i].file);
+    for(let el of forUpload){
+      this.uploadImage(el.file, el.details.comment, journey.id).subscribe((res:any) => {
+        if (res === null || !res.success) {
+          this.toastr.errorToast(res.msg || 'Възникна грешка, моля опитайте по-късно.');
+          return;
+        }
+      });
     }
     for (let i = 0; i < forUpdate.length; i++) {
-      fd.append(`imagesForUpdate[]`, JSON.stringify(forUpdate[i]));
+      fd.append(`imagesForUpdate[]`, JSON.stringify({id: forUpdate[i].id, comment: forUpdate[i].comment}));
     }
 
     fd.append('journey-data', JSON.stringify(journey));
@@ -124,6 +123,7 @@ export class JourneyService {
       headers: new HttpHeaders().set('Authentication', `Bearer ${localStorage.getItem('authtoken')}`)
     });
   }
+
   // DELETE
   deleteImage(id): Observable<any> {
     return this.http.delete(`${this.phpURL}/api/images/delete.php/${id}`,{

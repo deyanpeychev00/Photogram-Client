@@ -1,19 +1,19 @@
-.card-content p{
+.card-content p {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   line-height: 20px;
 }
 
-.card-image img{
+.card-image img {
 }
 
-.card-large{
+.card-large {
   transform: scale(1.2);
   opacity: 1;
 }
 
-.card-content .card-title{
+.card-content .card-title {
   font-weight: 600;
   color: #212121;
   text-overflow: ellipsis;
@@ -21,71 +21,75 @@
   white-space: nowrap;
 }
 
-.show-more-button{
-  background:  linear-gradient(to right, #7e57c2 , #2196f3) !important;
+.show-more-button {
+  background: linear-gradient(to right, #7e57c2, #2196f3) !important;
 }
 
-.chip{
+.chip {
   margin: 10px 0 15px 0;
 }
 
-.divider{
+.divider {
   height: 20px;
   background: transparent;
 }
 
-.materialboxedimage{
+.materialboxedimage {
   max-height: 200px;
   min-height: 200px;
 }
 
-@media all and (max-width: 782px){
-  .container{
+@media all and (max-width: 782px) {
+  .container {
     width: 100%;
   }
-  .row, .col{
+
+  .row, .col {
     margin: 0 !important;
   }
 
 }
 
-@media all and (max-width: 993px){
-  .materialboxedimage{
+@media all and (max-width: 993px) {
+  .materialboxedimage {
     max-height: 100%;
   }
-  .btn-pad{
+
+  .btn-pad {
     margin-top: 10px;
   }
 
-  .camera-alt{
+  .camera-alt {
     text-align: unset !important;
   }
-  .delimeter{
+
+  .delimeter {
     margin: 20px 0 !important;
   }
-  .modal-image{
+
+  .modal-image {
     padding: 0 10px !important;
   }
 }
 
-.materialboxed{
+.materialboxed {
   cursor: pointer;
 }
-.marg{
+
+.marg {
   margin: 10px 0 15px 0;
   cursor: default;
 }
 
-.material-icons{
+.material-icons {
   cursor: default;
 }
 
-.adjustIcon{
+.adjustIcon {
   transform: scale(0.6);
   margin-left: -10px;
   margin-top: -10px;
 }
-
 
 .tooltip {
 
@@ -119,6 +123,7 @@
   border-color: transparent grey transparent transparent;
   border-opacity: 0.6;
 }
+
 .tooltip:hover .tooltiptext {
   margin-left: 5px;
   visibility: visible;
@@ -130,7 +135,9 @@
   transition: 0.3s;
 }
 
-#myImg:hover {opacity: 0.7;}
+#myImg:hover {
+  opacity: 0.7;
+}
 
 /* The Modal (background) */
 .modal {
@@ -143,8 +150,8 @@
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
   max-height: 100% !important;
 }
 
@@ -175,18 +182,26 @@
   animation-duration: 0.6s;
 }
 
-.modal-image{
+.modal-image {
   max-height: 800px !important;
 }
 
 @-webkit-keyframes zoom {
-  from {-webkit-transform:scale(0)}
-  to {-webkit-transform:scale(1)}
+  from {
+    -webkit-transform: scale(0)
+  }
+  to {
+    -webkit-transform: scale(1)
+  }
 }
 
 @keyframes zoom {
-  from {transform:scale(0)}
-  to {transform:scale(1)}
+  from {
+    transform: scale(0)
+  }
+  to {
+    transform: scale(1)
+  }
 }
 
 /* The Close Button */
@@ -208,64 +223,113 @@
 }
 
 /* 100% Image Width on Smaller Screens */
-@media only screen and (max-width: 700px){
+@media only screen and (max-width: 700px) {
   .modal-content {
     width: 100%;
     max-width: 100% !important;
   }
+
   .photoModal .col .row {
     padding: 0 !important;
   }
-  .pad-left{
+
+  .pad-left {
     padding-left: 20px !important;
   }
 
-  .image-details{
+  .image-details {
     padding-left: 0;
     padding-right: 0;
   }
 }
 
-.pull-left{
+.pull-left {
   text-align: left;
   float: left;
 }
 
-.align-left{
+.align-left {
   text-align: left;
   margin-bottom: 0 !important;
 }
 
-.camera-model{
+.camera-model {
   font-size: 20px;
 }
 
-.modal-image{
+.modal-image {
   -webkit-transition-duration: 0.5s;
   -moz-transition-duration: 0.5s;
   -o-transition-duration: 0.5s;
   transition-duration: 0.5s;
 }
 
-.camera-alt{
+.camera-alt {
   text-align: left;
 }
 
-.delimeter{
+.delimeter {
   height: 2px;
   color: white;
   background-color: white;
 }
 
-.photoComment{
-  margin-top: -30px;
+.photoComment {
+  margin-top: 0px;
 }
 
-@media screen and (max-width: 783px){
-  .photoComment{
-    margin-top: -10px;
+input[type=text]:not(.browser-default):focus:not([readonly]), textarea:focus:not([readonly]) {
+  border-color: dodgerblue;
+  box-shadow: 0 1px 0 0 dodgerblue;
+}
+
+input[type=text]:not(.browser-default):focus:not([readonly]) + label, textarea:not(.browser-default):focus:not([readonly]) + label,
+input[type=text]:not(.browser-default):focus:not([readonly]) + i, .input-field .prefix.active {
+  color: dodgerblue;
+}
+
+.commentTextarea {
+  color: white;
+}
+
+.text-enlarge{
+  font-size: 18px;
+}
+
+.commentAuthor, .commentContent{
+  float: left;
+  text-align: left;
+}
+
+.commentAuthor a {
+  border-bottom: 1px solid;
+}
+
+@media screen and (max-width: 783px) {
+  .photoComment {
+    margin-top: 0px;
     margin-left: -13px;
     font-size: 14px;
+  }
+  .commentAuthor, .commentContent{
+    text-align: justify !important;
+    float: none !important;
+  }
+  .commentAuthor{
+    font-size: 16px;
+  }
+
+  .commentWrapper {
+    margin-bottom: 20px !important;
+  }
+
+  .commentWrapper {
+    margin-bottom: 5px !important;
+  }
+
+  .addCommentWrapper{
+    margin-top: 20px;
+    margin-bottom: 30px !important;
   }
 }
 

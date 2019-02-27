@@ -24,10 +24,10 @@
   </div>
 
   <div *ngIf="images.length && imagesLoaded === true">
-    <div class="uploadedPhotosWrapper center row" >
+    <div class="uploadedPhotosWrapper center row" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="0" (scrolled)="loadMoreImages()" >
       <div>
         <div class="divider"></div>
-        <div infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="0" (scrolled)="loadMoreImages()">
+        <div>
           <app-admin-image *ngFor="let photo of images" [photo]="photo" (delete)="deleteImage($event)" class="col s12 m6 l3"></app-admin-image>
         </div>
         <div class="divider"></div>

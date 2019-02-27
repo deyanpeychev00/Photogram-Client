@@ -1,19 +1,15 @@
-<div>
-  <div class="col s12 m12 center row container">
-    <div class="card ">
-      <div class="card-image">
-        <div>
-          <a routerLink="/journeys/edit/{{journey.id}}">
-            <img alt="{{journey.name}}, uploaded by {{journey.author}}" src="{{featuredImageSrc}}"/>
-          </a>
-        </div>
-        <a class="btn-floating btn-large halfway-fab waves-effect waves-light big red" routerLink="/journeys/edit/{{journey.id}}"><i class="material-icons">mode_edit</i></a>
+<span class="col s12 m6 l6 row">
+  <div class="card hoverable">
+    <div class="card-image hoverable">
+      <div class="hoverable">
+        <a routerLink="/journeys/edit/{{journey.id}}">
+          <img alt="{{journey.name}}, uploaded by {{journey.author}}" src="{{featuredImageSrc}}"/>
+          <span class="card-title">{{journey.name}}</span>
+        </a>
       </div>
-      <div class="card-content">
-        <span class="card-title">{{journey.name}}</span>
-        <p>{{journey.caption}}</p>
-      </div>
+      <a class="btn-floating btn-large halfway-fab waves-effect waves-light big red editButton"
+         routerLink="/journeys/edit/{{journey.id}}"><i class="material-icons">mode_edit</i></a>
     </div>
   </div>
-</div>
+</span>
 

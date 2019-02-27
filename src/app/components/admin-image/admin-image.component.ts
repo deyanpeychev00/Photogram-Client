@@ -21,7 +21,7 @@ export class AdminImageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.imagePath = this.dataService.getAPI().uploads + this.photo.fileName;
+    this.imagePath = this.dataService.getAPI().uploads + this.photo.fileName + '_m.jpg';
     this.photo.location = this.photo.location.filter(l => l !== 0);
     this.photo.resolution = this.photo.resolution.filter(r => r !== 0);
   }

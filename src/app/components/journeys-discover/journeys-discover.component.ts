@@ -92,7 +92,6 @@ export class JourneysDiscoverComponent implements OnInit {
       err => {
         this.isListening = false;
         this.upcommingResults = false;
-        console.log(err);
         this.toastr.errorToast((err.error.description ? err.error.description : 'Възникна грешка, моля опитайте отново'));
       });
   }

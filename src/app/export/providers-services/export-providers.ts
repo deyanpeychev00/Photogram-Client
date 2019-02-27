@@ -5,6 +5,7 @@ import {MapService} from '../../services/map/map.service';
 import {JourneyService} from '../../services/journey/journey.service';
 import {AdminService} from '../../services/admin/admin.service';
 import {UtilityService} from '../../services/utility/utility.service';
+import {CommentsService} from '../../services/comments/comments.service';
 
 export const ProvidersExport = [
   ToastrService,
@@ -13,5 +14,6 @@ export const ProvidersExport = [
   MapService,
   JourneyService,
   AdminService,
-  UtilityService
+  UtilityService,
+  CommentsService
 ];

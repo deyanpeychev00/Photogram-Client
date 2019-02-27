@@ -1,7 +1,11 @@
-.card {
-  padding: 10px;
-  background: radial-gradient(#bdbdbd, #e0e0e0, #fafafa, #fff);
+.editButton{
+  top: 0px;
+  right: 0px;
+  border-top-right-radius: 2px;
+  border-top-left-radius: 0px;
+  border-bottom-right-radius: 0px;
 }
+
 
 .materialboxedimage{
   min-height: 300px;

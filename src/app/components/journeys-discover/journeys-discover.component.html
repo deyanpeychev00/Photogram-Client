@@ -3,21 +3,17 @@
   (searchInDateFrame)="searchJourneysInDateFrame($event)"></app-filters-container>
 
 <div class="row">
-  <div class="center">
+  <div class="center container">
 
     <div class="divider" id="pageTop"></div>
     <!--Journeys and preloader container-->
-    <div class="container center">
-      <div class="center container">
-
+    <div class=" center">
         <!--Journeys-->
-        <div class="journeysWrapper center" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="0"
+        <span class="journeysWrapper center" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="0"
              (scrolled)="loadMoreJourneys()">
           <app-journey-preview *ngFor="let journey of journeysArr" [journey]="journey" [journeyCount]="journeysCount"
-                               class="center row container"></app-journey-preview>
-        </div>
-      </div>
-
+                               class="center container"></app-journey-preview>
+        </span>
       <!--Preloader-->
       <div *ngIf="upcommingResults" class="preloader-wrapper small active">
         <div class="spinner-layer spinner-blue-only">
@@ -35,9 +31,6 @@
     </div>
   </div>
 </div>
-
-
-<div class="divider"></div>
 
 <div class="fixed-action-btn">
   <a class="btn-floating btn-large grey waves-effect waves-light" (click)="scrollToTop()">

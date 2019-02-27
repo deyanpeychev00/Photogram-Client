@@ -15,7 +15,7 @@ export class MyJourneyPreviewComponent implements OnInit {
   constructor(private journeyService: JourneyService, private dataService: DataService) { }
 
   ngOnInit() {
-    this.featuredImageSrc = this.dataService.getAPI().uploads + this.journey.featuredImage;
+    this.featuredImageSrc = this.dataService.getAPI().uploads + this.journey.featuredImage + '_m.jpg';
   }
 
 }

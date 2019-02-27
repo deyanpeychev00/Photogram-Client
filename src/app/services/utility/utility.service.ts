@@ -105,4 +105,45 @@ export class UtilityService {
          </div>`;
     }
   }
+
+  generateUploadedFileObject(file, res, encoded){
+    return {
+      position: 'TRANSIT',
+      localID: btoa(file.name),
+      size: file.size / 1024,
+      location: res.data.location.length > 0 ? [res.data.location[0], res.data.location[1]] : [],
+      hasExif: res.data.hasExif,
+      showSize: true,
+      encoded: encoded,
+      fileName: '',
+      displayType: 'create',
+      dateTaken: res.data.dateTaken
+    };
+  }
+
+  /*EXIF.getData(file, () => {
+  let imgObj = {
+    position: 'TRANSIT',
+    localID: btoa(file.name),
+    size: file.size / 1024,
+    make: file.exifdata.Make ? file.exifdata.Make.toUpperCase() : '',
+    model: file.exifdata.Model ? file.exifdata.Model.toUpperCase() : '',
+    dateTaken: file.exifdata.DateTimeOriginal,
+    location: this.journeyService.extractFileLocation(file),
+    resolution: this.journeyService.extractFileResolution(file),
+    flash: file.exifdata.Flash,
+    iso: file.exifdata.ISOSpeedRatings,
+    focalLength: file.exifdata.FocalLength,
+    hasExif: Object.keys(file.exifdata).length > 0,
+    showSize: true,
+    encoded: fileReader.result,
+    fileName: '',
+    displayType: 'create'
+  };
+  if (Object.keys(file.exifdata).length > 0) {
+    this.selectedFiles.push({file, fileID: imgObj.localID, details: imgObj});
+  }
+  this.selectedPictures.push(imgObj);
+});*/
+
 }

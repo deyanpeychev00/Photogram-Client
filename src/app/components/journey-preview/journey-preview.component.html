@@ -1,19 +1,26 @@
-<div class="container">
-  <div class="col s12 m12 center row container">
+<div >
+  <div class="col s12 m6 l6 center row container">
     <div class="card">
       <div class="card-image">
-        <div>
+        <div class="hoverable">
           <a routerLink="/journeys/show/{{journey.id}}">
             <img alt="{{journey.name}}, uploaded by {{journey.author}}" src="{{featuredImageSrc}}"/>
+            <div class="card-title">{{journey.name}}</div>
           </a>
         </div>
-        <a class="btn-floating btn-large halfway-fab waves-effect waves-light big show-more-button" routerLink="/journeys/show/{{journey.id}}"><i class="material-icons">menu</i></a>
       </div>
       <div class="card-content">
-        <span class="card-title">{{journey.name}}</span>
         <p>{{journey.caption}}</p>
         <div class="card-author">
-          <span class="chip">Автор: <a class="grey-text text-darken-2" routerLink="/users/{{journey.author}}"><b>{{journey.author}}</b></a><img src="{{authorAvatarSrc}}"/></span>
+          <div class="ratings">
+            <span *ngFor="let a of starsArr; let index = index">
+              <i *ngIf="index+1 <= journey.averageRating" class="amber-text material-icons">star</i>
+              <i *ngIf="index+1 > journey.averageRating" class="grey-text material-icons">star</i>
+            </span>
+          </div>
+          <span class="chip">Автор: <a class="grey-text text-darken-2" routerLink="/users/{{journey.author}}"><b>{{journey.author}}</b></a><img
+            src="{{authorAvatarSrc}}"/></span>
+          <span class="chip"><b>Добавено на:</b> {{journey.dateCreated}}</span>
         </div>
       </div>
     </div>

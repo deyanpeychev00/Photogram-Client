@@ -24,6 +24,7 @@ import {AdminJourneysTableComponent} from '../../components/admin-journeys-table
 import {AdminUsersTableComponent} from '../../components/admin-users-table/admin-users-table.component';
 import {UserPageComponent} from '../../components/user-page/user-page.component';
 import {MostVisitedComponent} from '../../components/most-visited/most-visited.component';
+import {JourneyCommentsSidebarComponent} from '../../components/journey-comments-sidebar/journey-comments-sidebar.component';
 
 export const ComponentsExport = [
   AppComponent,
@@ -51,5 +52,6 @@ export const ComponentsExport = [
   AdminJourneysTableComponent,
   AdminImagesTableComponent,
   UserPageComponent,
-  MostVisitedComponent
+  MostVisitedComponent,
+  JourneyCommentsSidebarComponent
 ];

@@ -35,11 +35,15 @@ export class MapService {
 
   drawMapDensityLayer(data, type) {
     if (type === 'heatmap') {
-      let locationsArray = data.map(d => d.location);
+      // filter fake locations (lat: 0 & lon: 0)
+      let locationsArray = data.map(data => data.location).filter(location => location[0] !== 0 && location[1] !== 0);
+      // apply heat layer based on retireved locations
       let heat = L.heatLayer(locationsArray, {type: 'heatmap', radius: 20, minOpacity: 0.65})
         .addTo(this.map);
     } else if (type === 'locations') {
-      for (let dataCoordinates of data) {
+      // filter fake locations (lat: 0 & lon: 0)
+      for (let dataCoordinates of data.filter(d => d.location[0] !== 0 && d.location[1] !== 0)) {
+        // place markers with dedicated popups on retrieved locations
         let popupHTML = this.util.generateMarkerPopup(dataCoordinates, 'locations');
         const marker = L.marker(dataCoordinates.location, {type: 'marker', icon: this.locationIcon}).addTo(this.map);
         marker.bindPopup(popupHTML, this.popup);

@@ -29,6 +29,16 @@
           </div>
         </div>
       </form>
+      <div *ngIf="uploadingImagesProcess || selectedPictures.length">
+        <div class="progress blue lighten-4">
+          <div class="determinate imagesUploadedProgressBar" style="max-width: 100% !important;"></div>
+        </div>
+        <p class="black-text">
+          <span *ngIf="uploadedImagesCount < imagesForUpload - invalidImagesCount"><b>Добавяне на {{uploadedImagesCount}} от {{imagesForUpload}} избрани снимки ... </b></span>
+          <span class="green-text" *ngIf="uploadedImagesCount === imagesForUpload - invalidImagesCount"><b><i class="material-icons">check</i> Добавени са {{uploadedImagesCount}} от {{imagesForUpload}} избрани снимки</b></span>
+          <span [class.redText]="invalidImagesCount > 0" [class.greenText]="invalidImagesCount === 0"><b> ({{invalidImagesCount}} неуспешно добавени снимки)</b></span>
+        </p>
+      </div>
       <div class="uploadedPhotosWrapper">
           <div *ngIf="!selectedPictures.length && !journeyPictures.length" class="preloader-wrapper small active">
             <div class="spinner-layer spinner-blue-only">

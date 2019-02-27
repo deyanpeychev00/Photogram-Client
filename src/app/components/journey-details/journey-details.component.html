@@ -1,3 +1,6 @@
+<app-journey-comments-sidebar></app-journey-comments-sidebar>
+
+
 <div class="center journeyMainAndMap bottomPush">
   <div class="container col s12 m12 l4 center">
     <div *ngIf="journey">
@@ -126,13 +129,6 @@
   <div class="divider"></div>
 </div>
 
-<div class="fixed-action-btn">
-  <a class="btn-floating btn-large grey waves-effect waves-light" (click)="scrollToTop()">
-    <i class="large material-icons">keyboard_arrow_up</i>
-  </a>
-</div>
-
 <div *ngIf="journeyPictures.length">
   <app-footer></app-footer>
 </div>
-

@@ -15,6 +15,7 @@ export class EditPictureFormComponent implements OnInit {
   @Output() delete: EventEmitter<any> = new EventEmitter();
 
   imgLocation: string;
+  imgLocationLarge: string;
   oldComment: string;
   deleteModalID: string;
 
@@ -25,7 +26,8 @@ export class EditPictureFormComponent implements OnInit {
   ngOnInit() {
     this.oldComment = this.photo.comment || "";
     this.photo.forUpdate = false;
-    this.imgLocation = this.dataService.getAPI().uploads + this.photo.fileName;
+    this.imgLocation = this.dataService.getAPI().uploads + this.photo.fileName + '_s.jpg';
+    this.imgLocationLarge = this.dataService.getAPI().uploads + this.photo.fileName + '_l.jpg';
     this.photo.location = this.photo.location.filter(l => l !== 0);
     this.photo.resolution = this.photo.resolution.filter(r => r !== 0);
     this.deleteModalID = 'deleteModal-' + this.photo.id;

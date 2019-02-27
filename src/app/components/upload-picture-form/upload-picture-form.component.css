@@ -1,12 +1,3 @@
-.card{
-  padding: 10px;
-
-}
-
-.redCard{
-  background: radial-gradient(#ffcdd2, #ffebee) !important;
-}
-
 .greenCard{
   background: radial-gradient(#c8e6c9, #e8f5e9);
 }
@@ -66,4 +57,12 @@ input[type=text]:not(.browser-default):focus:not([readonly]), textarea:focus:not
 
 input[type=text]:not(.browser-default):focus:not([readonly])+label, textarea:not(.browser-default):focus:not([readonly])+label{
   color: dodgerblue;
+}
+
+.editButton{
+  top: 0px;
+  right: 0px;
+  border-top-right-radius: 2px;
+  border-top-left-radius: 0px;
+  border-bottom-right-radius: 0px;
 }

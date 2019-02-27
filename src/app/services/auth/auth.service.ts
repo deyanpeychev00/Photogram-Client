@@ -35,7 +35,7 @@ export class AuthService {
   pathProtector() {
     if (this.isLogged()) {
       this.router.navigate(['/']);
-      this.toastr.errorToast('Нямате достъп до този адрес.');
+      // this.toastr.errorToast('Нямате достъп до този адрес.');
     }
   }
   pathAuthProtector() {
@@ -155,7 +155,7 @@ export class AuthService {
       if(res.success){
         this.dataService.setUserLocalData(res.data);
         this.toastr.successToast(res.msg);
-        this.router.navigate(['/journeys/discover']);
+        location.reload(true);
       }else{
         this.toastr.errorToast(res.msg);
       }
@@ -177,7 +177,7 @@ export class AuthService {
       if(res.success){
         this.dataService.setUserLocalData(res.data);
         this.toastr.successToast(res.msg);
-        this.router.navigate(['/journeys/discover']);
+        location.reload(true);
       }else{
         this.toastr.errorToast(res.msg);
       }

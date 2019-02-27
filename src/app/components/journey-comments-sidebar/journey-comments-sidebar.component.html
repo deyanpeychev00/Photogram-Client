@@ -1,0 +1,54 @@
+<div class="fixed-action-btn">
+  <a class="btn-floating btn-large green waves-effect waves-light" (click)="openNav()">
+    <i class="large material-icons">comment</i>
+  </a>
+</div>
+
+<div id="mySidenav" class="Rsidenav">
+  <a href="javascript:void(0)" class="closebtn" (click)="closeNav()"><i class="small material-icons black-text">close</i></a>
+  <div class="commentsContainer col s12 m12 l12" *ngIf="sidebarOpened">
+    <div class="container commentsBackgroundContainer">
+      <div *ngFor="let a of imageComments">
+        <div class="col s12 m12 l12">
+          <div>
+            <div class="row commentWrapper">
+              <div class="row col s12 m12 l1 avatarPlaceholder">
+                <a routerLink="/users/{{a.user}}">
+                <img src="{{a.avatarSrc}}" width="60" height="60" alt=""
+                     class="circle responsive-img">
+                </a>
+              </div>
+              <div class="row col s12 m12 l11 left">
+                <span class="commentAuthor">
+                  <a routerLink="/users/{{a.user}}"><b>{{a.name}} </b>({{a.user}})</a><span class="grey-text text-darken-2"> | Добавен на: {{a.date}}</span>
+                </span>
+                <br>
+                <span class="commentContent">
+                {{a.comment}}
+              </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="addCommentWrapper">
+      <div class="row">
+        <div class="container">
+          <form class="col s12 m12 l12 white-text">
+            <div>
+              <div class="input-field">
+                <textarea id="icon_prefix2" class="materialize-textarea commentTextarea" (keyup)="prepareComment($event)"></textarea>
+                <label for="icon_prefix2">Коментирайте снимката</label>
+              </div>
+              <div class="input-field">
+                <a class="btn blue white-text" (click)="submitComment()"><!--<i class="material-icons">send</i>-->Коментирай</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

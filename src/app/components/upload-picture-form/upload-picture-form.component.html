@@ -1,5 +1,8 @@
 <div class="col s12 m12 l4">
-  <div class="card hoverable" [class.redCard]="!photo.hasExif" [class.greenCard]="photo.hasExif" [class.orangeCard]="photo.location.length === 0 && photo.hasExif" >
+  <div class="card hoverable">
+    <a *ngIf="!photo.hasExif" class="btn-floating btn-large halfway-fab waves-effect waves-light big red editButton activator"><i class="material-icons">error_outline</i></a>
+    <a *ngIf="photo.hasExif" class="btn-floating btn-large halfway-fab waves-effect waves-light big green editButton activator"><i class="material-icons">check</i></a>
+    <a *ngIf="photo.location.length === 0 && photo.hasExif" class="btn-floating btn-large halfway-fab waves-effect waves-light big orange editButton activator"><i class="material-icons">info_outline</i></a>
     <div class="card-image" *ngIf="photo.localID || photo.id">
       <img *ngIf="photo.hasExif" alt="Photogram Image taken with {{photo.make}} {{photo.model}}" src="{{photo.encoded}}" id="localIMG-{{photo.localID}}" class="previewImage activator materialboxed materialboxedimage upImg ">
       <img *ngIf="!photo.hasExif" alt="Photogram Image" src="{{photo.encoded}}" id="localIMG-{{photo.localID}}" class="previewImage activator materialboxed materialboxedimage upImg ">
@@ -25,7 +28,7 @@
     </div>
   </div>
   <div class="imageCommentWrapper">
-    <input id="imageComment" type="text" name="imageComment" maxlength="60" placeholder="Коментар" (input)="updateImageComment($event.target.value)">
+    <input id="imageComment" type="text" name="imageComment" maxlength="60" placeholder="Коментар (макс. 60 символа)" (input)="updateImageComment($event.target.value)">
   </div>
 </div>
 

@@ -75,17 +75,17 @@
   </div>
 </div>
 
+  <div class="row">
+    <div class="center container">
 
-<div class="container">
-  <div class="container">
-    <div class="journeysWrapper center container">
-      <!--Journeys-->
-      <div class="journeysWrapper" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="0" (scrolled)="loadMoreJourneys()">
-        <app-my-journey-preview *ngFor="let journey of journeysArr" [journey]="journey" [journeyCount]="journeysCount" class="center row container"></app-my-journey-preview>
+      <div class="divider" id="pageTop"></div>
+      <!--Journeys and preloader container-->
+      <div class=" center">
+        <!--Journeys-->
+        <span infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="0" (scrolled)="loadMoreJourneys()">
+          <app-my-journey-preview *ngFor="let journey of journeysArr" [journey]="journey" [journeyCount]="journeysCount" class=" center container"></app-my-journey-preview>
+        </span>
       </div>
     </div>
   </div>
 </div>
-
-
-

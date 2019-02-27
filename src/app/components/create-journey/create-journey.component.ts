@@ -6,6 +6,7 @@ import {EXIF} from 'exif-js';
 import {ToastrService} from '../../services/toastr/toastr.service';
 import {JourneyService} from '../../services/journey/journey.service';
 import {DataService} from '../../services/data/data.service';
+import {UtilityService} from '../../services/utility/utility.service';
 
 declare const $: any;
 
@@ -19,10 +20,16 @@ export class CreateJourneyComponent implements OnInit {
   donePhotos = [];
   journeyName: string;
   journeyDescription: string;
+  uploadingImagesProcess = false;
+  uploadedImagesCount = 0;
+  invalidImagesCount = 0;
+  imagesForUpload = 0;
+  uploadingJourneyProcess = false;
+  uploadedImagesToServerCount = 0;
 
 
   constructor(private auth: AuthService, private map: MapService, private toastrService: ToastrService,
-              private journeyService: JourneyService, private dataService: DataService, private router: Router) {
+              private journeyService: JourneyService, private dataService: DataService, private router: Router, private util: UtilityService) {
   }
 
   ngOnInit() {
@@ -40,53 +47,46 @@ export class CreateJourneyComponent implements OnInit {
     this.map.setEmptyMap('uploadJourneyMap');
   }
 
-  onPictureSelectorChange(ev) {
+  async onPictureSelectorChange(ev) {
     $('.uploadedPhotosWrapper').css('display', 'block');
+    $('.determinate').css('width', '0');
     this.map.emptyMarkers();
     this.selectedPictures = [];
     this.selectedFiles = [];
+    this.uploadedImagesCount = this.invalidImagesCount = 0;
     const files: Array<File> = ev.target.files;
-
-    for (let i = 0; i < files.length; i++) {
-      const file: any = files[i];
-
+    this.imagesForUpload = files.length;
+    this.uploadingImagesProcess = files.length > 0;
+    for (let i = 1; i <= files.length; i++) {
+      const file: any = files[i-1];
       const validator = this.auth.validatePostPicture(file);
       if (!validator.isValid) {
-        this.toastrService.toast(validator.msg);
-        continue;
+        this.toastrService.errorToast(validator.msg);
+        this.invalidImagesCount++;
+      }else{
+        const fileReader: FileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+        fileReader.onload = (e) => {
+          this.journeyService.validateImage(file).subscribe((res: any) => {
+            if(res !== null && res.success){
+              let imgObj = this.util.generateUploadedFileObject(file, res, fileReader.result);
+              if (res.data.hasExif) {
+                this.selectedFiles.push({file, fileID: imgObj.localID, details: imgObj});
+              }
+              this.selectedPictures.push(imgObj);
+              this.uploadedImagesCount++;
+              $('.determinate').css('width', `${(this.uploadedImagesCount*100)/(files.length-this.invalidImagesCount)}%`);
+            }else if(!res.success){
+              this.toastrService.errorToast('Възникна грешка, моля опитайте отново.');
+              return;
+            }
+          });
+        };
+        fileReader.onerror = (error) => {
+          console.error(error);
+          this.toastrService.toast('Възникна проблем при качването на снимка.');
+        };
       }
-      const fileReader: FileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = (e) => {
-        EXIF.getData(file, () => {
-          let imgObj = {
-            position: 'TRANSIT',
-            localID: btoa(file.name),
-            size: file.size / 1024,
-            make: file.exifdata.Make ? file.exifdata.Make.toUpperCase() : '',
-            model: file.exifdata.Model ? file.exifdata.Model.toUpperCase() : '',
-            dateTaken: file.exifdata.DateTimeOriginal,
-            location: this.journeyService.extractFileLocation(file),
-            resolution: this.journeyService.extractFileResolution(file),
-            flash: file.exifdata.Flash,
-            iso: file.exifdata.ISOSpeedRatings,
-            focalLength: file.exifdata.FocalLength,
-            hasExif: Object.keys(file.exifdata).length > 0,
-            showSize: true,
-            encoded: fileReader.result,
-            fileName: '',
-            displayType: 'create'
-          };
-          if (Object.keys(file.exifdata).length > 0) {
-            this.selectedFiles.push({file, fileID: imgObj.localID, details: imgObj});
-          }
-          this.selectedPictures.push(imgObj);
-        });
-      };
-      fileReader.onerror = (error) => {
-        console.error(error);
-        this.toastrService.toast('Възникна проблем при качването на снимка.');
-      };
     }
     this.map.connectJourneyMarkers();
   }
@@ -97,16 +97,24 @@ export class CreateJourneyComponent implements OnInit {
     if (!validateJourney.isValid) {
       this.toastrService.errorToast(validateJourney.msg);
     } else {
-      this.toastrService.toast('Създаване на пътешествието..');
-
-      this.journeyService.createJourney(this.journeyName, this.journeyDescription, this.selectedFiles).subscribe((res: any) =>{
+      this.uploadingJourneyProcess = true;
+      this.journeyService.createJourney(this.journeyName, this.journeyDescription/*, this.selectedFiles*/).subscribe((res: any) =>{
         if(res == null){
           this.toastrService.errorToast('Възникна грешка, моля опитайте по-късно.');
           return;
         }
         if(res.success){
-          this.toastrService.successToast(res.msg);
-          this.clearForm();
+          for(let fileObject of this.selectedFiles){
+            this.journeyService.uploadImage(fileObject.file, fileObject.details.comment, res.data.journeyId).subscribe((imageRes: any) => {
+              this.uploadedImagesToServerCount++;
+              if(this.uploadedImagesToServerCount >= this.imagesForUpload){
+                this.uploadingJourneyProcess = false;
+                this.toastrService.successToast('Успешно създадохте пътешествието.');
+                this.router.navigate(['/journeys/discover']);
+              }
+            });
+          }
+          // this.clearForm();
           return;
         }else{
           this.toastrService.errorToast(res.msg);
@@ -114,8 +122,6 @@ export class CreateJourneyComponent implements OnInit {
         }
       }, err => {this.toastrService.errorToast('Възникна грешка, моля опитайте по-късно.');});
     }
-
-    // this.clearForm();
   }
 
 
@@ -124,7 +130,6 @@ export class CreateJourneyComponent implements OnInit {
   }
 
   clearForm() {
-    // this.selectedPictures = this.donePhotos = [];
     this.journeyName = this.journeyDescription = '';
     $('.uploadFileInput').val('');
     $('.uploadedPhotosWrapper').css('display', 'none');

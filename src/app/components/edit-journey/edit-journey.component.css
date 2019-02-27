@@ -126,4 +126,15 @@ input[type=text]:not(.browser-default):focus:not([readonly])+label, textarea:not
   cursor: pointer;
 }
 
+.redText{
+  color: darkred;
+}
+.greenText{
+  color: green;
+}
+
+.determinate{
+  background-color: dodgerblue;
+}
+
 
